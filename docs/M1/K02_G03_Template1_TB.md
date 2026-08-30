@@ -35,7 +35,50 @@ Dipersiapkan oleh:
 Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
 
 ## 1.2 Analisis Kondisi Saat Ini
-Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+Saat ini masyarakat dapat melaporkan kerusakan fasilitas publik seperti jalan berlubang, lampu jalan mati, pohon tumbang, rambu rusak, atau fasilitas umum lainnya melalui berbagai kanal, seperti media sosial, call center instansi, SP4N-LAPOR, maupun aplikasi pemerintah daerah seperti JAKI/JakLapor.
+
+Kanal tersebut sudah mempermudah masyarakat menyampaikan pengaduan. Namun, untuk kasus kerusakan fasilitas publik masih terdapat beberapa celah karena sistem yang ada umumnya berorientasi pada laporan pengaduan, bukan pada pengelolaan kondisi dan riwayat fasilitas yang dilaporkan.
+
+## Kesenjangan yang Teridentifikasi
+
+| Kesenjangan | Kondisi Saat Ini | Dampak |
+|---|---|---|
+| **Laporan duplikat** | Beberapa warga dapat melaporkan kerusakan yang sama secara terpisah | Petugas perlu memeriksa laporan berulang untuk objek yang sama |
+| **Informasi kerusakan tidak selalu seragam** | Detail laporan banyak bergantung pada deskripsi bebas dari pelapor | Jenis, tingkat kerusakan, dan urgensi perlu diverifikasi kembali |
+| **Riwayat fasilitas sulit ditelusuri** | Laporan umumnya disimpan sebagai pengaduan terpisah | Kerusakan berulang pada fasilitas yang sama sulit diidentifikasi |
+| **Prioritas penanganan belum langsung terlihat** | Laporan dengan tingkat bahaya berbeda dapat masuk melalui mekanisme yang sama | Kerusakan yang lebih berbahaya berpotensi terlambat diprioritaskan |
+| **Status penanganan masih umum** | Status biasanya berupa diterima, diproses, atau selesai | Masyarakat tidak selalu mengetahui perkembangan perbaikan secara rinci |
+
+## Perbandingan Solusi yang Sudah Ada
+
+| Solusi | Fitur/Kelebihan | Keterbatasan terhadap Fokus Sistem |
+|---|---|---|
+| **SP4N-LAPOR** | Kanal pengaduan nasional dan laporan dapat diteruskan kepada instansi berwenang | Bersifat umum untuk berbagai jenis pelayanan publik, bukan khusus pengelolaan kerusakan fasilitas |
+| **JAKI/JakLapor** | Mendukung foto, kategori, lokasi, dan pemantauan laporan | Berorientasi pada pengaduan warga dan cakupannya terbatas pada DKI Jakarta |
+| **Call center instansi** | Memungkinkan komunikasi langsung dengan petugas | Data laporan tidak selalu terstruktur dan perkembangan laporan lebih sulit dipantau |
+| **Media sosial instansi** | Mudah diakses masyarakat | Tidak dirancang sebagai sistem pengelolaan laporan dan riwayat fasilitas |
+
+## Bukti Pendukung
+
+Data nasional SP4N-LAPOR menunjukkan bahwa pengaduan masyarakat memang digunakan dalam skala besar.
+
+| Data | Nilai |
+|---|---:|
+| Laporan masuk tahun 2023 | *176.853 laporan* |
+| Kenaikan dibandingkan 2022 | *30%* |
+| Persentase tindak lanjut tahun 2023 | *85,2%* |
+
+Sumber: Kementerian PANRB, *Evaluasi Pengelolaan Pengaduan SP4N-LAPOR! Tahun 2023*.
+
+Contoh data dari kanal resmi Pemerintah Kota Pontianak juga menunjukkan bahwa infrastruktur jalan menjadi topik pengaduan terbanyak pada statistik SP4N-LAPOR! November 2020.
+
+![Data Span Lapor](../assets/data_span-lapor.jpg)
+
+
+*Sumber gambar: Diskominfo Kota Pontianak.*
+
+Berdasarkan kondisi tersebut, perangkat lunak yang diusulkan difokuskan pada pelaporan dan pengelolaan kerusakan fasilitas publik secara lebih terstruktur terutama untuk mengurangi laporan duplikat, membantu menentukan prioritas penanganan, serta menyimpan riwayat kerusakan dan perbaikan fasilitas.
+
 
 ---
 
@@ -84,3 +127,4 @@ Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja p
 
 # Referensi
 - Diagram UML: https://www.drawio.com/, https://staruml.io/
+- [Evaluasi Pengelolaan Pengaduan SP4N-LAPOR! Tahun 2023](https://menpan.go.id/site/berita-terkini/kementerian-panrb-minta-instansi-pusat-tindak-lanjuti-hasil-evaluasi-pengelolaan-pengaduan)
