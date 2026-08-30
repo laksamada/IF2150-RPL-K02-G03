@@ -7,7 +7,7 @@ TOPIC BRAINSTORMING
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *SILEMBUR*
 
 ### Untuk: *[Nama Asisten]*
 
@@ -32,7 +32,7 @@ Dipersiapkan oleh:
 # BAB 1: Analisis Permasalahan
 
 ## 1.1 Latar Belakang Masalah
-Tuliskan deskripsi permasalahan yang kalian pilih secara naratif dan spesifik. Tambahkan keterkaitan permasalahan tersebut dengan Tujuan Pembangunan Berkelanjutan (SDGs) yang telah disepakati. Dukung argumen kalian dengan data yang kredibel, serta jelaskan urgensi mengapa masalah ini perlu dan layak untuk segera diselesaikan.
+SILEMBUR atau Sistem Informasi Lembur adalah sebuah platform pelaporan berbasis web dan aplikasi yang memfasilitasi warga untuk melaporkan kerusakan fasilitas umum di lingkungan tempat tinggal mereka seperti jalan berlubang lampu penerangan jalan yang mati dan pohon tumbang di mana nama lembur sendiri diambil dari bahasa Sunda yang berarti kampung atau kawasan tempat tinggal dan sistem ini bekerja dengan cara warga memotret serta menandai lokasi kerusakan melalui GPS kemudian laporan tersebut diteruskan kepada instansi pemerintah kota yang berwenang sekaligus dapat dipantau statusnya secara transparan hingga divisualisasikan dalam peta interaktif untuk membantu pemerintah memprioritaskan perbaikan berdasarkan data yang nyata dan dari sisi keterkaitannya dengan Tujuan Pembangunan Berkelanjutan aplikasi ini paling erat berhubungan dengan SDG 11 yaitu Sustainable Cities and Communities karena mendukung terciptanya kota yang inklusif aman tangguh dan berkelanjutan melalui pengelolaan infrastruktur publik yang lebih baik.
 
 ## 1.2 Analisis Kondisi Saat Ini
 Saat ini masyarakat dapat melaporkan kerusakan fasilitas publik seperti jalan berlubang, lampu jalan mati, pohon tumbang, rambu rusak, atau fasilitas umum lainnya melalui berbagai kanal, seperti media sosial, call center instansi, SP4N-LAPOR, maupun aplikasi pemerintah daerah seperti JAKI/JakLapor.
