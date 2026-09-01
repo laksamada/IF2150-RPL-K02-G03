@@ -85,7 +85,12 @@ Berdasarkan kondisi tersebut, perangkat lunak yang diusulkan difokuskan pada pel
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
+
+Target platform yang akan dipakai adalah aplikasi mobile. Aplikasi mobile dipilih agar pengguna dapat melapor pada waktu dan lokasi saat itu juga. Pengguna melapor dengan memberikan data - data yang dibutuhkan seperti lokasi, foto kerusakan dan waktu pelaporan.
+
+Dari beberapa kondisi yang ada, solusi yang diberikan dari *Nama P/L* adalah pelaporan kerusakan fasilitas yang lebih terstruktur dengan pengelolaan laporan duplikat serta penyimpanan status dan riwayat laporan fasilitas.
+
+Solusi tersebut menjadi inovasi inti dari solusi-solusi yang ada. Dengan adanya pengelolaan laporan duplikat, instansi dapat dengan mudah mengatur prioritas dalam penanganan kerusakan. Status dan riwayat laporan akan membantu pengguna/pelapor dalam pemantauan penanganan fasilitas dan membantu instansi dalam menentukan solusi penanganan yang tepat.
 
 ## 2.2 Asumsi dan Batasan
 
