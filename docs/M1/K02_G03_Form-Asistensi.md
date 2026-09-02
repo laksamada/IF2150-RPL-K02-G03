@@ -5,7 +5,7 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | *Minggu* |
-| **Tanggal** | *30/07/2026* |
+| **Tanggal** | *30/08/2026* |
 | **Kelas** | *K02* |
 | **Nomor Kelompok** | *G03*  |
 | **Nama Kelompok** | *LockedIn*  |
