@@ -94,11 +94,13 @@ Dengan adanya pengelolaan laporan duplikat, instansi dapat dengan mudah mengatur
 
 ## 2.2 Asumsi dan Batasan
 
-Jika foto terkait kerusakan fasilitas mengandung melibatkan wajah orang lain, maka foto yang diupload harus memenuhi UU PDP 27 Tahun 2022 terkait penyebaran data pribadi dengan persetujuan orang yang bersangkutan.
+Untuk pembuatan SILEMBUR, dari sisi teknis, kami berasumsi bahwa terdapat database yang cukup besar untuk menampung semua laporan beserta status dan riwayatnya dari pengguna dengan populasi 1 kota besar seperti Bandung selama 3 bulan. Dari sisi pengguna, kami berasumsi bahwa pengguna sudah memahami cara mengambil foto serta mengetik, sehingga bisa mengisi laporan dengan benar. 
 
-Sumber daya berupa penyimpanan database yang terbatas berarti bahwa tidak semua foto yang dikirim pengguna bisa disimpan secara permanen. Jika database hampir penuh, maka bisa diterapkan penghapusan foto yang dikirim pengguna setelah dicek atau setelah melewati jangka waktu tertentu.
+Jika foto terkait kerusakan fasilitas mengandung melibatkan wajah orang lain, maka foto yang diupload harus memenuhi UU PDP 27 Tahun 2022 terkait penyebaran data pribadi dengan meminta persetujuan orang yang bersangkutan. Selain itu, jika melakukan kerja sama dengan pemerintah daerah atau instansi berwenang, maka kontrak atau regulasi terkait juga harus dipatuhi.
 
-Sistem diasumsikan digunakan di sekitar tempat tinggal atau tempat berkegiatan pengguna, karena paling relevan dengan kondisi mereka. Pengguna biasanya menggunakan berbagai fasilitas dalam aktivitas hidupnya, baik di lingkungan rumah, sekolah, kantor, perjalanan, dan lainnya, sehingga mereka bisa melaporkan ketika ada fasilitas rusak yang menghambat kegiatan mereka.
+Sumber daya berupa penyimpanan database yang terbatas mengakibatkan tidak semua foto yang dikirim pengguna bisa disimpan secara permanen. Jika database hampir penuh, maka perlu diterapkan sistem penghapusan foto yang dikirim pengguna, misalnya setelah dicek oleh admin atau setelah melewati jangka waktu tertentu.
+
+Ruang lingkup solusi ini dibatasi pada seluruh populasi masyarakat dalam 1 kota tertentu. Pengguna diasumsikan menggunakan aplikasi di sekitar tempat tinggal atau tempat berkegiatan pengguna, karena paling relevan dengan kondisi mereka. Pengguna biasanya menggunakan berbagai fasilitas dalam aktivitas hidupnya, baik di lingkungan rumah, sekolah, kantor, perjalanan, dan lainnya, sehingga mereka bisa melaporkan ketika ada fasilitas rusak yang menghambat kegiatan mereka.
 
 
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
@@ -114,8 +116,8 @@ Sistem diasumsikan digunakan di sekitar tempat tinggal atau tempat berkegiatan p
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | *Masyarakat umum* |  *Memfoto fasilitas rusak* | *Melaporkan fasilitas kepada pihak yang bertanggung jawab agar dapat diperbaiki* |
-| US-02 | *Admin* | *Verifikasi foto* | *Memastikan foto yang dikirim pengguna terkait kerusakan fasilitas * |
+| US-01 | *Masyarakat umum* |  *Memfoto fasilitas rusak* | *Melaporkan fasilitas rusak kepada pihak yang bertanggung jawab agar dapat diperbaiki* |
+| US-02 | *Admin* | *Verifikasi foto* | *Memastikan bahwa foto yang dikirim pengguna itu terkait kerusakan fasilitas * |
 | US-03 | *Pemerintah daerah* | *Melakukan tindakan perbaikan* | *Melakukan perbaikan fasilitas sesuai laporan demi kelancaran aktivitas masyarakat* |
 
 ## 3.3 Deskripsi Aktivitas
