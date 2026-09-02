@@ -5,12 +5,14 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | *Minggu* |
+
 | **Tanggal** | *30/07/2026* |
 | **Kelas** | *K02* |
 | **Nomor Kelompok** | *G03*  |
 | **Nama Kelompok** | *LockedIn*  |
 | **Nama Perangkat Lunak** | *SiLembur*  |
 | **Dokumen** | *Template T1*  |
+
 
 ### Anggota Kelompok
 
@@ -31,14 +33,14 @@
 | 3. Penggunaan AI diperbolehkan, tetapi harus transparan terkait penggunaannya |
 | 4. Draft hanya untuk mengecek progres,setelah dokumen final dirilis, tidak boleh direvisi lagi |
 
-**Notes for this section:**  
-*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
+
+
 
 ## Dokumentasi
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src=".\assets\Screenshot (126).png" width="100%">
+  <img src="./assets/fotoAsistensi.png" width="100%">
 </p>
 
 <p align="center">
