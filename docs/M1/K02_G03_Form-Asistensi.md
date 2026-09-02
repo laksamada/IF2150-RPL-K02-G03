@@ -5,7 +5,6 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | *Minggu* |
-
 | **Tanggal** | *30/07/2026* |
 | **Kelas** | *K02* |
 | **Nomor Kelompok** | *G03*  |
