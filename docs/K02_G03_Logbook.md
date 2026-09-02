@@ -7,7 +7,7 @@
 | Kelas | *K02* |
 | Nomor Kelompok | *G05* |
 | Nama Kelompok | *LockedIn* |
-| Nama Perangkat Lunak | *[Nama P/L]* |
+| Nama Perangkat Lunak | *SiLembur* |
 
 **Anggota Kelompok:**
 
@@ -33,8 +33,11 @@
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *04-05-2026* | *[Nama Mahasiswa]* | *[Jelaskan Pekerjaan secara Singkat]* | *[Durasi Pengerjaan]* | *[On Progress/Done]* | [Kendala yang dialami, jika tidak ada cukup tandai "-"] | 
-| *05-05-2026* | *John Doe* | *Mendesain diagram kelas* | *3* | *Done* | *-* | 
+| *31-09-2026* | *Mochamad Fachri Alfaridzi* | *mengerjakan section 1.2* | *1* | *Done* | - | 
+| *31-09-2026* | *Kevin Lincoln Hutabarat* | *Mengerjakan section 2.2 dan 3.2 di template* | *1-2* | *Done* | *-* | 
+| *31-09-2026* | *Muhammad Pandu Pulunggana* | *Mengerjakan section latar belakag di template* | *1* | *Done* | *-* | 
+| *31-09-2026* | *Muhammad Dhiya Rafi* | *Mengerjakan section 3.1 di template* | *1* | *Done* | *-* |
+| *02-09-2026* | *Satya Radhityan Yahya* | *Mengerjakan section 2.1, 3.2, 3.3 dan 3.4 di template* | *3* | *Done* | *-* |
 | | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**
