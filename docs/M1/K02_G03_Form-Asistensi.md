@@ -10,7 +10,7 @@
 | **Nomor Kelompok** | *G03*  |
 | **Nama Kelompok** | *LockedIn*  |
 | **Nama Perangkat Lunak** | *SILEMBUR*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Dokumen** | *TB*  |
 
 ### Anggota Kelompok
 
@@ -40,7 +40,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/fotoAsistensi.png" width="100%">
 </p>
 
 <p align="center">
