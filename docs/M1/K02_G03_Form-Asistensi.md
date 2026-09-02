@@ -4,12 +4,12 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | *Minggu* |
+| **Tanggal** | *30/Agustus/2026* |
 | **Kelas** | *K02* |
 | **Nomor Kelompok** | *G03*  |
 | **Nama Kelompok** | *LockedIn*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
+| **Nama Perangkat Lunak** | *SILEMBUR*  |
 | **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
 
 ### Anggota Kelompok
@@ -26,10 +26,12 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. *Ide Udah oke* |
+| 2. *Yang penting bisa ngejelasin bedanya solusi yang di propose dengan solusi yang ada* |
+| 3. *Gak harus yang unik banget, yang penting bisa nyari gap dari solusi yang ada* |
+| 4. *Draft hanya buat ngecek progress aja* |
+| 5. *Setelah release final dokumen gaboleh direvisi lagi* |
+| 6. *AI tidak dilarang, hanya diminta transparansi kebijakan penggunaan AI* |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
