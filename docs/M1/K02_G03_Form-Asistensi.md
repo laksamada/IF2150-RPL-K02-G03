@@ -4,13 +4,13 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
+| **Hari** | *Minggu* |
+| **Tanggal** | *30/07/2026* |
 | **Kelas** | *K02* |
 | **Nomor Kelompok** | *G03*  |
 | **Nama Kelompok** | *LockedIn*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Nama Perangkat Lunak** | *SiLembur*  |
+| **Dokumen** | *Template T1*  |
 
 ### Anggota Kelompok
 
@@ -26,10 +26,10 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Ide sudah cukup baik,harus bisa menjelaskan perbedaan solusi yang diajukan dengan solusi yang sudah ada  |
+| 2. Tidak harus sangat unik, yang penting ada gap dari solusi sebelumnya |
+| 3. Penggunaan AI diperbolehkan, tetapi harus transparan terkait penggunaannya |
+| 4. Draft hanya untuk mengecek progres,setelah dokumen final dirilis, tidak boleh direvisi lagi |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
@@ -38,7 +38,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src=".\assets\Screenshot (126).png" width="100%">
 </p>
 
 <p align="center">

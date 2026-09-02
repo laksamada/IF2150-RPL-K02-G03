@@ -7,7 +7,7 @@
 | Kelas | *K02* |
 | Nomor Kelompok | *G05* |
 | Nama Kelompok | *LockedIn* |
-| Nama Perangkat Lunak | *[Nama P/L]* |
+| Nama Perangkat Lunak | *SiLembur* |
 
 **Anggota Kelompok:**
 

@@ -7,7 +7,7 @@
 | Kelas | *K02* |
 | Nomor Kelompok | *G03* |
 | Nama Kelompok | *LockedIn* |
-| Nama Perangkat Lunak | *[Nama P/L]* |
+| Nama Perangkat Lunak | *SiLembur* |
 
 **Anggota Kelompok:**
 
@@ -52,8 +52,8 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 
 | Tanda Tangan | Nama Anggota |
 | :---: | :--- |
-| <img src="./assets/ttd-anggota1.png" width="100"> | **[NIM - Nama Anggota 1]** |
-| <img src="./assets/ttd-anggota2.png" width="100"> | **[NIM - Nama Anggota 2]** |
-| <img src="./assets/ttd-anggota3.png" width="100"> | **[NIM - Nama Anggota 3]** |
-| <img src="./assets/ttd-anggota4.png" width="100"> | **[NIM - Nama Anggota 4]** |
-| <img src="./assets/ttd-anggota5.png" width="100"> | **[NIM - Nama Anggota 5]** |
+| <img src="./assets/ttd_fachri.jpeg"  width="100%" >| **[13225128 - Mochamad Fachri Alfaridzi]** |
+| <img src=".\assets\ttd_satya.png" width="100%" > | **[13525098 - Satya Radhityan Yahya]** |
+| <img src="./assets/ttd_rafi.png" width="100"> | **[13525035 - Muhammad Dhiya Rafi]** |
+| <img src="./assets/ttd_pandu.png" width="100"> | **[13525059 - Muhammad Pandu Pulunggana]** |
+| <img src="./assets/ttd_kevin.png" width="100"> | **[13525101 - Kevin Lincoln Hutabarat ]** |
