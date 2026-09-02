@@ -86,11 +86,11 @@ Berdasarkan kondisi tersebut, perangkat lunak yang diusulkan difokuskan pada pel
 
 ## 2.1 Deskripsi Perangkat Lunak
 
-Target platform yang akan dipakai SILEMBUR adalah aplikasi mobile. Aplikasi mobile dipilih agar pengguna dapat melapor pada waktu dan lokasi pada saat itu juga. Pengguna melapor dengan memberikan data - data yang dibutuhkan seperti lokasi, foto kerusakan dan waktu pelaporan.
+Target platform yang akan dipakai SILEMBUR adalah aplikasi/web mobile. Aplikasi/web mobile dipilih agar pengguna dapat melapor pada waktu dan lokasi pada saat itu juga. Pengguna akan melapor dengan memberikan detail yang dibutuhkan seperti lokasi, foto kerusakan dan waktu pelaporan.
 
-Dari beberapa kondisi yang ada, solusi yang diberikan dari SILEMBUR adalah pelaporan kerusakan fasilitas yang lebih terstruktur dengan pengelolaan laporan duplikat serta penyimpanan status dan riwayat laporan fasilitas.
+Dari beberapa kondisi yang ada, inovasi inti yang diberikan dari SILEMBUR yang membedakan dengan solusi-solusi yang sudah ada adalah pelaporan kerusakan fasilitas yang lebih terstruktur dengan pengelolaan laporan duplikat serta penyimpanan status dan riwayat laporan fasilitas.
 
-Solusi tersebut menjadi inovasi inti dari solusi-solusi yang ada. Dengan adanya pengelolaan laporan duplikat, instansi dapat dengan mudah mengatur prioritas dalam penanganan kerusakan. Status dan riwayat laporan akan membantu pengguna/pelapor dalam pemantauan penanganan fasilitas dan membantu instansi dalam menentukan solusi penanganan yang tepat.
+Dengan adanya pengelolaan laporan duplikat, instansi dapat dengan mudah mengatur prioritas dalam penanganan kerusakan. Status dan riwayat laporan akan membantu pengguna/pelapor dalam pemantauan penanganan fasilitas dan membantu instansi dalam menentukan solusi penanganan yang tepat.
 
 ## 2.2 Asumsi dan Batasan
 
@@ -117,6 +117,16 @@ Sistem diasumsikan digunakan di sekitar tempat tinggal atau tempat berkegiatan p
 | US-01 | *Masyarakat umum* |  *Memfoto fasilitas rusak* | *Melaporkan fasilitas kepada pihak yang bertanggung jawab agar dapat diperbaiki* |
 | US-02 | *Admin* | *Verifikasi foto* | *Memastikan foto yang dikirim pengguna terkait kerusakan fasilitas * |
 | US-03 | *Pemerintah daerah* | *Melakukan tindakan perbaikan* | *Melakukan perbaikan fasilitas sesuai laporan demi kelancaran aktivitas masyarakat* |
+
+## 3.3 Deskripsi Aktivitas
+| ID | Aktivitas | Penjelasan | ID User Story |
+| :--- | :--- | :--- | :--- |
+| A01 | *Melakukan pelaporan* | *Pengguna melapor dengan mengisi detail laporan.* | *US-01* |
+| A02 | *Cek validasi* | *Memastikan laporan yang diberikan pengguna valid. Jika tidak valid, pengguna dapat merevisi laporannya.* | *US-02*|
+| A03 | *Cek duplikat* | *Memastikan tidak ada laporan duplikat pada database.* | *US-02*|
+| A04 | *Perbaikan fasilitas* | *Pemerintah memperbaiki fasilitas sesuai dengan laporan yang ada dengan memperhatikan prioritas.* |  *US-03*
+| A05 | *Pembaruan status laporan* | *Mengubah status laporan yang sudah diperbaiki dan memnyimapannya pada riwayat laporan.* | *US-02*
+| A06 | *Pemantauan status laporan* | *Memantau proses dan riwayat laporan.* | *US-01*
 
 ## 3.4 Model Proses Bisnis
 <br>
