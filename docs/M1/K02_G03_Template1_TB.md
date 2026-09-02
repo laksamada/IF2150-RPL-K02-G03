@@ -73,9 +73,9 @@ Sumber: Kementerian PANRB, *Evaluasi Pengelolaan Pengaduan SP4N-LAPOR! Tahun 202
 Contoh data dari kanal resmi Pemerintah Kota Pontianak juga menunjukkan bahwa infrastruktur jalan menjadi topik pengaduan terbanyak pada statistik SP4N-LAPOR! November 2020.
 
 ![Data Span Lapor](../assets/data_span-lapor.jpg)
-
-
-*Sumber gambar: Diskominfo Kota Pontianak.*
+<p align = "center"> 
+<i>Gambar 1. Statistik pengaduan warga, Sumber: Diskominfo Kota Pontianak.</i>
+</p>
 
 Berdasarkan kondisi tersebut, perangkat lunak yang diusulkan difokuskan pada pelaporan dan pengelolaan kerusakan fasilitas publik secara lebih terstruktur terutama untuk mengurangi laporan duplikat, membantu menentukan prioritas penanganan, serta menyimpan riwayat kerusakan dan perbaikan fasilitas.
 
@@ -86,9 +86,9 @@ Berdasarkan kondisi tersebut, perangkat lunak yang diusulkan difokuskan pada pel
 
 ## 2.1 Deskripsi Perangkat Lunak
 
-Target platform yang akan dipakai adalah aplikasi mobile. Aplikasi mobile dipilih agar pengguna dapat melapor pada waktu dan lokasi saat itu juga. Pengguna melapor dengan memberikan data - data yang dibutuhkan seperti lokasi, foto kerusakan dan waktu pelaporan.
+Target platform yang akan dipakai SILEMBUR adalah aplikasi mobile. Aplikasi mobile dipilih agar pengguna dapat melapor pada waktu dan lokasi pada saat itu juga. Pengguna melapor dengan memberikan data - data yang dibutuhkan seperti lokasi, foto kerusakan dan waktu pelaporan.
 
-Dari beberapa kondisi yang ada, solusi yang diberikan dari *Nama P/L* adalah pelaporan kerusakan fasilitas yang lebih terstruktur dengan pengelolaan laporan duplikat serta penyimpanan status dan riwayat laporan fasilitas.
+Dari beberapa kondisi yang ada, solusi yang diberikan dari SILEMBUR adalah pelaporan kerusakan fasilitas yang lebih terstruktur dengan pengelolaan laporan duplikat serta penyimpanan status dan riwayat laporan fasilitas.
 
 Solusi tersebut menjadi inovasi inti dari solusi-solusi yang ada. Dengan adanya pengelolaan laporan duplikat, instansi dapat dengan mudah mengatur prioritas dalam penanganan kerusakan. Status dan riwayat laporan akan membantu pengguna/pelapor dalam pemantauan penanganan fasilitas dan membantu instansi dalam menentukan solusi penanganan yang tepat.
 
@@ -119,14 +119,13 @@ Sistem diasumsikan digunakan di sekitar tempat tinggal atau tempat berkegiatan p
 | US-03 | *Pemerintah daerah* | *Melakukan tindakan perbaikan* | *Melakukan perbaikan fasilitas sesuai laporan demi kelancaran aktivitas masyarakat* |
 
 ## 3.3 Model Proses Bisnis
-Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
 <br>
 
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
+<img alt="Activity Diagram" src="./assets/diagram/diagram-activity.svg">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Activity Diagram</i>
+<i>Gambar 2. Activity Diagram</i>
 </p>
 
 <br>
