@@ -15,7 +15,7 @@ Dipersiapkan oleh:
 
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *	K02* |
+| Kelas | *K02* |
 | Kelompok | *G03* |
 
 | NIM | Nama |
@@ -23,7 +23,7 @@ Dipersiapkan oleh:
 | *13525059* | *Muhammad Pandu Pulunggana* |
 | *13525128* | *Mochamad Fachri Alfaridzi* |
 | *13525101* | *Kevin Lincoln Hutabarat* |
-| *13525035* | *	Muhammad Dhiya Rafi* |
+| *13525035* | *Muhammad Dhiya Rafi* |
 | *13525098* | *Satya Radhityan Yahya* |
 
 ---
