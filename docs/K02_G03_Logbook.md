@@ -5,7 +5,7 @@
 | Informasi | Keterangan |
 |---|---|
 | Kelas | *K02* |
-| Nomor Kelompok | *G05* |
+| Nomor Kelompok | *G03* |
 | Nama Kelompok | *LockedIn* |
 | Nama Perangkat Lunak | *SiLembur* |
 
@@ -29,7 +29,7 @@
 ---
 
 ### Milestone 1
-**Periode:** [Tanggal Mulai] - [Tanggal Selesai]
+**Periode:** 31-08-2026 - 02-09-2026
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
@@ -43,6 +43,19 @@
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
+### Milestone 2
+**Periode:** 06-09-2026 - 09-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *06-09-2026* | *Kevin Lincoln Hutabarat* | *Mengerjakan section 2.1 dan 2.2 pada dokumen RG* | *2* | *Done* | *-* |
+| *08-09-2026* | *Kevin Lincoln Hutabarat* | *Mengerjakan section 1.2 pada dokumen RG* | *1* | *Done* | *-* |
+| *08-09-2026* | *Muhammad Pandu Pulunggana* | *Mengerjakan section 2.5 Kebutuhan Non-Fungsional* | *1* | *Done* | *-* |
+| *08-09-2026* | *Muhammad Dhiya Rafi* | *Melengkapi isi section 2.5* | *1* | *Done* | *-* |
+| *08-09-2026* | *Mochamad Fachri Alfaridzi* | *Mengisi section 2.3 pemetaan kebutuhan* | *2* | *Done* | *-* |
+| *09-09-2026* | *Satya Radhityan Yahya* | *Memperbaiki section 2.1 kebutuhan pengguna awal* | *1* | *Done* | *-* |
+| *09-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi Form Asistensi M2 dan memperbarui section 2.5 KNF* | *2* | *Done* | *-* |
+| *09-09-2026* | *Mochamad Fachri Alfaridzi* | *Merevisi section 2.2 dan 2.3 serta melengkapi dokumen deklarasi penggunaan AI* | *2* | *Done* | *-* |
 ---
 
 
