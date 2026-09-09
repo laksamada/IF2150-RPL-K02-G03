@@ -37,7 +37,7 @@
 | *31-09-2026* | *Kevin Lincoln Hutabarat* | *Mengerjakan section 2.2 dan 3.2 di template* | *1-2* | *Done* | *-* | 
 | *31-09-2026* | *Muhammad Pandu Pulunggana* | *Mengerjakan section latar belakag di template* | *1* | *Done* | *-* | 
 | *31-09-2026* | *Muhammad Dhiya Rafi* | *Mengerjakan section 3.1 di template* | *1* | *Done* | *-* |
-| *02-09-2026* | *Satya Radhityan Yahya* | *Mengerjakan section 2.1, 3.3 dan 3.4 di template* | *3* | *Done* | *-* |
+| *02-09-2026* | *Satya Radhityan Yahya* | *Mengerjakan section 2.1, 3.2, 3.3 dan 3.4 di template* | *3* | *Done* | *-* |
 | | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**
