@@ -22,8 +22,9 @@
 ---
 
 ### Daftar Isi
-* [Milestone 1](#milestone-1)
-* Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
+- [Milestone 1](#milestone-1)
+- [Milestone 2](#milestone-2)
+- [Milestone 3](#milestone-3)
 
 
 ---
@@ -38,7 +39,6 @@
 | *31-09-2026* | *Muhammad Pandu Pulunggana* | *Mengerjakan section latar belakag di template* | *1* | *Done* | *-* | 
 | *31-09-2026* | *Muhammad Dhiya Rafi* | *Mengerjakan section 3.1 di template* | *1* | *Done* | *-* |
 | *02-09-2026* | *Satya Radhityan Yahya* | *Mengerjakan section 2.1, 3.2, 3.3 dan 3.4 di template* | *3* | *Done* | *-* |
-| | | | | | | |
 
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
@@ -56,6 +56,23 @@
 | *09-09-2026* | *Satya Radhityan Yahya* | *Memperbaiki section 2.1 kebutuhan pengguna awal* | *1* | *Done* | *-* |
 | *09-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi Form Asistensi M2 dan memperbarui section 2.5 KNF* | *2* | *Done* | *-* |
 | *09-09-2026* | *Mochamad Fachri Alfaridzi* | *Merevisi section 2.2 dan 2.3 serta melengkapi dokumen deklarasi penggunaan AI* | *2* | *Done* | *-* |
+
+### Milestone 3
+
+**Periode:** 13-09-2026 - 16-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *13-09-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui Chapter 1 pada dokumen use case* | *1* | *Done* | *-* |
+| *14-09-2026* | *Muhammad Pandu Pulunggana* | *Menambahkan dan menyempurnakan use case UC01, UC02, dan UC03* | *2* | *Done* | *-* |
+| *14-09-2026* | *Muhammad Pandu Pulunggana* | *Merevisi penjelasan serta pengelompokan kebutuhan fungsional mengikuti pola EARS* | *2* | *Done* | *-* |
+| *15-09-2026* | *Mochamad Fachri Alfaridzi* | *Menambahkan diagram use case pada dokumen* | *2* | *Done* | *-* |
+| *16-09-2026* | *Mochamad Fachri Alfaridzi* | *Melengkapi isi section 3.3* | *1* | *Done* | *-* |
+| *16-09-2026* | *Muhammad Dhiya Rafi* | *Melengkapi konten hasil asistensi Milestone 3 dan skenario UC01* | *2* | *Done* | *-* |
+| *16-09-2026* | *Muhammad Dhiya Rafi* | *Menambahkan skenario UC08 serta memperbarui section 3.4.4, 3.4.5, dan 3.4.6* | *2* | *Done* | *-* |
+| *16-09-2026* | *Kevin Lincoln Hutabarat* | *Menambahkan konten section 3.4.7 untuk skenario UC07* | *1* | *Done* | *-* |
+| *15-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.2* | *1* | *Done* | *-* |
+| *15-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.3* | *1* | *Done* | *-* |
 ---
 
 
