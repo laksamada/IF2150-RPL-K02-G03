@@ -24,6 +24,7 @@
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
 * [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
 
 ---
 
@@ -44,6 +45,11 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Claude | Meminta pendapat mengenai ruang lingkup aktor pemerintah daerah, karena kelompok kesulitan menentukan sejauh mana peran instansi dapat diimplementasikan dalam proyek kuliah | "Menurut kami ada bagian yang sulit, yaitu peran pemerintah. Walaupun ini memang web untuk pemerintah, saat mengimplementasikan proyek ini kami tidak tahu bagaimana caranya menghubungkan bagian tersebut, misalnya bagaimana pemerintah memverifikasi laporan, sedangkan ini hanya proyek kuliah. Bagaimana sebaiknya batas sistemnya ditentukan?" | Kelompok memutuskan sendiri perbaikan fisik fasilitas ditempatkan di luar perangkat lunak dengan kolom P/L bernilai Tidak. Rumusan kebutuhannya ditulis ulang oleh anggota kelompok. |
 | Claude | Memverifikasi tabel pemetaan kebutuhan yang telah disusun kelompok, terutama ketepatan jenis kebutuhan dan penelusuran ke ID aktivitas | "Ini tabel pemetaan kebutuhan yang sudah kami susun, dari R01 sampai R15. Tolong periksa apakah jenis kebutuhan dan penelusuran ke ID aktivitasnya sudah tepat, dan apakah ada aktivitas yang belum tercakup." | AI menandai baris ganda, kesalahan penautan ID aktivitas, dan aktivitas yang belum memiliki kebutuhan. Seluruh perbaikan akhir diputuskan dan ditulis sendiri oleh kelompok. |
 
+### Milestone 3
+
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| ChatGPT | Memverifikasi kesesuaian use case diagram dengan use case pada bagian 3.2 | "Tolong periksa apakah use case diagram ini sudah sesuai dengan use case yang dijelaskan pada bagian 3.2. Sebutkan bagian yang perlu diperiksa atau disesuaikan." |  Kami meninjau kembali hasilnya dan melakukan sedikit penyesuaian pada diagram |
 ---
 ### Pernyataan Integritas dan Persetujuan
 
