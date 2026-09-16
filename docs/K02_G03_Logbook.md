@@ -69,11 +69,10 @@
 | *15-09-2026* | *Mochamad Fachri Alfaridzi* | *Menambahkan diagram use case pada dokumen* | *2* | *Done* | *-* |
 | *16-09-2026* | *Mochamad Fachri Alfaridzi* | *Melengkapi isi section 3.3* | *1* | *Done* | *-* |
 | *16-09-2026* | *Muhammad Dhiya Rafi* | *Melengkapi konten hasil asistensi Milestone 3 dan skenario UC01* | *2* | *Done* | *-* |
-| *16-09-2026* | *Muhammad Dhiya Rafi* | *Menambahkan skenario UC08 serta memperbarui section 3.4.4, 3.4.5, dan 3.4.6* | *2* | *Done* | *-* |
-| *16-09-2026* | *Kevin Lincoln Hutabarat* | *Menambahkan konten section 3.4.7 untuk skenario UC07* | *1* | *Done* | *-* |
+| *16-09-2026* | *Kevin Lincoln Hutabarat* | *Menambahkan skenario UC08 serta memperbarui section 3.4.4, 3.4.5, dan 3.4.6* | *2* | *Done* | *-* |
+| *16-09-2026* | *Muhammad Dhiya Rafi* | *Menambahkan konten section 3.4.7 untuk skenario UC07* | *1* | *Done* | *-* |
 | *15-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.2* | *1* | *Done* | *-* |
 | *15-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.3* | *1* | *Done* | *-* |
-| *16-09-2026* | *Kevin Lincoln Hutabarat* | *Mengupdate bagian  3.4.4, 3.4.5, 3.4.6* | *2* | *Done* | *-* |
 ---
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
