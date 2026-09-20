@@ -7,23 +7,23 @@ CLASS DIAGRAM
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *SILEMBUR*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabila*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G03* |
 
 | NIM | Nama |
-|---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| --- | --- |
+| *13525059* | *Muhammad Pandu Pulunggana* |
+| *13525128* | *Mochamad Fachri Alfaridzi* |
+| *13525101* | *Kevin Lincoln Hutabarat* |
+| *13525035* | *Muhammad Dhiya Rafi* |
+| *13525098* | *Satya Radhityan Yahya* |
 ---
 
 ## Daftar Perubahan
@@ -44,6 +44,11 @@ Tuliskan overview perangkat lunak dalam narasi yang dapat memberikan gambaran te
 
 Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
+Penerapan sistem aplikasi pelaporan ini menciptakan perbaikan fasilitas umum yang lebih terstruktur. Ketika masyarakat umum menemukan kerusakan di ruang publik, mereka dapat langsung melaporkannya pada waktu itu juga. Cukup dengan menambahkan detail yang diperlukan, laporan bisa dilanjutkan ke tahap verifikasi.
+
+Pengguna dapat melakukan revisi pada laporannya apabila terdapat kesalahan pada detail laporan yang menyebabkan laporannya tidak terverifikasi oleh admin. Ketika laporan sudah terverifikasi dan dicek duplikat, laporan kemudian disimpan pada database. Dari database tersebut Pemerintah Daerah dapat merencanakan dan memulai perbaikan.
+
+Setelah memberikan laporan, pengguna kemudian dapat memantau status laporannya untuk mengetahui proses pengerjaan. Selain itu, pengguna juga dapat melihat laporan kerusakan dari pengguna lain dan riwayat laporan yang sudah selesai diperbaiki.
 ---
 
 # BAB 2: Kebutuhan Fungsional
@@ -61,13 +66,30 @@ Tabel 2.1. Daftar Kebutuhan Fungsional
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
-| *KF01* | *R01* | *Ketika pelanggan membuka halaman katalog, sistem harus menampilkan daftar produk yang tersedia.* |
-| *KF02* | *R02* | *Ketika pelanggan memilih "Tambah ke Keranjang" pada suatu produk, sistem harus menyimpan produk tersebut ke dalam keranjang pelanggan.* |
-| *KF03* | *R03* | *Ketika pelanggan menekan tombol checkout, sistem harus menampilkan pilihan metode pembayaran yang tersedia.* |
-| *KF04* | *R04* | *Ketika pelanggan memilih metode pembayaran, sistem harus mengirimkan permintaan otorisasi beserta nominal tagihan dan ID pesanan ke payment gateway (dummy).* |
-| *KF05* | *R04* | *Ketika payment gateway (dummy) mengembalikan status pembayaran berhasil, sistem harus memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil.* |
-| *KF06* | *R05* | *Ketika pelanggan membuka menu riwayat pesanan, sistem harus menampilkan daftar pesanan beserta statusnya.* |
-| *KFXX* | *...* | *...* |
+| *KF01* | *R01* | *Sistem harus menampilkan formulir laporan dengan kolom foto, lokasi, dan deskripsi kerusakan fasilitas* |
+| *KF02* | *R01* | *Ketika pengguna mengunggah foto, sistem harus menyimpan foto tersebut sebagai lampiran laporan* |
+| *KF03* | *R01* | *Ketika layanan GPS tersedia, sistem harus mengambil data lokasi laporan secara otomatis. Ketika layanan GPS tidak tersedia, sistem harus menyediakan input lokasi manual melalui integrasi peta.* |
+| *KF04* | *R02* | *Ketika pengguna mengirimkan formulir laporan, sistem harus menyimpan data laporan ke basis data dengan status awal menunggu verifikasi* |
+| *KF05* | *R02* | *Sistem harus menyediakan pilihan keputusan verifikasi berupa setujui, tolak, atau minta revisi disertai kolom catatan alasan* |
+| *KF06* | *R03* | *Sistem harus menampilkan daftar laporan berstatus menunggu verifikasi pada dashboard admin* |
+| *KF07* | *R03* | *Ketika admin menetapkan keputusan verifikasi (setuju/tolak/revisi) beserta catatan alasan, sistem harus mengirimkan notifikasi hasil verifikasi beserta alasannya kepada pengguna* |
+| *KF08* | *R04* | *Selama status laporan belum terverifikasi, sistem harus menahan laporan agar tidak diteruskan kepada pemerintah daerah* |
+| *KF09* | *R05* | *Ketika admin menyelesaikan proses verifikasi laporan, sistem harus menyimpan status, catatan admin, dan waktu verifikasi ke basis data* |
+| *KF10* | *R06* | *Sistem harus menampilkan daftar laporan pengguna lain tanpa menampilkan identitas pelapor* |
+| *KF11* | *R06* | *Ketika pengguna memilih salah satu laporan dari daftar, sistem harus menampilkan detail lengkap laporan yaitu foto, lokasi, deskripsi, dan status, tanpa menampilkan identitas pelapor* |
+| *KF12* | *R07* | *Ketika status laporan diperbarui, sistem harus memperbarui nilai status terkini pada laporan tersebut* |
+| *KF13* | *R07* | *Sistem harus menampilkan status terbaru laporan kepada pengguna yang membuat laporan tersebut* |
+| *KF14* | *R08* | *Ketika jumlah laporan kerusakan pada suatu fasilitas dalam satu periode melebihi ambang batas yang ditetapkan, sistem harus menandai fasilitas tersebut sebagai kandidat evaluasi perbaikan permanen pada dashboard admin dan pemerintah* |
+| *KF15* | *R09* | *Ketika admin mengonfirmasi duplikat, sistem harus menggabungkan laporan-laporan tersebut menjadi satu laporan induk tanpa mengurangi jumlah pelapor yang tercatat* |
+| *KF16* | *R10* | *Ketika laporan baru diverifikasi, sistem harus menghitung skor prioritas berdasarkan kategori kerusakan, jumlah pelapor, lama waktu menunggu penanganan, dan frekuensi laporan berulang* |
+| *KF17* | *R10* | *Ketika data terkait laporan berubah, sistem harus memperbarui skor prioritas laporan tersebut* |
+| *KF18* | *R11* | *Sistem harus menampilkan daftar laporan terverifikasi kepada pemerintah terurut berdasarkan skor prioritas* |
+| *KF19* | *R11* | *Ketika pemerintah memilih filter kategori kerusakan dan/atau wilayah, sistem harus menyaring daftar laporan sesuai filter tersebut* |
+| *KF20* | *R13* | *Ketika laporan baru masuk untuk fasilitas yang sudah memiliki laporan aktif, sistem harus memeriksa status aktif laporan lain pada fasilitas tersebut* |
+| *KF21* | *R13* | *Ketika hasil pemeriksaan menemukan laporan aktif lain pada fasilitas yang sama, sistem harus menampilkan daftar kandidat laporan duplikat kepada admin untuk dikonfirmasi* |
+| *KF22* | *R14* | *Ketika status laporan berubah, sistem harus mencatat perubahan tersebut sebagai riwayat yang terhubung dengan objek fasilitas terkait* |
+| *KF23* | *R14* | *Sistem harus menampilkan riwayat perubahan status per fasilitas agar kerusakan berulang pada fasilitas yang sama dapat ditelusuri* |
+| *KF24* | *R15* | *Sistem harus menampilkan status terkini dan riwayat penanganan laporan kepada pelapor yang membuat laporan tersebut* |
 
 
 ---
@@ -82,8 +104,9 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Pelanggan* | *Pengguna yang memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| *Masyarakat umum* | *Pengguna ini bertindak sebagai pihak yang melaporkan dan melampirkan bukti fasilitas-fasilitas umum yang rusak kepada sistem. Karakteristik dari pengguna ini adalah mencari kemudahan dalam menggunakan aplikasi.* |
+| *Admin* | *Pengguna ini bertindak sebagai verifikator bukti dan lokasi fasilitas-fasilitas umum yang rusak yang telah dilaporkan oleh pengguna dari pihak masyarakat umum. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan dalam memverifikasi suatu laporan.* |
+| *Pemerintah daerah* | *Pengguna ini bertindak sebagai pihak perencana dan pelaksana tindakan-tindakan yang harus dilakukan setelah menerima laporan fasilitas-fasilitas umum yang rusak. Karakteristik dari pengguna ini adalah mencari kemudahan dalam mendapatkan laporan.* |
 
 ## 3.2 Identifikasi Use Case
 
@@ -91,14 +114,16 @@ Use case berfungsi untuk mendeskripsikan interaksi aktor-aktor yang terlibat den
 
 Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
-| ID UC | Nama Use Case | Deskripsi Singkat | Aktor | ID KF |
+| ID UC | Nama Use Case | Deskripsi Singkat | Aktor Terlibat | ID KF Terkait |
 | :--- | :--- | :--- | :--- | :--- |
-| *UC01* | *Memesan Produk* | *Pelanggan memilih produk hingga pesanan tersimpan di sistem.* | *Pelanggan* | *KF01, KF02* |
-| *UC02* | *Melihat Keranjang* | *Pelanggan melihat daftar item yang telah dipilih sebelum checkout.* | *Pelanggan* | *KF02* |
-| *UC03* | *Melakukan Pembayaran* | *Pelanggan menyelesaikan pembayaran atas pesanan yang dibuat.* | *Pelanggan* | *KF03, KF04, KF05* |
-| *UC04* | *Memilih Metode Pembayaran* | *Pelanggan memilih metode pembayaran alternatif (kartu atau e-wallet).* | *Pelanggan* | *KF03* |
-| *UC05* | *Melihat Riwayat Pesanan* | *Pelanggan melihat daftar pesanan yang pernah dibuat beserta statusnya.* | *Pelanggan* | *KF06* |
-| *...* | *...* | *...* | *...* | *...* |
+| *UC01* | *Membuat Laporan Kerusakan Fasilitas* | *Masyarakat umum mengisi formulir laporan kerusakan fasilitas dengan mengunggah foto, lokasi, dan deskripsi kerusakan, kemudian mengirimkannya untuk disimpan sistem.* | *Masyarakat umum* | *KF01, KF02, KF03, KF04, KF05* |
+| *UC02* | *Memverifikasi Laporan dan Menghitung Prioritas* | *Admin meninjau daftar laporan pada dashboard, menyetujui/menolak/meminta revisi disertai catatan alasan, dan setelah laporan terverifikasi sistem menghitung skor prioritasnya.* | *Admin* | *KF06, KF07, KF08, KF09, KF16* |
+| *UC03* | *Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas* | *Pemerintah daerah melihat daftar laporan terverifikasi yang terurut berdasarkan skor prioritas, dan menyaring daftar tersebut berdasarkan kategori kerusakan maupun wilayah.* | *Pemerintah daerah* | *KF18, KF19* |
+| *UC04* | *Melihat Daftar dan Detail Laporan Publik* | *Masyarakat umum melihat daftar laporan milik pengguna lain tanpa identitas pelapor, lalu memilih salah satu laporan untuk melihat detail lengkapnya.* | *Masyarakat umum* | *KF10, KF11* |
+| *UC05* | *Memantau Status dan Riwayat Penanganan Laporan* | *Pelapor memantau status terkini laporan yang telah dibuat, termasuk melihat riwayat penanganan seiring pembaruan status oleh admin.* | *Masyarakat umum* | *KF12, KF13, KF24* |
+| *UC06* | *Meninjau Fasilitas dengan Kerusakan Berulang* | *Admin dan pemerintah daerah meninjau fasilitas yang ditandai sebagai kandidat evaluasi perbaikan permanen karena laporan kerusakannya melebihi ambang batas dalam satu periode.* | *Admin, Pemerintah daerah* | *KF14* |
+| *UC07* | *Mengonfirmasi dan Menggabungkan Laporan Duplikat* | *Admin memeriksa laporan aktif pada fasilitas yang sama, meninjau daftar kandidat duplikat, lalu mengonfirmasi penggabungan menjadi satu laporan induk sehingga skor prioritas diperbarui.* | *Admin* | *KF15, KF17, KF20, KF21* |
+| *UC08* | *Melacak Riwayat Perubahan Status per Fasilitas* | *Admin dan pemerintah daerah menelusuri riwayat perubahan status laporan yang terhubung dengan fasilitas tertentu untuk memantau kerusakan berulang.* | *Admin, Pemerintah daerah* | *KF22, KF23* |
 
 ## 3.3 Use Case Diagram
 Buatlah diagram use case keseluruhan berdasarkan identifikasi use case beserta aktor yang melakukan use case tersebut. Perhatikan garis `<<extend>>` dan `<<include>>`.
@@ -107,7 +132,7 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 <br>
 <p align="center">
-<img alt="Use Case Diagram" src="../M4/assets/diagram/contoh-uc-diagram.webp" width="80%">
+<img alt="Use Case Diagram" src="./assets\diagram/diagram_silembur.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 1. Use Case Diagram</i>
@@ -121,45 +146,188 @@ Pada bagian ini, Anda diperbolehkan untuk menyalin dari dokumen sebelumnya.
 
 ### 3.4.1 Skenario UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** *Membuat Laporan Kerusakan Fasilitas*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan detail produk dan menambahkannya ke keranjang* |
-| 2 | *Pelanggan menekan tombol checkout* | *Sistem membuat pesanan baru dari isi keranjang dan menampilkan ringkasan pesanan* |
-| ... | *...* | *...* |
+| 1 | *Pengguna memilih menu laporan* | *Sistem menampilkan formulir yang akan diisi oleh pengguna, formulir mencakup foto, lokasi, dan deskripsi kerusakan beserta tombol Simpan Laporan agar pengguna dapat menyimpan laporan ke sistem (tombol masih terkunci)* |
+| 2 | *Pengguna mengisi seluruh pertanyaan yang ada di formulir* | *Sistem membuka kunci tombol Simpan Laporan* |
+| 3 | *Pengguna mengonfirmasi laporan yang telah dibuat* | *Sistem menyimpan laporan dan menampilkan informasi mengenai laporan tersebut* |
 
-**Skenario Alternatif 1: Produk Tidak Tersedia**
+
+<br>
+
+**Skenario Alternatif 1: Pengguna tidak mengisi seluruh formulir**
+
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan pesan "Produk tidak tersedia" karena stok habis* |
-| 2 | *Pelanggan memilih produk lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| 1 | *Pengguna memilih menu laporan* | *Sistem menampilkan formulir yang akan diisi oleh pengguna, formulir mencakup foto, lokasi, dan deskripsi kerusakan beserta tombol Simpan Laporan agar pengguna dapat menyimpan laporan ke sistem (tombol masih terkunci)* |
+| 2 | *Pengguna tidak mengisi seluruh pertanyaan yang ada di formulir* | *Sistem masih mengunci tombol Simpan Laporan* |
+| 3 | *Pengguna mengonfirmasi laporan yang telah dibuat* | *Sistem memberikan respons dan mengarahkan agar pengguna mengisi seluruh formulir* |
+| 4 | *Pengguna mengisi formulir yang belum diisi* | *Sistem kembali ke langkah 2 skenario normal* |
+
+### 3.4.2 Skenario UC02
+
+**Nama Use Case:** *Memverifikasi Laporan dan Menghitung Prioritas*
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin menerima laporan dari pengguna* | *Sistem memberikan notifikasi adanya laporan baru dari pengguna* |
+| 2 | *Admin memverifikasi laporan yang diterima dan menghitung prioritas* | *Sistem menampilkan detail laporan, dan memberikan opsi untuk menyetujui atau menolak laporan* |
+| 3 | *Admin menyetujui laporan yang diterima* | *Sistem menambahkan laporan baru kedalam database dengan prioritas yang diberikan* |
+
+<br>
+
+**Skenario Alternatif 1: Admin menolak laporan**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin menerima laporan dari pengguna* | *Sistem memberikan notifikasi adanya laporan baru dari pengguna* |
+| 2 | *Admin memverifikasi laporan yang diterima dan menghitung prioritas* | *Sistem menampilkan detail laporan, dan memberikan opsi untuk menyetujui atau menolak laporan* |
+| 3 | *Admin menolak laporan yang diterima* | *Sistem memberikan notifikasi kepada pengguna terkait laporannya yang membutuhkan revisi* |
 
 ### 3.4.3 Skenario UC03
 
-**Nama Use Case:** *Melakukan Pembayaran*
+**Nama Use Case:** *Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia (mis. Kartu, E-Wallet)* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy) sesuai metode yang dipilih* |
-| 3 | *-* | *Payment gateway (dummy) mengembalikan status pembayaran berhasil; sistem memperbarui status pesanan menjadi "Lunas" dan menampilkan notifikasi pembayaran berhasil* |
-| ... | *...* | *...* |
+| 1 | *Pemerintah daerah memantau laporan yang sudah terverifikasi* | *Sistem menampilkan list laporan-laporan dari pengguna yang sudah terverifikasi dan diberikan prioritas oleh admin* |
+| 2 | *Pemerintah daerah menyaring laporan yang sudah terverifikasi* | *Sistem dapat memberikan filter pada list laporan-laporan. Seperti filter prioritas, lokasi, kategori kerusakan, dll* |
 
-**Skenario Alternatif 1: Pembayaran Dummy Gagal**
+
+### 3.4.4 Skenario UC04
+**Nama Use Case:** *Melihat Daftar dan Detail Laporan Publik*
+
+**Skenario Normal**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem menampilkan laporan secara detail, yang mencakup judul, deksripsi, foto, dan status laporan* |
+
+**Skenario Alternatif 1: Laporan dipilih menggunakan filter**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum menerapkan filter lokasi* | *Sistem menampilkan list laporan pengguna lain yang terjadi di lokasi sesuai filter pengguna* |
+| 3 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem menampilkan laporan secara detail, yang mencakup judul, deksripsi, foto, dan status laporan* |
+
+**Skenario Alternatif 2: Tidak ada laporan yang muncul setelah menerapkan filter**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum menerapkan filter lokasi, namun belum terdapat laporan* | *Sistem menampilkan pesan "belum ada laporan"* |
+
+**Skenario Alternatif 3: Loading detail laporan terlalu lama**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem berusaha memuat konten laporan, gagal memperlihatkan konten dalam 5 detik, dan menampilkan pesan "tolong muat ulang halaman"* |
+
+
+### 3.4.5 Skenario UC05
+**Nama Use Case:** *Memantau Status dan Riwayat Penanganan Laporan*
+
+**Skenario Normal**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan yang telah dibuat* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem menampilkan laporan secara detail, yang mencakup judul, deksripsi, foto, status, dan riwayat pengerjaan laporan terurut dari terawal hingga terakhir* |
+
+**Skenario Alternatif 1: Belum ada laporan yang dibuat**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan yang telah dibuat* | *Sistem menampilkan pesan "belum ada laporan"* |
+
+**Skenario Alternatif 2: Loading detail laporan terlalu lama**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Masyarakat umum membuka menu Laporan yang telah dibuat* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
+| 2 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem berusaha memuat konten laporan, gagal memperlihatkan konten dalam 5 detik, dan menampilkan pesan "tolong muat ulang halaman"* |
+
+### 3.4.6 Skenario UC06
+**Nama Use Case:** *Meninjau Fasilitas dengan Kerusakan Berulang*
+
+**Skenario Normal**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah membuka menu laporan yang dikirim pengguna* | *Sistem menampilkan list laporan-laporan yang dikirim pengguna dan sudah diverifikasi, yang mencakup judul, foto, lokasi, dan tag laporan* |
+| 2 | *Admin/Pemerintah daerah menerapkan filter untuk fasilitas dengan kerusakan berulang* | *Sistem menampilkan list laporan-laporan yang memiliki tag kerusakan berulang* |
+| 3 | *Admin/Pemerintah daerah memilih laporan yang ingin dilihat* | *Sistem menampilkan detail laporan yang dipilih, yang mencakup judul, deskripsi, foto, status, dan riwayat pengerjaan laporan* |
+
+**Skenario Alternatif 1: Laporan dipilih tanpa menggunakan filter**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah membuka menu laporan yang dikirim pengguna* | *Sistem menampilkan list laporan-laporan yang dikirim pengguna dan sudah diverifikasi, yang mencakup judul, foto, lokasi, dan tag laporan* |
+| 2 | *Admin/Pemerintah daerah memilih laporan yang ingin dilihat dengan tag Kerusakan Berulang* | *Sistem menampilkan detail laporan yang dipilih, yang mencakup judul, deskripsi, foto, status, dan riwayat pengerjaan laporan* |
+
+**Skenario Alternatif 2: Tidak ada laporan yang muncul setelah menerapkan filter**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah membuka menu laporan yang dikirim pengguna* | *Sistem menampilkan list laporan-laporan yang dikirim pengguna dan sudah diverifikasi, yang mencakup judul, foto, lokasi, dan tag laporan* |
+| 2 | *Admin/Pemerintah daerah menerapkan filter untuk fasilitas dengan kerusakan berulang, namun belum terdapat laporan* | *Sistem menampilkan pesan "belum ada laporan"* |
+
+**Skenario Alternatif 3: Loading detail laporan terlalu lama**
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah membuka menu laporan yang dikirim pengguna* | *Sistem menampilkan list laporan-laporan yang dikirim pengguna dan sudah diverifikasi, yang mencakup judul, foto, lokasi, dan tag laporan* |
+| 2 | *Admin/Pemerintah daerah menerapkan filter untuk fasilitas dengan kerusakan berulang* | *Sistem menampilkan list laporan-laporan yang memiliki tag kerusakan berulang* |
+| 3 | *Admin/Pemerintah daerah memilih laporan yang ingin dilihat* | *Sistem berusaha memuat konten laporan, gagal memperlihatkan konten dalam 5 detik, dan menampilkan pesan "tolong muat ulang halaman* |
+
+### 3.4.7 Skenario UC07
+
+**Nama Use Case:** *Mengonfirmasi dan Menggabungkan Laporan Duplikat*
+
+**Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan menekan tombol "Bayar" pada ringkasan pesanan* | *Sistem menampilkan pilihan metode pembayaran yang tersedia* |
-| 2 | *Pelanggan memilih salah satu metode pembayaran* | *Sistem mengirimkan permintaan otorisasi ke payment gateway (dummy), yang mengembalikan status gagal (mis. saldo e-wallet dummy tidak mencukupi)* |
-| 3 | *Pelanggan memilih untuk mencoba lagi atau memilih metode lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| 1 | *Admin memilih menu daftar laporan aktif* | *Sistem menampilkan list laporan aktif* |
+| 2 | *Admin mengaktifkan fitur untuk menggabungkan laporan duplikat* | *Sistem masih menampilkan list laporan aktif* |
+| 3 | *Admin mencari dan menentukan laporan yang duplikat* | *Sistem menyimpan laporan-laporan yang telah ditandai oleh admin agar dipersiapkan untuk digabungkan* |
+| 4 | *Admin mengonfirmasi pilihan* | *Sistem memberikan warning terlebih dahulu apakah admin yakin laporan-laporan yang dipilih merupakan laporan duplikat* |
+| 5 | *Admin menekan tombol yakin dalam warning yang diberikan sistem* | *Sistem menggabungkan seluruh laporan yang telah ditandai dan sistem otomatis menghitung ulang skor* |
+
+**Skenario Alternatif 1: Admin salah memilih laporan duplikat**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin memilih menu daftar laporan aktif* | *Sistem menampilkan list laporan aktif* |
+| 2 | *Admin mengaktifkan fitur untuk menggabungkan laporan duplikat* | *Sistem masih menampilkan list laporan aktif* |
+| 3 | *Admin mencari dan menentukan laporan yang duplikat* | *Sistem menyimpan laporan-laporan yang telah ditandai oleh admin agar dipersiapkan untuk digabungkan* |
+| 4 | *Admin mengonfirmasi pilihan* | *Sistem memberikan warning terlebih dahulu apakah admin yakin laporan-laporan yang dipilih merupakan laporan duplikat* |
+| 5 | *Admin menekan tombol tidak yakin dalam warning yang diberikan sistem* | *Sistem kembali lagi dan siap untuk mengubah laporan yang dipilih admin* |
+| 6 | *Admin menghapus laporan yang ternyata tidak duplikat, lalu menambahkan laporan yang duplikat jika masih ada* | Sistem kembali ke langkah 3 skenario normal* |
+
+
+### 3.4.8 Skenario UC08
+
+**Nama Use Case:** *Melacak Riwayat Perubahan Status per Fasilitas*
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah memilih menu riwayat perubahan laporan* | *Sistem menampilkan list laporan yang statusnya berubah* |
+| 2 | *Admin/Pemerintah daerah mencari laporan terkait fasilitas tertentu di menu pencarian* | *Sistem menampilkan fasilitas yang dicari sesuai keyword dari Admin/Pemerintah daerah* |
+| 3 | *Admin/Pemerintah daerah melihat lebih lanjut mengenai informasi perubahan* | *Sistem menampilkan detail mengenai kerusakan baru/berulang pada fasilitas tersebut* |
+
+
+**Skenario Alternatif 1: Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Admin/Pemerintah daerah memilih menu riwayat perubahan laporan* | *Sistem menampilkan list laporan yang statusnya berubah* |
+| 2 | *Admin/Pemerintah daerah mencari laporan terkait fasilitas tertentu yang tidak ada di dalam list laporan yang statusnya berubah di menu pencarian* | *Sistem memberikan peringatan bahwa laporan perubahan fasilitas yang dicari tidak ada di dalam sistem* |
+| 3 | *Admin/Pemerintah daerah memasukkan kembali nama fasilitas yang ada di list laporan perubahan* | *Sistem kembali ke langkah 2 skenario normal* |
+
 
 <sub>*Lanjutkan pola 3.4.x ini untuk setiap ID UC pada 3.2, sampai seluruh use case tercakup.*<sub>
 
