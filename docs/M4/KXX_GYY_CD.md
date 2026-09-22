@@ -342,13 +342,17 @@ Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* | *UC01, UC05* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan beserta status pembayarannya.* | *UC01, UC03, UC05* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* | *UC01, UC02* |
-| *C04* | *MetodePembayaran* | *Kelas abstrak yang merepresentasikan metode pembayaran yang dipilih pelanggan.* | *UC03, UC04* |
-| *C05* | *Kartu* | *Merealisasikan pembayaran melalui kartu kredit/debit dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C06* | *EWallet* | *Merealisasikan pembayaran melalui e-wallet, termasuk pengecekan saldo, dengan mengirimkan permintaan ke payment gateway (dummy).* | *UC03, UC04* |
-| *C07* | *RiwayatTransaksi* | *Menyimpan catatan transaksi beserta status yang dikembalikan payment gateway (dummy).* | *UC03, UC05* |
+| *C01* | *Pelapor* | *Menyimpan identitas masyarakat umum, mengetahui laporan-laporan yang telah dibuatnya, dan memantau status penanganannya.* | *UC01, UC04, UC05* |
+| *C02* | *Admin* | *Menyimpan identitas admin dan mengambil keputusan verifikasi serta konfirmasi duplikat atas laporan yang masuk.* | *UC02, UC06, UC07, UC08* |
+| *C03* | *PemerintahDaerah* | *Menyimpan identitas pemerintah daerah dan menyaring/memantau laporan terverifikasi berdasarkan prioritas.* | *UC03, UC06, UC08* |
+| *C04* | *Laporan* | *Mengetahui foto, lokasi, deskripsi, dan status kerusakan fasilitas; mencatat perubahan statusnya sendiri.* | *UC01, UC02, UC03, UC04, UC05, UC06, UC07, UC08* |
+| *C05* | *Lokasi* | *Mengetahui koordinat laporan, memutuskan sumbernya dari GPS otomatis atau input peta manual.* | *UC01* |
+| *C06* | *Fasilitas* | *Mengetahui seluruh laporan yang terjadi pada dirinya dan menandai dirinya sebagai kandidat evaluasi perbaikan permanen bila laporan melebihi ambang batas.* | *UC06, UC07, UC08* |
+| *C07* | *Verifikasi* | *Mengetahui keputusan (setuju/tolak/revisi), catatan alasan, dan waktu verifikasi; memutuskan apakah laporan diteruskan ke pemerintah daerah.* | *UC02* |
+| *C08* | *SkorPrioritas* | *Menghitung skor prioritas laporan berdasarkan kategori kerusakan, jumlah pelapor, lama waktu tunggu, dan frekuensi laporan berulang, serta memperbarui nilainya saat data terkait berubah.* | *UC02, UC03, UC07* |
+| *C09* | *RiwayatStatus* | *Mencatat setiap perubahan status laporan yang terhubung dengan fasilitas terkait agar kerusakan berulang dapat ditelusuri.* | *UC05, UC08* |
+| *C10* | *Notifikasi* | *Mengirimkan hasil verifikasi beserta alasannya kepada pelapor.* | *UC02* |
+| *C11* | *KonfirmasiDuplikat* | *Mengetahui daftar kandidat laporan duplikat pada satu fasilitas dan melakukan penggabungan menjadi satu laporan induk.* | *UC07* |
 | *...* | *...* | *...* | *...* |
 
 Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
