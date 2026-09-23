@@ -25,7 +25,7 @@
 - [Milestone 1](#milestone-1)
 - [Milestone 2](#milestone-2)
 - [Milestone 3](#milestone-3)
-
+- [Milestone 4](#milestone-4)
 
 ---
 
@@ -74,6 +74,19 @@
 | *16-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.1 untuk skenario UC01* | *1* | *Done* | *-* |
 | *16-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.2* | *1* | *Done* | *-* |
 | *16-09-2026* | *Satya Radhityan Yahya* | *Melengkapi isi section 3.4.3* | *1* | *Done* | *-* |
+
+### Milestone 4
+
+**Periode:** 22-09-2026 - 23-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *22-09-2026* | *Muhammad Pandu Pulunggana* | *Mengisi section 4.1 berupa identifikasi nama kelas dan penjelasannya serta menyesuaikan nama file dokumen Milestone 4* | *2* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Dhiya Rafi* | *Melengkapi beberapa bagian section 4.2 berupa identifikasi kelas, diagram kelas, serta tabel atribut dan metode* | *1* | *Done* | *-* |
+| *23-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi dan melengkapi Form Asistensi Milestone 4* | *1* | *Done* | *-* |
+| *23-09-2026* | *Mochamad Fachri Alfaridzi* | *Menambahkan diagram kelas untuk UC yang menjadi tanggung jawab serta melengkapi detail identifikasi kelas, atribut, dan metode pada section 4.2 terkait* | *1* | *Done* | *-* |
+| *23-09-2026* | *Kevin Lincoln Hutabarat* | *Melengkapi beberapa bagian section 4.2 pada dokumen class diagram, termasuk identifikasi kelas, diagram kelas, serta tabel atribut dan metode* | *1t* | *Done* | *-* |
+| *23-09-2026* | *Satya Radhityan Yahya* | *Mengisi Bab 5 pada dokumen Milestone 4* | *1* | *Done* | *-* |
 ---
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
