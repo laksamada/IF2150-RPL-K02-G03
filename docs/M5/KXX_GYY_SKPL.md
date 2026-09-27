@@ -210,7 +210,7 @@ Salin ulang Use Case Diagram dari BAB 3.3 dokumen *Use Case & Scenario Use Case*
 <img alt="Use Case Diagram" src="./assets\diagram/diagram_silembur.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Use Case Diagram</i>
+<i>Gambar 2. Use Case Diagram</i>
 </p>
 
 ## 4.4 Skenario Use Case
@@ -426,7 +426,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC01" src="./assets/diagram/UC01.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+<i>Gambar 3. Diagram Kelas Use Case UC01</i>
 </p>
 <br>
 
@@ -444,7 +444,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC02" src="./assets/diagram/UC02.drawio.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 3. Diagram Kelas Use Case UC02</i>
+<i>Gambar 4. Diagram Kelas Use Case UC02</i>
 </p>
 <br>
 
@@ -464,7 +464,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC03" src="./assets/diagram/UC03.drawio.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 4. Diagram Kelas Use Case UC03</i>
+<i>Gambar 5. Diagram Kelas Use Case UC03</i>
 </p>
 <br>
 
@@ -482,7 +482,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC04" src="./assets/diagram/UC04.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 5. Diagram Kelas Use Case UC04</i>
+<i>Gambar 6. Diagram Kelas Use Case UC04</i>
 </p>
 <br>
 
@@ -499,7 +499,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC05" src="./assets/diagram/UC05.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 6. Diagram Kelas Use Case UC05</i>
+<i>Gambar 7. Diagram Kelas Use Case UC05</i>
 </p>
 <br>
 
@@ -516,7 +516,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC06" src="./assets/diagram/UC06.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 7. Diagram Kelas Use Case UC06</i>
+<i>Gambar 8. Diagram Kelas Use Case UC06</i>
 </p>
 <br>
 
@@ -534,7 +534,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC07" src="./assets/diagram/UC07.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 8. Diagram Kelas Use Case UC07</i>
+<i>Gambar 9. Diagram Kelas Use Case UC07</i>
 </p>
 <br>
 
@@ -553,7 +553,7 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 <img alt="Class Diagram UC08" src="./assets/diagram/UC08.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 9. Diagram Kelas Use Case UC08</i>
+<i>Gambar 10. Diagram Kelas Use Case UC08</i>
 </p>
 <br>
 
@@ -570,7 +570,7 @@ Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diag
 <img alt="Class Diagram Keseluruhan" src="./assets/diagram/diagram-kelas-keseluruhan.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 10. Diagram Kelas Keseluruhan</i>
+<i>Gambar 11. Diagram Kelas Keseluruhan</i>
 </p>
 <br>
 
