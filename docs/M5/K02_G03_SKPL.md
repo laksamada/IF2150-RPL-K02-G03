@@ -30,7 +30,7 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | *Menambah dua skenario alternatif untuk UC03* |
 | *B* |  |
 | *C* |  |
 | ... |  |
@@ -275,6 +275,19 @@ Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari B
 | :--- | :--- | :--- |
 | 1 | *Pemerintah daerah memantau laporan yang sudah terverifikasi* | *Sistem menampilkan list laporan-laporan dari pengguna yang sudah terverifikasi dan diberikan prioritas oleh admin* |
 | 2 | *Pemerintah daerah menyaring laporan yang sudah terverifikasi* | *Sistem dapat memberikan filter pada list laporan-laporan. Seperti filter prioritas, lokasi, kategori kerusakan, dll* |
+
+**Skenario Alternatif 1 : Tidak ada laporan terverifikasi setelah diberikan filter**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Pemerintah daerah memantau laporan yang sudah terverifikasi* | *Sistem menampilkan list laporan-laporan dari pengguna yang sudah terverifikasi dan diberikan prioritas oleh admin* |
+| 2 | *Pemerintah daerah menyaring laporan yang sudah terverifikasi* | *Sistem menampilkan pesan "belum ada laporan* |
+
+**Skenario Alternatif 2 : Tidak ada laporan terverifikasi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | *Pemerintah daerah membuka menu laporan terferivikasi* | *Sistem menampilkan pesan "belum ada laporan"* | 
 
 
 ### 4.4.4 Skenario UC04
