@@ -85,7 +85,9 @@ Tabel 1.4. Aturan Penomoran
 | *Kelas* | *CXX* | *Objek yang terikat dengan Use Case* |
 
 ## 1.5 Referensi
-Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
+Powerpoint Modul 1-5 dari Edunex kelas Software Engineering [Parent Class]
+Kementerian PANRB, *Evaluasi Pengelolaan Pengaduan SP4N-LAPOR! Tahun 2023*
+Diskominfo Kota Pontianak
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 Dokumen SKPL SILEMBUR ini terdiri dari enam bab. BAB 1 berisi pendahuluan dokumen. BAB 2 membahas deskripsi umum perangkat lunak. BAB 3 memuat kebutuhan fungsional dan non-fungsional. BAB 4 membahas pemodelan use case beserta skenarionya. BAB 5 membahas pemodelan kelas. BAB 6 menyajikan traceability yang menghubungkan kebutuhan, use case, dan kelas.
