@@ -26,6 +26,7 @@
 - [Milestone 2](#milestone-2)
 - [Milestone 3](#milestone-3)
 - [Milestone 4](#milestone-4)
+- [Milestone 5](#milestone-5)
 
 ---
 
@@ -87,6 +88,22 @@
 | *23-09-2026* | *Mochamad Fachri Alfaridzi* | *Menambahkan diagram kelas untuk UC yang menjadi tanggung jawab serta melengkapi detail identifikasi kelas, atribut, dan metode pada section 4.2 terkait* | *1* | *Done* | *-* |
 | *23-09-2026* | *Kevin Lincoln Hutabarat* | *Melengkapi beberapa bagian section 4.2 pada dokumen class diagram, termasuk identifikasi kelas, diagram kelas, serta tabel atribut dan metode* | *1t* | *Done* | *-* |
 | *23-09-2026* | *Satya Radhityan Yahya* | *Mengisi Bab 5 pada dokumen Milestone 4* | *1* | *Done* | *-* |
+
+### Milestone 5
+
+**Periode:** 27-09-2026 - 30-09-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *27-09-2026* | *Kevin Lincoln Hutabarat* | *Mengintegrasikan isi BAB 3, 4, 5, dan 6 pada dokumen SKPL berdasarkan dokumen yang telah dibuat sebelumnya dan menyesuaikan penomoran gambar pada BAB 4 dan BAB 5* | *1* | *Done* | *-* |
+| *29-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi section 2.1 dan 2.2 pada dokumen SKPL mengenai deskripsi umum sistem dan perangkat lunak dan menambahkan activity diagram proses bisnis* | *2* | *Done* | *-* |
+| *29-09-2026* | *Mochamad Fachri Alfaridzi* | *Mengisi section 1.1 dan 1.2 pada dokumen SKPL mengenai tujuan penulisan dokumen dan lingkup masalah SILEMBUR* | *1* | *Done* | *-* |
+| *29-09-2026* | *Muhammad Pandu Pulunggana* | *Mengisi section 1.6 mengenai deskripsi umum dan sistematika isi dokumen SKPL* | *1* | *Done* | *-* |
+| *30-09-2026* | *Satya Radhityan Yahya* | *Mengisi section 1.4 mengenai aturan penomoran dan section 2.3 mengenai pengguna perangkat lunak, serta memperbarui skenario UC dengan menambahkan skenario alternatif* | *2* | *Done* | *-* |
+| *30-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi dan melengkapi Form Asistensi Milestone 5 beserta catatan hasil asistensi dan dokumentasi* | *1* | *Done* | *-* |
+| *30-09-2026* | *Muhammad Pandu Pulunggana* | *Mengisi section 1.3 mengenai definisi, istilah, dan singkatan yang digunakan pada dokumen SKPL* | *1* | *Done* | *-* |
+| *30-09-2026* | *Kevin Lincoln Hutabarat* | *Mengisi section 2.4 dan 2.5 pada dokumen SKPL mengenai batasan perangkat lunak dan lingkungan operasi perangkat lunak* | *1* | *Done* | *-* |
+
 ---
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
