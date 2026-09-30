@@ -61,18 +61,18 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *...* | *...* |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
 | :--- | :--- | :--- |
-| *Kebutuhan Fungsional* | *KFXX* | |
-| *Kebutuhan Non-Fungsional* | *KNFXX* | |
-| *Aktor* | *AXX* | |
-| *Use Case* | *UCXX* | |
-| *Kelas* | *CXX* | |
-| *...* | *...* |
+| *User Story* | *US-XX* | *Kebutuhan pengguna awal* |
+| *Aktivitas* | *AXX* | *Aktivitas aktor* |
+| *Kebutuhan* | *RXX* | *Kebutuhan user, sistem dan bisnis* |
+| *Kebutuhan Fungsional* | *KFXX* | *Proses yang harus disediakan oleh sistem* |
+| *Kebutuhan Non-Fungsional* | *KNFXX* | *Kualitas dan performa yang harus dicapai*   |
+| *Use Case* | *UCXX* | *Kasus-kasus penggunaan perangkat lunak oleh aktor* |
+| *Kelas* | *CXX* | *Objek yang terikat dengan Use Case* |
 
 ## 1.5 Referensi
 Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
