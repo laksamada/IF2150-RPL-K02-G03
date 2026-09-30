@@ -58,7 +58,17 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
 | *UC* | *Singkatan dari Use Case.* |
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| *SILEMBUR* | *Singkatan dari Sistem Informasi Lembur, yaitu nama aplikasi pelaporan kerusakan fasilitas umum yang dibangun pada dokumen ini.* |
+| *GPS* | *Singkatan dari Global Positioning System, yaitu layanan penentuan lokasi yang dipakai untuk mengambil koordinat laporan secara otomatis.* |
+| *SP4N-LAPOR* | *Singkatan dari Sistem Pengelolaan Pengaduan Pelayanan Publik Nasional Layanan Aspirasi dan Pengaduan Online Rakyat, yaitu kanal pengaduan nasional yang disebut pada lingkup masalah.* |
+| *JAKI* | *Singkatan dari Jakarta Kini, yaitu aplikasi layanan warga milik Pemerintah Provinsi DKI Jakarta yang disebut pada lingkup masalah.* |
+| *US* | *Singkatan dari User Story, yaitu kebutuhan pengguna awal.* |
+| *R* | *Singkatan dari Requirement (Kebutuhan), yaitu kebutuhan user, sistem, dan bisnis.* |
+| *C* | *Singkatan dari Class (Kelas), yaitu objek yang terikat dengan Use Case.* |
+| *API* | *Singkatan dari Application Programming Interface, yaitu antarmuka yang memungkinkan dua sistem saling bertukar data.* |
+| *DBMS* | *Singkatan dari Database Management System, yaitu perangkat lunak yang mengelola basis data.* |
+| *OS* | *Singkatan dari Operating System (Sistem Operasi).* |
+| *ID* | *Singkatan dari Identifier, yaitu penanda unik untuk setiap kebutuhan, use case, atau kelas.* |
 
 ## 1.4 Aturan Penomoran
 
