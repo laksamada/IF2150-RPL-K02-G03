@@ -59,6 +59,15 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | ChatGPT | Memverifikasi tabel keterangan diagram kelas yang telah disusun kelompok untuk beberapa use case (UC), terutama konsistensi kelas, atribut, metode, dan relasi dengan diagram serta skenario use case | "Berdasarkan file md dan diagram yang sudah kami buat, tolong periksa tabel keterangan untuk use case ini. Cek apakah kelas, atribut, metode, dan relasinya sudah sesuai dengan diagram dan skenario use case." | Diagram kelas dan tabel keterangan awal disusun sendiri oleh kelompok. AI hanya digunakan untuk memeriksa konsistensi tabel dan memberikan masukan pada bagian yang perlu ditinjau kembali.  |
 | ChatGPT | Membantu memahami dan memverifikasi penggunaan notasi relasi pada diagram kelas, seperti asosiasi, agregasi, komposisi, dan dependensi | "Coba jelaskan arti notasi relasi pada diagram kelas, seperti belah ketupat hitam atau kosong dan garis putus-putus, lalu bantu periksa apakah penggunaannya pada diagram kami sudah sesuai." | Penjelasan AI digunakan sebagai bahan belajar dan referensi saat memeriksa ketepatan relasi pada diagram kelas. |
 ---
+
+
+### Milestone 
+
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| ChatGPT | Memahami sisi teknikal dari pembuatan perangkat lunak, termasuk komponen apa yang dibutuhkan dan penjelasan komponen-komponennya | "Apa itu API, dan bagaimana bisa relevan ketika membuat suatu aplikasi?" | Penjelasan AI digunakan untuk membantu mengisi bagian 2.4 dan 2.5 |
+---
+
 ### Pernyataan Integritas dan Persetujuan
 
 Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan AI di atas adalah benar. Kami telah memvalidasi seluruh hasil AI dan bertanggung jawab penuh atas orisinalitas, keamanan, dan kebenaran hasil akhir dari tugas ini.

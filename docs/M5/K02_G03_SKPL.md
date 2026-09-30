@@ -120,10 +120,11 @@ Silembur merupakan sistem aplikasi pelaporan untuk fasilitas umum yang mengalami
 
 ## 2.4 Batasan Perangkat Lunak
 Batasan yang harus dituliskan, di antaranya:
-1. *P/L harus menggunakan API Google Maps untuk mendukung pengambilan lokasi dari peta*
-2. *P/L harus memakai format data yang sama dengan sistem lain, contohnya saat menggunakan API Google Maps.*
+1. *P/L harus menggunakan API Google Maps dan Google Sign-In untuk mendukung pengambilan lokasi dari peta serta melakukan login.*
+2. *P/L harus memakai format data yang sama dengan sistem lain, contohnya saat menggunakan API Google Maps dan Google Sign-In.*
 3. *P/L harus berfungsi pada platform mobile untuk sistem operasi Android dan iOS.*
-4. *...*
+4. *P/L harus menggunakan JavaScript sebagai salah satu bahasa dalam mengimplementasikan backend.*
+5. *P/L harus menggunakan Google Cloud Storage untuk menyimpan foto laporan dan PostgreSQL 18 untuk menyimpan deskripsi laporan.*
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
 Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
@@ -134,7 +135,8 @@ Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroper
 | *Client* | *Mobile App* |
 | *DBMS* | *PostgreSQL 18* |
 | *OS* | *Android dan iOS* |
-| *...* | *...* |
+| *Runtime* | *Node.js v24* |
+| *Cloud* | *Google Cloud* |
 
 ---
 
