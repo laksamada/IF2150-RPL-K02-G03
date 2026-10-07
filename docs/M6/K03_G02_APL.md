@@ -127,6 +127,17 @@ Seluruh komponen pada Tabel 2.1 digambarkan dan dikelompokkan menjadi *View*, *C
 
 ## 3.2 Physical View
 
+Physical View dipilih karena SILEMBUR berjalan di dua lingkungan yang terpisah yaitu perangkat mobile milik pengguna dan server di Google Cloud. View ini melengkapi Logical View dengan menunjukkan di node mana setiap komponen pada Tabel 2.1 dijalankan dan bagaimana node-node tersebut saling berkomunikasi sesuai lingkungan operasi pada Tabel 1.1.
+
+<p align="center">
+<img alt="Physical View SILEMBUR" src="./assets/diagram/physicals.drawio.png" width="100%">
+</p>
+<p align="center">
+<i>Gambar 3. Physical View SILEMBUR</i>
+</p>
+
+Semua komponen View dan GoogleMapsAdapter berjalan di aplikasi mobile pada Android dan iOS. View memanggil Controller di server melalui HTTPS. Controller, Model, Pendukung, dan CloudStorageAdapter berjalan di server Node.js v24 pada Google Cloud. Data Model tersimpan di PostgreSQL 18 dan foto laporan tersimpan di Google Cloud Storage. Login dan verifikasi token memakai Google Sign In. Peta diambil dari Google Maps Platform. Controller dan Model ditempatkan di server agar aturan bisnis tidak bisa dilewati dari aplikasi dan Android maupun iOS memakai logika yang sama.
+
 ---
 
 # Referensi
