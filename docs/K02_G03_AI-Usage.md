@@ -26,6 +26,8 @@
 * [Milestone 2](#milestone-2)
 * [Milestone 3](#milestone-3)
 * [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
 
 ---
 
@@ -66,6 +68,15 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | ChatGPT | Memahami sisi teknikal dari pembuatan perangkat lunak, termasuk komponen apa yang dibutuhkan dan penjelasan komponen-komponennya | "Apa itu API, dan bagaimana bisa relevan ketika membuat suatu aplikasi?" | Penjelasan AI digunakan untuk membantu mengisi bagian 2.4 dan 2.5 |
+
+### Milestone 6
+
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude | Meminta rekomendasi pemilihan pola arsitektur dan identifikasi komponen | "berikan rekomendasi untuk menentukan pola arsitektur berdasarkan dokumen-dokumen pada milestone sebelumnya." | Rekomendasi AI dipakai sebagai acuan awal. Kelompok memeriksa kesesuaian komponen dengan kelas dan use case pada SKPL untuk menentukan pola arsitektur yang sesuai. |
+| Claude | Meminta saran perbaikan isi tabel Lingkungan Operasi Perangkat Lunak | "Yang Lingkungan Operasi Perangkat Lunak disesuaikan saja, bagusnya seperti apa?" | Saran AI hanya dipakai sebagai pertimbangan. Kelompok tetap memakai Tabel 1.1 yang sama dengan subbab 2.5 SKPL karena SKPL sudah final. |
+| Claude | Membantu merevisi diagram Physical View pada subbab 3.2  | "Tolong cek  bagian 3.2 Physical View apakah isinya dan notasinya sudah sesuai ketentuan." | beberapa kali merevisi gaya diagram sampai sesuai kebutuhan. |
+
 ---
 
 ### Pernyataan Integritas dan Persetujuan
