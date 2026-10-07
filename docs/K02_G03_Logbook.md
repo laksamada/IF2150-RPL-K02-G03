@@ -27,6 +27,7 @@
 - [Milestone 3](#milestone-3)
 - [Milestone 4](#milestone-4)
 - [Milestone 5](#milestone-5)
+- [Milestone 6](#milestone-6)
 
 ---
 
@@ -103,6 +104,20 @@
 | *30-09-2026* | *Muhammad Dhiya Rafi* | *Mengisi dan melengkapi Form Asistensi Milestone 5 beserta catatan hasil asistensi dan dokumentasi* | *1* | *Done* | *-* |
 | *30-09-2026* | *Muhammad Pandu Pulunggana* | *Mengisi section 1.3 mengenai definisi, istilah, dan singkatan yang digunakan pada dokumen SKPL* | *1* | *Done* | *-* |
 | *30-09-2026* | *Kevin Lincoln Hutabarat* | *Mengisi section 2.4 dan 2.5 pada dokumen SKPL mengenai batasan perangkat lunak dan lingkungan operasi perangkat lunak* | *1* | *Done* | *-* |
+
+### Milestone 6
+
+**Periode:** 04-10-2026 - 07-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *04-10-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui identitas dokumen APL dan mengisi sebagian BAB 1* | *1* | *Done* | *-* |
+| *07-10-2026* | *Muhammad Dhiya Rafi* | *Mengisi Form Asistensi Milestone 6* | *1* | *Done* | *-* |
+| *07-10-2026* | *Muhammad Pandu Pulunggana* | *Mengisi Tabel 2.1 identifikasi komponen pada BAB 2 dokumen APL* | *2* | *Done* | *-* |
+| *07-10-2026* | *Mochamad Fachri Alfaridzi* | *Membuat diagram Physical View dan mengisi section 3.2 pada dokumen APL* | *2* | *Done* | *-* |
+| *07-10-2026* | *Mochamad Fachri Alfaridzi* | *Memperbarui dokumen deklarasi penggunaan AI untuk Milestone 6* | *1* | *Done* | *-* |
+| *07-10-2026* | *Satya Radhityan Yahya* | *Membuat diagram Logical View, mengisi section 3.1, dan menambahkan aset diagram* | *2* | *Done* | *-* |
+| *07-10-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui  BAB 1* | *1* | *Done* | *-* |
 
 ---
 
