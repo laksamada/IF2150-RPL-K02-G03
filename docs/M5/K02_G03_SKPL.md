@@ -309,7 +309,7 @@ Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari B
 | 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
 | 2 | *Masyarakat umum memilih laporan yang ingin dilihat* | *Sistem menampilkan laporan secara detail, yang mencakup judul, deksripsi, foto, dan status laporan* |
 
-**Skenario Alternatif 1: Laporan dipilih menggunakan filter**
+    **Skenario Alternatif 1: Laporan dipilih menggunakan filter**
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
 | 1 | *Masyarakat umum membuka menu Laporan Pengguna Lain* | *Sistem menampilkan list laporan yang sudah ditulis oleh pengguna lain yang mencakup  judul, foto, dan lokasi laporan* |
