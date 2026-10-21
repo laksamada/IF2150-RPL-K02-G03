@@ -28,6 +28,7 @@
 - [Milestone 4](#milestone-4)
 - [Milestone 5](#milestone-5)
 - [Milestone 6](#milestone-6)
+- [Milestone 7](#milestone-7)
 
 ---
 
@@ -118,6 +119,22 @@
 | *07-10-2026* | *Mochamad Fachri Alfaridzi* | *Memperbarui dokumen deklarasi penggunaan AI untuk Milestone 6* | *1* | *Done* | *-* |
 | *07-10-2026* | *Satya Radhityan Yahya* | *Membuat diagram Logical View, mengisi section 3.1, dan menambahkan aset diagram* | *2* | *Done* | *-* |
 | *07-10-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui  BAB 1* | *1* | *Done* | *-* |
+
+### Milestone 7
+
+**Periode:** 14-10-2026 - 21-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *14-10-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui identitas dokumen DDPL* | *1* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Dhiya Rafi* | *Mengisi Form Asistensi Milestone 6* | *1* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Pandu Pulunggana* | *Mengisi UC01 dan UC02* | *2* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Pandu Pulunggana* | *Membuat logo untuk software silembur* | *1* | *Done* | *-* |
+| *21-10-2026* | *Mochamad Fachri Alfaridzi* | *Mengisi BAB 1* | *2* | *Done* | *-* |
+| *21-10-2026* | *Mochamad Fachri Alfaridzi* | *Memperbarui dokumen deklarasi penggunaan AI untuk Milestone 7* | *1* | *Done* | *-* |
+| *21-10-2026* | *Satya Radhityan Yahya* | *Mengisi BAB 5 dan 6* | *2* | *Done* | *-* |
+| *21-10-2026* | *Kevin Lincoln Hutabarat* | *Menambahkan UC03,UC04,UC05* | *2* | *Done* | *-* |
+| *21-10-2026* | *Muhammad Dhiya Rafi* | *Menambahkan UC06,UC07,UC08* | *2* | *Done* | *-* |
 
 ---
 
