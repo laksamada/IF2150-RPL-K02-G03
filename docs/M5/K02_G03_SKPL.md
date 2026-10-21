@@ -495,10 +495,10 @@ Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diag
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C03* | *PemerintahDaerah* | *idPemerintah, namaInstansi, wilayahKerja* | *lihatLaporanTerverifikasi(), pilihFilter(kategori, wilayah)* |
-| *C04* | *Laporan* | *idLaporan, fotoLaporan, deskripsiLaporan, kategoriKerusakan, tanggalLaporan, statusLaporan* | *getLaporanTerverifikasi(), urutkanBerdasarkanPrioritas(), filterLaporan(kategori, wilayah)* |
-| *C05* | *Lokasi* | *koordinat, wilayah* | *getWilayah()* |
-| *C08* | *SkorPrioritas* | *skor* | *getSkor()* |
+    | *C03* | *PemerintahDaerah* | *idPemerintah, namaInstansi, wilayahKerja* | *lihatLaporanTerverifikasi(), pilihFilter(kategori, wilayah)* |
+    | *C04* | *Laporan* | *idLaporan, fotoLaporan, deskripsiLaporan, kategoriKerusakan, tanggalLaporan, statusLaporan* | *getLaporanTerverifikasi(), urutkanBerdasarkanPrioritas(), filterLaporan(kategori, wilayah)* |
+    | *C05* | *Lokasi* | *koordinat, wilayah* | *getWilayah()* |
+    | *C08* | *SkorPrioritas* | *skor* | *getSkor()* |
 
 ### 5.2.4 Use Case UC04
 **Nama Use Case:** *Melihat Daftar dan Detail Laporan Publik*
