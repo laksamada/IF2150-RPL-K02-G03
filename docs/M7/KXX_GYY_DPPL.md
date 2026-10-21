@@ -289,6 +289,151 @@ Pada diagram, pastikan:
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
 
+## 3.6 Use Case Meninjau Fasilitas dengan Kerusakan Berulang
+
+**ID Use Case:** *UC06*  
+**Nama Use Case:** *Meninjau Fasilitas dengan Kerusakan Berulang*
+
+### 3.6.1 Identifikasi Kelas
+
+Tabel 3.6. Identifikasi Kelas Use Case [UC06]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *Laporan* | *Laporan* |
+| 2 | *Fasilitas* | *Fasilitas* |
+| 3 | *Admin* | *Admin* |
+| 4 | *Pemerintah Daerah* | *Pemerintah Daerah* |
+
+### 3.6.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC06]</i>
+</p>
+
+- **Skenario Alternatif 1: Tidak ada fasilitas yang muncul**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram_alt1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC06] - [Tidak ada fasilitas yang muncul]</i>
+</p>
+
+- **Skenario Alternatif 2: Loading dashboard terlalu lama**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram_alt2.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC06] - [Loading dashboard terlalu lama]</i>
+</p>
+
+### 3.6.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_class_diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Meninjau Fasilitas dengan Kerusakan Berulang
+</i>
+</p>
+
+## 3.7 Use Case Mengonfirmasi dan Menggabungkan Laporan Duplikat
+
+**ID Use Case:** *UC07*  
+**Nama Use Case:** *Mengonfirmasi dan Menggabungkan Laporan Duplikat*
+
+### 3.7.1 Identifikasi Kelas
+
+Tabel 3.7. Identifikasi Kelas Use Case [UC07]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *Laporan* | *Laporan* |
+| 2 | *Fasilitas* | *Fasilitas* |
+| 3 | *Admin* | *Admin* |
+| 4 | *SkorPrioritas* | *SkorPrioritas* |
+| 5 | *KonfirmasiDuplikat* | *KonfirmasiDuplikat* |
+
+### 3.7.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC07]</i>
+</p>
+
+- **Skenario Alternatif 1: Admin salah memilih laporan duplikat**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_sequence_diagram_alt1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC07] - [Admin salah memilih laporan duplikat]</i>
+</p>
+
+### 3.7.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_class_diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Mengonfirmasi dan Menggabungkan Laporan Duplikat</i>
+</p>
+
+## 3.8 Use Case Melacak Riwayat Perubahan Status per Fasilitas
+
+**ID Use Case:** *UC08*  
+**Nama Use Case:** *Melacak Riwayat Perubahan Status per Fasilitas*
+
+### 3.8.1 Identifikasi Kelas
+
+Tabel 3.8. Identifikasi Kelas Use Case [UC08]
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | *Laporan* | *Laporan* |
+| 2 | *Fasilitas* | *Fasilitas* |
+| 3 | *RiwayatStatus* | *RiwayatStatus* |
+
+### 3.8.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_sequence_diagram.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC08]</i>
+</p>
+
+- **Skenario Alternatif 1: Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_sequence_diagram_alt1.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram [UC08] - [Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah]</i>
+</p>
+
+### 3.8.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_class_diagram.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Melacak Riwayat Perubahan Status per Fasilitas </i>
+</p>
+
 <br>
 
 ---
