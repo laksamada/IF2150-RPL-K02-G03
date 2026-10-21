@@ -290,7 +290,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC01_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar X. Diagram Kelas Membuat Laporan Kerusakan Fasilitas</i>
 </p>
 
 ## 3.2 Use Case Memverifikasi Laporan dan Menghitung Prioritas
@@ -337,7 +337,7 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC02_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar X. Diagram Kelas Memverifikasi Laporan dan Menghitung Prioritas</i>
 </p>
 
 ## 3.6 Use Case Meninjau Fasilitas dengan Kerusakan Berulang
