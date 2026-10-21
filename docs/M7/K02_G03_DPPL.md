@@ -493,23 +493,29 @@ Tabel 3.8. Identifikasi Kelas Use Case [UC08]
 
 ## 4.1 Diagram Kelas
 
-**Bagian ini diisi dengan diagram kelas keseluruhan.**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-class_diargam.png" width="35%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/ClassDiagramkeseluruhan.drawio.png" width="235%">
 </p>
 <p align="center">
-<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan [Nama P/L]</i>
+<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan SILEMBUR</i>
 </p>
 
 Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C02]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C03]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *...* | *...* | *...* | *...* |
+| *C01* | *Pelapor* | *idPelapor: Integer, namaPelapor: String, jumlahLaporan: Integer* | *konfirmasiSimpanLaporan(), terimaNotifikasi(), bukaLaporan(Laporan), bukaRiwayatLaporan(Laporan)* |
+| *C02* | *Admin* | *idAdmin: Integer, namaAdmin: String* | *lihatDaftarLaporan(): List of Laporan, tetapkanKeputusan(keputusan: String, catatan: String), konfirmasiGabungLaporan(): Boolean, lihatFasilitasRusakBerulang(): List of Fasilitas* |
+| *C03* | *PemerintahDaerah* | *idPemerintah: Integer, namaInstansi: String, wilayahKerja: String* | *lihatLaporanTerverifikasi(), pilihFilter(kategori, wilayah), lihatFasilitasRusakBerulang(): List of Fasilitas* |
+| *C04* | *Laporan* | *idLaporan: Integer, fotoLaporan: String, deskripsiLaporan: String, kategoriKerusakan: String, tanggalLaporan: String, statusLaporan: String* | *buatLaporanBaru(), tampilkanFormulir(), validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String): Boolean, bukaKunciSimpan(), simpanLaporan(), getLaporanMenungguVerifikasi(): List of Laporan, getDetailLaporan(): String, updateStatus(status), getLaporanTerverifikasi(), urutkanBerdasarkanPrioritas(), filterLaporan(kategori, wilayah), pilihDuplikat(): List of Laporan, getRiwayatStatus(): RiwayatStatus* |
+| *C05* | *Lokasi* | *koordinat: String, wilayah: String* | *setLokasiLaporan(koordinat: String), getWilayah(): String* |
+| *C06* | *Fasilitas* | *idFasilitas: Integer, namaFasilitas: String, lokasiFasilitas: String, jumlahKerusakanBerulang: Integer* | *getLaporan(): Laporan, cariFasilitas(keyword: String): Fasilitas, getDetailFasilitas(): String, getJumlahLaporan(): Integer* |
+| *C07* | *Verifikasi* | *idVerifikasi: Integer, keputusan: String, catatanAlasan: String, waktuVerifikasi: String* | *simpanVerifikasi(keputusan: String, catatan: String), tahanLaporan(), teruskanKePemerintah()* |
+| *C08* | *SkorPrioritas* | *jumlahPelapor: Integer, lamaMenunggu: Integer, frekuensiBerulang: Integer, namaFasilitasInduk: String, skor: Integer* | *hitungSkor(): Integer, getSkor(): Integer* |
+| *C09* | *RiwayatStatus* | *idRiwayat: Integer, tanggalPerubahan: String, deskripsiPerubahan: String* | *getPerubahan(): RiwayatStatus* |
+| *C10* | *Notifikasi* | *idNotifikasi: Integer, isiPesan: String, waktuKirim: String* | *kirimNotifikasi()* |
+| *C11* | *KonfirmasiDuplikat* | *daftarKandidat: List of Laporan, namaFasilitasInduk: String* | *simpanKandidat(), warning(), gabungLaporan(): laporan* |
 
 <br>
 
@@ -517,12 +523,19 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 # BAB 5: Matriks Kerunutan
 
-Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
-
 Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| *C01-Pelapor* | *UC01-Membuat Laporan Kerusakan Fasilitas, UC04-Melihat Daftar dan Detail Laporan Publik, UC05-Memantau Status dan Riwayat Penanganan Laporan* |
+| *C02-Admin* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C03-Pemerintah Daerah* | *UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C04-Laporan* | *UC01-Membuat Laporan Kerusakan Fasilitas, UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC04-Melihat Daftar dan Detail Laporan Publik, UC05-Memantau Status dan Riwayat Penanganan Laporan, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C05-Lokasi* | *UC01-Membuat Laporan Kerusakan Fasilitas* |
+| *C06-Fasilitas* | *UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C07-Verifikasi* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas* |
+| *C08-SkorPrioritas* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
+| *C09-RiwayatStatus* | *UC05-Memantau Status dan Riwayat Penanganan Laporan, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C10-Notifikasi* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas* |
+| *C11-KonfirmasiDuplikat* | *UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
+
