@@ -7,10 +7,10 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *SILEMBUR*
 ### *[Logo Perangkat Lunak]*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabila*
 
 
 Dipersiapkan oleh:
@@ -53,10 +53,10 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen DPPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+Dokumen DPPL ini menjelaskan rancangan perangkat lunak SILEMBUR yang disusun dari kebutuhan pada SKPL dan arsitektur pada APL. Isinya mencakup rancangan arsitektur dan realisasi setiap use case dalam bentuk sequence diagram dan diagram kelas perancangan. Dokumen ini digunakan oleh Kelompok G03 sebagai acuan saat mengimplementasikan dan menguji P/L. Asisten mata kuliah IF2150 menggunakannya untuk memeriksa kesesuaian rancangan dengan kebutuhan yang sudah ditetapkan.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diambil dari SKPL.
+SILEMBUR (Sistem Informasi Lembur) adalah aplikasi web mobile untuk melaporkan kerusakan fasilitas umum seperti jalan berlubang, lampu penerangan jalan yang mati, dan pohon tumbang. Nama "lembur" diambil dari bahasa Sunda yang berarti kampung. Masyarakat membuat laporan berisi foto, lokasi GPS, dan deskripsi kerusakan. Admin kemudian memverifikasi laporan tersebut sebelum diteruskan ke pemerintah daerah. Kanal pengaduan yang ada saat ini, seperti SP4N-LAPOR dan JAKI, memperlakukan setiap laporan sebagai pengaduan terpisah. Akibatnya laporan duplikat menumpuk, prioritas penanganan tidak langsung terlihat, dan riwayat kerusakan suatu fasilitas sulit ditelusuri. SILEMBUR menangani masalah tersebut dengan menggabungkan laporan duplikat, menghitung skor prioritas setiap laporan terverifikasi, dan mencatat riwayat status per fasilitas. Cakupan sistem dibatasi pada satu kota dengan tiga jenis pengguna, yaitu masyarakat umum, admin, dan pemerintah daerah.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
@@ -66,9 +66,24 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | Singkatan, Akronim, atau Istilah | Penjelasan |
 | :--- | :--- |
 | *P/L* | *Singkatan dari Perangkat Lunak, yaitu aplikasi yang memberikan perintah kepada komputer untuk menjalankan tugas tertentu.* |
-| *DPPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
+| *DPPL* | *Singkatan dari Deskripsi Perancangan Perangkat Lunak, yaitu dokumen yang berisi rancangan P/L sebagai acuan implementasi.* |
+| *SKPL* | *Singkatan dari Spesifikasi Kebutuhan Perangkat Lunak, yaitu dokumen yang merangkum kriteria-kriteria yang diperlukan untuk membangun aplikasi menjalankan tugasnya.* |
+| *APL* | *Singkatan dari Arsitektur Perangkat Lunak, yaitu dokumen yang berisi pola arsitektur dan komponen penyusun P/L.* |
+| *MVC* | *Singkatan dari Model View Controller, yaitu pola arsitektur yang memisahkan data dan logika bisnis dari tampilan serta pengolah input.* |
+| *KF* | *Singkatan dari Kebutuhan Fungsional.* |
+| *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
 | *UC* | *Singkatan dari Use Case.* |
-| *...* | *...* |
+| *SILEMBUR* | *Singkatan dari Sistem Informasi Lembur, yaitu nama aplikasi pelaporan kerusakan fasilitas umum yang dibangun pada dokumen ini.* |
+| *GPS* | *Singkatan dari Global Positioning System, yaitu layanan penentuan lokasi yang dipakai untuk mengambil koordinat laporan secara otomatis.* |
+| *SP4N-LAPOR* | *Singkatan dari Sistem Pengelolaan Pengaduan Pelayanan Publik Nasional Layanan Aspirasi dan Pengaduan Online Rakyat, yaitu kanal pengaduan nasional yang disebut pada lingkup masalah.* |
+| *JAKI* | *Singkatan dari Jakarta Kini, yaitu aplikasi layanan warga milik Pemerintah Provinsi DKI Jakarta yang disebut pada lingkup masalah.* |
+| *US* | *Singkatan dari User Story, yaitu kebutuhan pengguna awal.* |
+| *R* | *Singkatan dari Requirement (Kebutuhan), yaitu kebutuhan user, sistem, dan bisnis.* |
+| *C* | *Singkatan dari Class (Kelas), yaitu objek yang terikat dengan Use Case.* |
+| *API* | *Singkatan dari Application Programming Interface, yaitu antarmuka yang memungkinkan dua sistem saling bertukar data.* |
+| *DBMS* | *Singkatan dari Database Management System, yaitu perangkat lunak yang mengelola basis data.* |
+| *OS* | *Singkatan dari Operating System (Sistem Operasi).* |
+| *ID* | *Singkatan dari Identifier, yaitu penanda unik untuk setiap kebutuhan, use case, atau kelas.* |
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
@@ -77,15 +92,22 @@ Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
 | :--- | :--- | :--- |
-| *Uce Case* | *UCXX* | |
-| *Kelas* | *CXX* | |
-| *...* | *...* |
+| *User Story* | *US-XX* | *Kebutuhan pengguna awal* |
+| *Aktivitas* | *AXX* | *Aktivitas aktor* |
+| *Kebutuhan* | *RXX* | *Kebutuhan user, sistem dan bisnis* |
+| *Kebutuhan Fungsional* | *KFXX* | *Proses yang harus disediakan oleh sistem* |
+| *Kebutuhan Non-Fungsional* | *KNFXX* | *Kualitas dan performa yang harus dicapai* |
+| *Use Case* | *UCXX* | *Kasus-kasus penggunaan perangkat lunak oleh aktor* |
+| *Kelas* | *CXX* | *Objek yang terikat dengan Use Case* |
 
 ## 1.5 Referensi
-Cantumkan dokumentasi P/L yang dirujuk oleh dokumen ini, **minimal dokumen SKPL dan APL**. Tambahkan buku, panduan, atau dokumentasi lain apabila digunakan.
+- Kelompok K02 G03. *Spesifikasi Kebutuhan Perangkat Lunak (SKPL) SILEMBUR*
+- Kelompok K02 G03. *Arsitektur Perangkat Lunak (APL) SILEMBUR*
+- Powerpoint Modul dari Edunex kelas Software Engineering [Parent Class]
+- Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut, dengan maksimal 1 paragraf.
+Dokumen DPPL SILEMBUR ini terdiri dari lima bab. BAB 1 berisi pendahuluan dokumen. BAB 2 membahas perancangan arsitektur yang meliputi lingkungan implementasi serta pola arsitektur dan komponen penyusunnya. BAB 3 membahas realisasi setiap use case melalui identifikasi kelas dan sequence diagram serta diagram kelas. BAB 4 menyajikan diagram kelas perancangan keseluruhan. BAB 5 menyajikan matriks kerunutan antara kelas perancangan dan use case.
 
 <br>
 
