@@ -261,8 +261,8 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
 | 1 | *Pelapor* | *Pelapor* |
-| 2 | *Laporan * | *Laporan* |
-| 3 | *Lokasi * | *Lokasi * |
+| 2 | *Laporan* | *Laporan* |
+| 3 | *Lokasi* | *Lokasi* |
 
 ### 3.1.2 Sequence Diagram
 
@@ -275,7 +275,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 <i>Gambar X. Sequence Diagram [UC01]</i>
 </p>
 
-- **Skenario Alternatif 1: Pengguna tidak mengisi seluruh formulir **
+- **Skenario Alternatif 1: Pengguna tidak mengisi seluruh formulir**
 
 <p align="center">
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC01_sequence_diagram_alt1.png" width="50%">
