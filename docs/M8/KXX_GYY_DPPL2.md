@@ -8,7 +8,11 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## *SILEMBUR*
-### *[Logo Perangkat Lunak]*
+### *LOGO*
+<p align="center">
+<img alt="Contoh Arsitektur MVC" src="./assets/diagram/logo.jpeg" width="40%">
+</p>
+<p align="center">
 
 ### Untuk: *Amanda Aurellia Salsabila*
 
