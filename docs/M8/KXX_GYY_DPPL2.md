@@ -119,6 +119,7 @@ Dokumen DPPL SILEMBUR ini terdiri dari lima bab. BAB 1 berisi pendahuluan dokume
 
 Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bahasa pemrograman yang digunakan.
 
+Tabel 2.1 Komponen Lingkungan Implementasi
 | Komponen | Spesifikasi |
 | :--- | :--- |
 | *Server* | *Node.js v24, dijalankan pada layanan cloud* |
@@ -156,10 +157,10 @@ Selain itu, model MVC juga membuat testing tampilan aplikasi lebih mudah dilakuk
 <img alt="Contoh Arsitektur MVC" src="./assets/diagram/Arsitektur-mvc.png" width="40%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Arsitektur MVC</i>
+<i>Gambar 2.2. Contoh Arsitektur MVC</i>
 </p>
 
-Tabel 1.1. Lingkungan Operasi Perangkat Lunak
+Tabel 2.2. Lingkungan Operasi Perangkat Lunak
 
 | Komponen | Spesifikasi |
 | :--- | :--- |
@@ -225,7 +226,7 @@ Gunakan hasil **BAB 3 Model Arsitektur Perangkat Lunak pada dokumen APL**.
 <img alt="Logical View SILEMBUR" src="./assets/diagram/logical-view.png" width="100%">
 </p>
 <p align="center">
-<i>Gambar 2. Logical View SILEMBUR</i>
+<i>Gambar 2.4.1. Logical View SILEMBUR</i>
 </p>
 
 Seluruh komponen pada Tabel 2.1 digambarkan dan dikelompokkan menjadi *View*, *Controller*, *Model*, *Pendukung*, *Integrasi Eksternal*, dan *Penyimpanan Data*. Setiap *View* diberi keterangan use case dan aktor yang memakainya. Garis "Memanggil" menunjukkan *View* yang meneruskan aksi pengguna ke *Controller*, sedangkan garis "akses" menunjukkan *Controller* yang membaca atau mengubah *Model*. Hubungan antar-*Model* mengikuti diagram kelas keseluruhan pada SKPL. Fasilitas mengagregasi Laporan, Laporan mengagregasi Lokasi dan RiwayatStatus, serta Laporan tersusun atas (komposisi) SkorPrioritas. Karena Lokasi, RiwayatStatus, dan SkorPrioritas merupakan bagian dari Laporan, *controller* mengaksesnya melalui Laporan, tidak secara langsung. Seluruh *controller* memakai Autentikasi dan Validasi sebelum memproses permintaan. Layanan Google di luar P/L, yaitu Google Maps Platform, Google Sign-In, dan Google Cloud Storage, digambarkan dengan garis putus-putus.
@@ -238,7 +239,7 @@ Physical View dipilih karena SILEMBUR berjalan di dua lingkungan yang terpisah y
 <img alt="Physical View SILEMBUR" src="./assets/diagram/physicals.drawio.png" width="100%">
 </p>
 <p align="center">
-<i>Gambar 3. Physical View SILEMBUR</i>
+<i>Gambar 2.4.2. Physical View SILEMBUR</i>
 </p>
 
 Semua komponen View dan GoogleMapsAdapter berjalan di aplikasi mobile pada Android dan iOS. View memanggil Controller di server melalui HTTPS. Controller, Model, Pendukung, dan CloudStorageAdapter berjalan di server Node.js v24 pada Google Cloud. Data Model tersimpan di PostgreSQL 18 dan foto laporan tersimpan di Google Cloud Storage. Login dan verifikasi token memakai Google Sign In. Peta diambil dari Google Maps Platform. Controller dan Model ditempatkan di server agar aturan bisnis tidak bisa dilewati dari aplikasi dan Android maupun iOS memakai logika yang sama.
@@ -272,7 +273,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC01_sequence_diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3.1.2.1. Sequence Diagram [UC01]</i>
 </p>
 
 - **Skenario Alternatif 1: Pengguna tidak mengisi seluruh formulir**
@@ -281,7 +282,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC01_sequence_diagram_alt1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Pengguna tidak mengisi seluruh formulir]</i>
+<i>Gambar 3.1.2.2. Sequence Diagram [UC01] - [Pengguna tidak mengisi seluruh formulir]</i>
 </p>
 
 ### 3.1.3 Diagram Kelas
@@ -290,7 +291,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC01]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC01_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Membuat Laporan Kerusakan Fasilitas</i>
+<i>Gambar 3.1.3. Diagram Kelas Membuat Laporan Kerusakan Fasilitas</i>
 </p>
 
 ## 3.2 Use Case Memverifikasi Laporan dan Menghitung Prioritas
@@ -319,7 +320,7 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC02_sequence_diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC02]</i>
+<i>Gambar 3.2.2.1. Sequence Diagram [UC02]</i>
 </p>
 
 - **Skenario Alternatif 1: Admin menolak laporan**
@@ -328,7 +329,7 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC02_sequence_diagram_alt1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC02] - [Admin menolak laporan]</i>
+<i>Gambar 3.2.2.2. Sequence Diagram [UC02] - [Admin menolak laporan]</i>
 </p>
 
 ### 3.2.3 Diagram Kelas
@@ -337,7 +338,7 @@ Tabel 3.2. Identifikasi Kelas Use Case [UC02]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC02_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Memverifikasi Laporan dan Menghitung Prioritas</i>
+<i>Gambar 3.2.3. Diagram Kelas Memverifikasi Laporan dan Menghitung Prioritas</i>
 </p>
 
 ## 3.3 Use Case Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas
@@ -363,16 +364,16 @@ Tabel 3.3. Identifikasi Kelas Use Case [UC03]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-1.drawio (3).png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3.3.2.1 Sequence Diagram [UC03]</i>
 </p>
 
 - **Skenario Alternatif 1 : Tidak ada laporan terverifikasi setelah diberikan filter**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-1.drawio (1).png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-2.drawio (1).png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.3.2.2. Sequence Diagram [UC03] - [Tidak ada laporan terverifikasi setelah diberikan filter]</i>
 </p>
 
 - **Skenario Alternatif 2 : Tidak ada laporan terverifikasi**
@@ -380,7 +381,7 @@ Tabel 3.3. Identifikasi Kelas Use Case [UC03]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-03-3.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.3.2.3. Sequence Diagram [UC03] - [Tidak ada laporan terverifikasi]</i>
 </p>
 
 
@@ -390,7 +391,7 @@ Tabel 3.3. Identifikasi Kelas Use Case [UC03]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC03.drawio.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3.3.3. Diagram Kelas [Use Case Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas]</i>
 </p>
 
 
@@ -417,7 +418,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC04]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-1.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC04]</i>
+<i>Gambar 3.4.2.1. Sequence Diagram [UC04]</i>
 </p>
 
 - **Skenario Alternatif 1: Laporan dipilih menggunakan filter**
@@ -426,7 +427,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC04]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-2.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.4.2.2. Sequence Diagram [UC04] - [Laporan dipilih menggunakan filter]</i>
 </p>
 
 
@@ -436,7 +437,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC04]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-3.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.4.2.3. Sequence Diagram [UC04] - [Tidak ada laporan yang muncul setelah menerapkan filter]</i>
 </p>
 
 - **Skenario Alternatif 3: Loading detail laporan terlalu lama**
@@ -444,7 +445,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC04]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-04-4.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.4.2.4. Sequence Diagram [UC04] - [Loading detail laporan terlalu lama]</i>
 </p>
 
 
@@ -454,11 +455,11 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC04]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC04.drawio (1).png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3.4.3. Diagram Kelas [Melihat Daftar dan Detail Laporan Publik]</i>
 </p>
 
 
-## 3.5 Use Case *Memantau Status dan Riwayat Penanganan Laporan*
+## 3.5 Use Case Memantau Status dan Riwayat Penanganan Laporan
 
 **ID Use Case:** *UC05*
 **Nama Use Case:** *Memantau Status dan Riwayat Penanganan Laporan*
@@ -478,19 +479,19 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC05]
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-05-1.drawio (1).png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-05-1 (1).drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3.5.2.1. Sequence Diagram [UC05]</i>
 </p>
 
 - **Skenario Alternatif 1: Belum ada laporan yang dibuat**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-05-2.drawio (1).png" width="50%">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-05-2 (1).drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.5.2.2. Sequence Diagram [UC05] - [Belum ada laporan yang dibuat]</i>
 </p>
 
 - **Skenario Alternatif 2: Loading detail laporan terlalu lama**
@@ -498,7 +499,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC05]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC-05-3.drawio.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.5.2.3. Sequence Diagram [UC05] - [Loading detail laporan terlalu lama]</i>
 </p>
 
 
@@ -508,7 +509,7 @@ Tabel 3.1. Identifikasi Kelas Use Case [UC05]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC05.drawio (1).png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3.5.3. Diagram Kelas [Memantau Status dan Riwayat Penanganan Laporan]</i>
 </p>
 
 ## 3.6 Use Case Meninjau Fasilitas dengan Kerusakan Berulang
@@ -535,7 +536,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC06]</i>
+<i>Gambar 3.6.2.1. Sequence Diagram [UC06]</i>
 </p>
 
 - **Skenario Alternatif 1: Tidak ada fasilitas yang muncul**
@@ -544,7 +545,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram_alt1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC06] - [Tidak ada fasilitas yang muncul]</i>
+<i>Gambar 3.6.2.2. Sequence Diagram [UC06] - [Tidak ada fasilitas yang muncul]</i>
 </p>
 
 - **Skenario Alternatif 2: Loading dashboard terlalu lama**
@@ -553,7 +554,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_sequence_diagram_alt2.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC06] - [Loading dashboard terlalu lama]</i>
+<i>Gambar 3.6.2.3. Sequence Diagram [UC06] - [Loading dashboard terlalu lama]</i>
 </p>
 
 ### 3.6.3 Diagram Kelas
@@ -562,7 +563,7 @@ Tabel 3.6. Identifikasi Kelas Use Case [UC06]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC06_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Meninjau Fasilitas dengan Kerusakan Berulang
+<i>Gambar 3.6.3. Diagram Kelas Meninjau Fasilitas dengan Kerusakan Berulang
 </i>
 </p>
 
@@ -591,7 +592,7 @@ Tabel 3.7. Identifikasi Kelas Use Case [UC07]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_sequence_diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC07]</i>
+<i>Gambar 3.7.2.1. Sequence Diagram [UC07]</i>
 </p>
 
 - **Skenario Alternatif 1: Admin salah memilih laporan duplikat**
@@ -600,7 +601,7 @@ Tabel 3.7. Identifikasi Kelas Use Case [UC07]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_sequence_diagram_alt1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC07] - [Admin salah memilih laporan duplikat]</i>
+<i>Gambar 3.7.2.2. Sequence Diagram [UC07] - [Admin salah memilih laporan duplikat]</i>
 </p>
 
 ### 3.7.3 Diagram Kelas
@@ -609,7 +610,7 @@ Tabel 3.7. Identifikasi Kelas Use Case [UC07]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC07_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Mengonfirmasi dan Menggabungkan Laporan Duplikat</i>
+<i>Gambar 3.7.3. Diagram Kelas Mengonfirmasi dan Menggabungkan Laporan Duplikat</i>
 </p>
 
 ## 3.8 Use Case Melacak Riwayat Perubahan Status per Fasilitas
@@ -635,7 +636,7 @@ Tabel 3.8. Identifikasi Kelas Use Case [UC08]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_sequence_diagram.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC08]</i>
+<i>Gambar 3.8.2.1. Sequence Diagram [UC08]</i>
 </p>
 
 - **Skenario Alternatif 1: Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah**
@@ -644,7 +645,7 @@ Tabel 3.8. Identifikasi Kelas Use Case [UC08]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_sequence_diagram_alt1.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC08] - [Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah]</i>
+<i>Gambar 3.8.2.2. Sequence Diagram [UC08] - [Admin/Pemerintah daerah mencari fasilitas yang tidak ada dalam list laporan yang berubah]</i>
 </p>
 
 ### 3.8.3 Diagram Kelas
@@ -653,7 +654,7 @@ Tabel 3.8. Identifikasi Kelas Use Case [UC08]
 <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/UC08_class_diagram.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Melacak Riwayat Perubahan Status per Fasilitas </i>
+<i>Gambar 3.8.3. Diagram Kelas Melacak Riwayat Perubahan Status per Fasilitas </i>
 </p>
 
 <br>
