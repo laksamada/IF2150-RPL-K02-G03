@@ -1467,8 +1467,10 @@ Tabel 6.11. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
+| *[I-01]* | <img alt="Login" src="./assets/diagram/I-01.jpeg" width="50%"> |
+| *[I-02]* | <img alt="Beranda" src="./assets/diagram/I-02.jpeg" width="50%"> |
+| *[I-03]* | <img alt="Detail Laporan Publik" src="./assets/diagram/I-03.1.jpeg" width="50%"><br><img alt="Detail Laporan Saya" src="./assets/diagram/I-03.2.jpeg" width="50%"> |
+| *[I-04]* | <img alt="Buat Laporan" src="./assets/diagram/I-04.jpeg" width="50%"> |
 | *[I-08]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-08.png" width="50%">|
 | *[I-09]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-09.png" width="50%">|| *[I-10]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-10.png" width="50%">|
 
