@@ -100,8 +100,8 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 
 | Tanda Tangan | Nama Anggota |
 | :---: | :--- |
-| <img src="../M1/assets/ttd_fachri.jpeg" width="100">| **[13225128 - Mochamad Fachri Alfaridzi]** |
-| <img src="../M1/assets/ttd_satya.png" width="100"> | **[13525098 - Satya Radhityan Yahya]** |
-| <img src="../M1/assets/ttd_rafi.png" width="100"> | **[13525035 - Muhammad Dhiya Rafi]** |
-| <img src="../M1/assets/ttd_pandu.png" width="100"> | **[13525059 - Muhammad Pandu Pulunggana]** |
-| <img src="../M1/assets/ttd_kevin.png" width="100"> | **[13525101 - Kevin Lincoln Hutabarat ]** |
+| <img src="./M1/assets/ttd_fachri.jpeg" width="100">| **[13225128 - Mochamad Fachri Alfaridzi]** |
+| <img src="./M1/assets/ttd_satya.png" width="100"> | **[13525098 - Satya Radhityan Yahya]** |
+| <img src="./M1/assets/ttd_rafi.png" width="100"> | **[13525035 - Muhammad Dhiya Rafi]** |
+| <img src="./M1/assets/ttd_pandu.png" width="100"> | **[13525059 - Muhammad Pandu Pulunggana]** |
+| <img src="./M1/assets/ttd_kevin.png" width="100"> | **[13525101 - Kevin Lincoln Hutabarat ]** |
