@@ -1010,21 +1010,83 @@ Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
 | *...* | *...* | *...* | *...* |
 
 
-## 6.X Rancangan Antarmuka [ID Layar X]
+## 6.8 Rancangan Antarmuka [ID Layar 8]
 
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
 
-## 6.Y Rancangan Antarmuka Keseluruhan
+**Antarmuka:** *I-08*  
+**Nama Layar:** *Daftar Laporan Terverifikasi*
 
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-08.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.8. Rancangan Antarmuka [I-08] - Daftar Laporan Terverifikasi</i>
+</p>
 
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
+Tabel 6.8. Spesifikasi Objek Antarmuka [ID Layar]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0801* | *Dropdown sektor/wilayah* | *Wilayah* | *Menunjukkan wilayah-wilayah yang ada, getWilayah()* |
+| *O-0802* | *Search input dan filter* | *Search bar dan filter* | *Menunjukkan laporan yang sesuai dengan filter, getLaporanTerverifikasi() pilihFilter()* |
+| *O-0803* | *Interactive map* | *Peta wilayah* | *Menunjukkan lokasi-lokasi objek penting di peta* |
+| *O-0804* | *Card laporan* | *Detail Laporan dan footer tombol aksi* | *Tombol aksi sesuai jenis laporan* |
+| *O-0805* | *Navigasi fasilitas* | *Fasilitas* | *Menuju I-09* |
+
+## 6.9 Rancangan Antarmuka [ID Layar 9]
+
+
+**Antarmuka:** *I-09*  
+**Nama Layar:** *Daftar Fasilitas*
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-09.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.9. Rancangan Antarmuka [I-09] - Daftar Fasilitas</i>
+</p>
+
+Tabel 6.9. Spesifikasi Objek Antarmuka [I-09]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0901* | *Search input dan filter* | *Search bar dan filter* | *Menunjukkan fasilitas yang sesuai dengan filter, cariFasilitas()* |
+| *O-0902* | *Card fasilitas* | *Informasi umum fasilitas dan tombol aksi Lihat Detail* | *Tombol aksi menuju ke I-10* |
+| *O-0903* | *Navigasi laporan* | *Laporan* | *Menuju I-08* |
+
+## 6.10 Rancangan Antarmuka [ID Layar 10]
+
+
+**Antarmuka:** *I-10*  
+**Nama Layar:** *Detail Fasilitas*
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-10.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.10. Rancangan Antarmuka [I-10] - Detail Fasilitas</i>
+</p>
+
+Tabel 6.10. Spesifikasi Objek Antarmuka [I-10]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-1001* | *Card detail* | *Lokasi, tingkat kerusakan, nama fasilitas* | *Menunjukkan detail fasilitas, getDetailFasilitas()* |
+| *O-1002* | *Card laporan menunjuk fasilitas* | *Informasi laporan yang menunjuk fasilitas* | *Tombol aksi menuju ke I-08, getLaporan() getJumlahLaporan()* |
+| *O-1004* | *Card riwayat dan foto* | *Riwayat fasilitas dan perbaikan serta foto beserta timestamp* | *getRiwayatLaporan()* |
+| *O-1005* | *Button perbarui status* | *Perbarui status fasilitas* | *Merubah riwayat status, getPerubahan()* |
+
+
+## 6.11 Rancangan Antarmuka Keseluruhan
+
+Tabel 6.11. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
 | *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
 | *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
+| *[I-08]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-08.png" width="50%">|
+| *[I-09]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-09.png" width="50%">|| *[I-10]* |  <img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/I-10.png" width="50%">|
 
 <br>
 
