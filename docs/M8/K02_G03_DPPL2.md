@@ -1399,7 +1399,7 @@ Tabel 6.4. Spesifikasi Objek Antarmuka [I-04]
 <img alt="Rancangan Antarmuka Dashboard Admin: Daftar Laporan Masuk" src="./assets/diagram/ID-05.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+<i>Gambar 6.5. Rancangan Antarmuka [I-05] - Dashboard Admin: Daftar Laporan Masuk</i>
 </p>
 
 Tabel 6.5. Spesifikasi Objek Antarmuka [I-05]
@@ -1411,7 +1411,7 @@ Tabel 6.5. Spesifikasi Objek Antarmuka [I-05]
 | *O-0503* | *Top Bar* | *Berisi deskripsi halaman* | *Menunjukkan deskripsi dashboard, settings, filter, search* |
 | *O-0504* | *Bottom bar* | *Berisi daftar menu* | *Menunjukkan menu dashboard, laporan, notifikasi, profil* |
 
-## 6.4 Rancangan Antarmuka [I-06]
+## 6.6 Rancangan Antarmuka [I-06]
 
 **Antarmuka:** *I-06*  
 **Nama Layar:** *Verifikasi Laporan*
@@ -1420,7 +1420,7 @@ Tabel 6.5. Spesifikasi Objek Antarmuka [I-05]
 <img alt="Rancangan Antarmuka Verifikasi Laporan" src="./assets/diagram/ID-06.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+<i>Gambar 6.5. Rancangan Antarmuka [I-06] - Verifikasi Laporan</i>
 </p>
 
 Tabel 6.6. Spesifikasi Objek Antarmuka [I-06]
@@ -1443,10 +1443,10 @@ Tabel 6.6. Spesifikasi Objek Antarmuka [I-06]
 <img alt="Rancangan Antarmuka Penggabungan Laporan Duplikat" src="./assets/diagram/ID-07 (2).png" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+<i>Gambar 6.7. Rancangan Antarmuka [I-07] - Penggabungan Laporan Duplikat</i>
 </p>
 
-Tabel 6.7. Spesifikasi Objek Antarmuka [I-04]
+Tabel 6.7. Spesifikasi Objek Antarmuka [I-07]
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
