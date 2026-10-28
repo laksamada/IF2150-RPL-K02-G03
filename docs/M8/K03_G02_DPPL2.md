@@ -36,9 +36,9 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
+| *A* | *Menambahkan logo pada dokumen.* |
+| *B* | *Memperbaiki gambar yang tidak muncul pada Bab 3.* |
+| *C* | *Menambahkan penomoran gambar pada Bab 3.* |
 | ... |  |
 
 ---
@@ -1036,14 +1036,14 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *C01-Pelapor* | *UC01-Membuat Laporan Kerusakan Fasilitas, UC04-Melihat Daftar dan Detail Laporan Publik, UC05-Memantau Status dan Riwayat Penanganan Laporan* |
-| *C02-Admin* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
-| *C03-Pemerintah Daerah* | *UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
-| *C04-Laporan* | *UC01-Membuat Laporan Kerusakan Fasilitas, UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC04-Melihat Daftar dan Detail Laporan Publik, UC05-Memantau Status dan Riwayat Penanganan Laporan, UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C01-Pelapor* | *UC01-Membuat Laporan Kerusakan Fasilitas*<br>*UC04-Melihat Daftar dan Detail Laporan Publik*<br>*UC05-Memantau Status dan Riwayat Penanganan Laporan* |
+| *C02-Admin* | *UC02-Memverifikasi Laporan dan Menghitung Prioritas*<br>*UC06-Meninjau Fasilitas dengan Kerusakan Berulang*<br>*UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C03-Pemerintah Daerah* | *UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas*<br>*UC06-Meninjau Fasilitas dengan Kerusakan Berulang*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C04-Laporan* | *UC01-Membuat Laporan Kerusakan Fasilitas*<br>*UC02-Memverifikasi Laporan dan Menghitung Prioritas*<br>*UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas*<br>*UC04-Melihat Daftar dan Detail Laporan Publik*<br>*UC05-Memantau Status dan Riwayat Penanganan Laporan*<br>*UC06-Meninjau Fasilitas dengan Kerusakan Berulang*<br>*UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
 | *C05-Lokasi* | *UC01-Membuat Laporan Kerusakan Fasilitas* |
-| *C06-Fasilitas* | *UC06-Meninjau Fasilitas dengan Kerusakan Berulang, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
-| *C07-Verifikasi* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas* |
-| *C08-SkorPrioritas* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas, UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas, UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
-| *C09-RiwayatStatus* | *UC05-Memantau Status dan Riwayat Penanganan Laporan, UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
-| *C10-Notifikasi* | *UC02-Memverifikasi Laporan dan Menhitung Prioritas* |
+| *C06-Fasilitas* | *UC06-Meninjau Fasilitas dengan Kerusakan Berulang*<br>*UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C07-Verifikasi* | *UC02-Memverifikasi Laporan dan Menghitung Prioritas* |
+| *C08-SkorPrioritas* | *UC02-Memverifikasi Laporan dan Menghitung Prioritas*<br>*UC03-Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas*<br>*UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
+| *C09-RiwayatStatus* | *UC05-Memantau Status dan Riwayat Penanganan Laporan*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
+| *C10-Notifikasi* | *UC02-Memverifikasi Laporan dan Menghitung Prioritas* |
 | *C11-KonfirmasiDuplikat* | *UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
