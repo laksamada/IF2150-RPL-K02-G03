@@ -681,10 +681,10 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelapor* | *idPelapor: Integer, namaPelapor: String, jumlahLaporan: Integer* | *konfirmasiSimpanLaporan(), terimaNotifikasi(), bukaLaporan(Laporan), bukaRiwayatLaporan(Laporan)* |
-| *C02* | *Admin* | *idAdmin: Integer, namaAdmin: String* | *lihatDaftarLaporan(): List of Laporan, tetapkanKeputusan(keputusan: String, catatan: String), konfirmasiGabungLaporan(): Boolean, lihatFasilitasRusakBerulang(): List of Fasilitas* |
+| *C01* | *Pelapor* | *idPelapor: Integer, namaPelapor: String, jumlahLaporan: Integer* | *konfirmasiSimpanLaporan(laporan: Laporan), terimaNotifikasi(), bukaLaporan(Laporan), bukaRiwayatLaporan(Laporan)* |
+| *C02* | *Admin* | *idAdmin: Integer, namaAdmin: String* | *lihatDaftarLaporan(): List of Laporan, tetapkanKeputusan(keputusan: String, catatan: String, laporan: Laporan), konfirmasiGabungLaporan(): Boolean, lihatFasilitasRusakBerulang(): List of Fasilitas* |
 | *C03* | *PemerintahDaerah* | *idPemerintah: Integer, namaInstansi: String, wilayahKerja: String* | *lihatLaporanTerverifikasi(), pilihFilter(kategori, wilayah), lihatFasilitasRusakBerulang(): List of Fasilitas* |
-| *C04* | *Laporan* | *idLaporan: Integer, fotoLaporan: String, deskripsiLaporan: String, kategoriKerusakan: String, tanggalLaporan: String, statusLaporan: String* | *buatLaporanBaru(), tampilkanFormulir(), validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String): Boolean, bukaKunciSimpan(), simpanLaporan(), getLaporanMenungguVerifikasi(): List of Laporan, getDetailLaporan(): String, updateStatus(status), getLaporanTerverifikasi(), urutkanBerdasarkanPrioritas(), filterLaporan(kategori, wilayah), pilihDuplikat(): List of Laporan, getRiwayatStatus(): RiwayatStatus* |
+| *C04* | *Laporan* | *idLaporan: Integer, fotoLaporan: String, deskripsiLaporan: String, kategoriKerusakan: String, tanggalLaporan: String, statusLaporan: String* | *buatLaporanBaru(), tampilkanFormulir(), validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String): Boolean, bukaKunciSimpan(), simpanLaporan(), getLaporanMenungguVerifikasi(): List of Laporan, getDetailLaporan(): String, updateStatus(status), getLaporanTerverifikasi(), urutkanBerdasarkanPrioritas(listLaporan: List of Laporan), filterLaporan(kategori, wilayah), pilihDuplikat(): List of Laporan, getRiwayatStatus(): RiwayatStatus* |
 | *C05* | *Lokasi* | *koordinat: String, wilayah: String* | *setLokasiLaporan(koordinat: String), getWilayah(): String* |
 | *C06* | *Fasilitas* | *idFasilitas: Integer, namaFasilitas: String, lokasiFasilitas: String, jumlahKerusakanBerulang: Integer* | *getLaporan(): Laporan, cariFasilitas(keyword: String): Fasilitas, getDetailFasilitas(): String, getJumlahLaporan(): Integer* |
 | *C07* | *Verifikasi* | *idVerifikasi: Integer, keputusan: String, catatanAlasan: String, waktuVerifikasi: String* | *simpanVerifikasi(keputusan: String, catatan: String), tahanLaporan(), teruskanKePemerintah()* |
@@ -711,54 +711,275 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
-## 5.1 Kelas [Nama Kelas 1]
+## 5.1 Kelas Pelapor
 
-**Nama Kelas:** *[Nama kelas]*  
-**ID Kelas:** *[ID kelas]*
+**Nama Kelas:** *Pelapor*  
+**ID Kelas:** *C01*
 
-Tabel 5.1.1. Operasi Kelas [Nama Kelas 1]
+Tabel 5.1.1. Operasi Kelas Pelapor
 
 | Nama Operasi | Visibility (private, public) | Keterangan |
 | :--- | :--- | :--- |
-| *[Signature operasi, termasuk parameter dan tipe kembalian]* | *[Visibility]* | *[Tanggung jawab operasi]* |
-| *...* | *...* | *...* |
+| *konfirmasiSimpanLaporan(laporan: Laporan)* | *Public* | *Mengonfirmasi dan menyimpan laporan baru ke dalam sistem* |
+| *terimaNotifikasi()* | *Public* | *Menerima pemberitahuan status verifikasi laporan* |
+| *bukaLaporan(laporan: Laporan)* | *Public* | *Membuka dan menampilkan detail laporan pelapor* |
+| *bukaRiwayatLaporan(laporan: Laporan)* | *Public* | *Membuka riwayat perubahan status penanganan laporan* |
 
-Tabel 5.1.2. Atribut Kelas [Nama Kelas 1]
+Tabel 5.1.2. Atribut Kelas Pelapor
 
 | Nama Atribut | Visibility (private, public) | Tipe |
 | :--- | :--- | :--- |
-| *[Nama atribut]* | *[Visibility]* | *[Tipe sesuai bahasa pemrograman yang digunakan]* |
-| *...* | *...* | *...* |
+| *idPelapor* | *Private* | *Integer* |
+| *namaPelapor* | *Private* | *String* |
+| *jumlahLaporan* | *Private* | *Integer* |
 
 ### 5.1.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
-**Nama Kelas:** *[Nama kelas]*  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-001]*
+**Nama Kelas:** *Pelapor*  
+**Nama Operasi:** *konfirmasiSimpanLaporan(laporan: Laporan)*  
+**ID Algoritma:** *Algo-001*
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure konfirmasiSimpanLaporan(input/output laporan: Laporan)
+{ I.S perubahan laporan belum tersimpan di database }
+{ F.S laporan tersimpan di dalam database}
+
+KAMUS LOKAL
+
+ALGORTIMA
+    if (laporan.validasiIsianFormulir(laporan.fotoLaporan, laporan.deskripsiLaporan, lokasi.koordinat)) then
+        laporan.simpanLaporan()
+        self.jumlahLaporan <- self.jumlahLaporan + 1
+    else
+        { jika formulir tidak tervalidasi, jangan lakukan apapun }
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut. 
-
-Tabel 5.1.1. Query Operasi [Nama Operasi]
+Tabel 5.1.3. Query Operasi konfirmasiSimpanLaporan()
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-001]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| *Q-001* | *INSERT INTO laporan (foto_laporan, deskripsi_laporan, tanggal_laporan, status_laporan, id_pelapor) VALUES (?, ?, NOW(), 'Menunggu Verifikasi', ?);* | *Menyimpan entri laporan baru yang telah dikonfirmasi pelapor ke basis data* |
+
+## 5.2 Kelas Admin
+
+**Nama Kelas:** *Admin*  
+**ID Kelas:** *C02*
+
+Tabel 5.2.1. Operasi Kelas Admin
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *lihatDaftarLaporan()* | *Public* | *Mengambil daftar seluruh laporan yang perlu ditinjau* |
+| *tetapkanKeputusan(keputusan: String, catatan: String, laporan: Laporan)* | *Public* | *Menentukan keputusan verifikasi (setujui, tolak, atau revisi)* |
+| *konfirmasiGabungLaporan()* | *Public* | *Mengonfirmasi penggabungan laporan yang teridentifikasi duplikat* |
+| *lihatFasilitasRusakBerulang()* | *Public* | *Menampilkan daftar fasilitas yang mengalami kerusakan berulang* |
+
+Tabel 5.2.2. Atribut Kelas Admin
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idAdmin* | *Private* | *Integer* |
+| *namaAdmin* | *Private* | *String* |
+
+### 5.2.1 Algoritma/Query
+
+**Nama Kelas:** *Admin*  
+**Nama Operasi:** *tetapkanKeputusan(keputusan: String, catatan: String, laporan: Laporan)*  
+**ID Algoritma:** *Algo-002*
+
+```text
+Procedure tetapkanKeputusan(keputusan: String, catatan: String, laporan: Laporan)
+
+KAMUS LOKAL
+
+ALGORITMA
+    if (keputusan = "Disetujui") then
+        laporan.updateStatus("Disetejui")
+        verifikasi <- createVerifikasi(laporan.idLaporan, keputusan, catatan)
+        verifikasi.teruskanKePemerintah()
+    else if (keputusan = "Ditolak")
+        laporan.updateStatus("Ditolak")
+        verifikasi <- createVerifikasi(laporan.idLaporan, keputusan, catatan)
+```
 
 
-### 5.1.2 Algoritma/Query
+Tabel 5.2.3. Query Operasi tetapkanKeputusan(keputusan: String, catatan: String, laporan: Laporan)
 
-*[Ulangi pola 5.1.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-002* | *UPDATE laporan SET status_laporan = ? WHERE id_laporan = ?;* | *Memperbarui status laporan di basis data sesuai keputusan verifikasi admin* |
+| *Q-003* | *INSERT INTO verifikasi (id_laporan, id_admin, keputusan, catatan_alasan, waktu_verifikasi) VALUES (?, ?, ?, ?, NOW());* | *Mencatat log hasil verifikasi admin ke basis data* |
 
-## 5.2 Kelas [Nama Kelas Berikutnya]
+## 5.3 Kelas PemerintahDaerah
 
-*[Ulangi pola 5.1: nama dan ID kelas, tabel operasi, tabel atribut, serta subbab algoritma/query untuk operasi penting jika diperlukan.]*
+**Nama Kelas:** *PemerintahDaerah*  
+**ID Kelas:** *C03*
+
+Tabel 5.3.1. Operasi Kelas PemerintahDaerah
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *lihatLaporanTerverifikasi()* | *Public* | *Menampilkan daftar laporan terverifikasi untuk ditindaklanjuti* |
+| *pilihFilter(kategori: String, wilayah: String)* | *Public* | *Menyaring laporan berdasarkan kategori kerusakan dan wilayah kerja* |
+| *lihatFasilitasRusakBerulang()* | *Public* | *Menampilkan daftar fasilitas publik dengan kerusakan berulang* |
+
+Tabel 5.3.2. Atribut Kelas PemerintahDaerah
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idPemerintah* | *Private* | *Integer* |
+| *namaInstansi* | *Private* | *String* |
+| *wilayahKerja* | *Private* | *String* |
+
+### 5.3.1 Algoritma/Query
+
+**Nama Kelas:** *PemerintahDaerah*  
+**Nama Operasi:** *pilihFilter(kategori: String, wilayah: String)*  
+**ID Algoritma:** *Algo-003*
+
+```text
+function pilihFilter(kategori: String, wilayah: String) -> List of Laporan
+
+KAMUS LOKAL
+    daftarHasil, daftarLaporan: List of Laporan
+    i : Integer
+
+ALGORITMA
+    daftarLaporan <- Laporan.getLaporanTerverifikasi()
+    daftarHasil <- createListLaporan()
+
+    traversal i [0..daftarLaporan.length-1]
+        if (kategori = "" OR laporan.kategoriKerusakan = kategori) AND 
+           (wilayah = "" OR laporan.lokasi.wilayah = wilayah) then
+            appendLastElm(daftarHasil, daftarLaporan[i])
+
+    daftarHasil.urutkanBerdasarkanPrioritas(listLaporan: List of Laporan)
+    -> daftarHasil
+```
+
+
+Tabel 5.3.3. Query Operasi pilihFilter(kategori: String, wilayah: String)
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-004* | *SELECT l.*, s.skor FROM laporan l JOIN lokasi loc ON l.id_laporan = loc.id_laporan JOIN skor_prioritas s ON l.id_laporan = s.id_laporan WHERE l.status_laporan = 'Terverifikasi' AND (? = '' OR l.kategori_kerusakan = ?) AND (? = '' OR loc.wilayah = ?) ORDER BY s.skor DESC;* | *Mengambil daftar laporan terverifikasi berdasarkan kriteria filter yang terurut dari prioritas tertinggi* |
+
+## 5.4 Kelas Laporan
+
+**Nama Kelas:** *Laporan*  
+**ID Kelas:** *C04*
+
+Tabel 5.4.1. Operasi Kelas Laporan
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *buatLaporanBaru()* | *Public* | *Menginisialisasi formulir pembuatan laporan baru* |
+| *tampilkanFormulir()* | *Public* | *Menampilkan antarmuka pengisian laporan* |
+| *validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String)* | *Public* | *Memeriksa kelengkapan data isian formulir* |
+| *bukaKunciSimpan()* | *Public* | *Membuka akses tombol simpan setelah formulir valid* |
+| *simpanLaporan()* | *Public* | *Menyimpan data laporan ke dalam basis data* |
+| *getLaporanMenungguVerifikasi()* | *Public* | *Mengambil daftar laporan yang berstatus menunggu verifikasi* |
+| *getDetailLaporan()* | *Public* | *Mengambil data rincian dari satu laporan* |
+| *updateStatus(status: String)* | *Public* | *Memperbarui status penanganan laporan* |
+| *getLaporanTerverifikasi()* | *Public* | *Mengambil daftar laporan yang sudah terverifikasi* |
+| *urutkanBerdasarkanPrioritas(listLaporan: List of Laporan)* | *Public* | *Mengurutkan daftar laporan berdasarkan skor prioritas* |
+| *filterLaporan(kategori: String, wilayah: String)* | *Public* | *Menyaring data laporan sesuai parameter* |
+| *pilihDuplikat()* | *Public* | *Mengidentifikasi kandidat laporan yang berpotensi duplikat* |
+| *getRiwayatStatus()* | *Public* | *Mengambil data riwayat perubahan status laporan* |
+
+Tabel 5.4.2. Atribut Kelas Laporan
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idLaporan* | *Private* | *Integer* |
+| *fotoLaporan* | *Private* | *String* |
+| *deskripsiLaporan* | *Private* | *String* |
+| *kategoriKerusakan* | *Private* | *String* |
+| *tanggalLaporan* | *Private* | *String* |
+| *statusLaporan* | *Private* | *String* |
+
+### 5.4.1 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String)*  
+**ID Algoritma:** *Algo-004*
+
+```text
+Function validasiIsianFormulir(foto: String, deskripsi: String, koordinat: String) -> Boolean
+
+KAMUS LOKAL
+
+ALGORITMA
+    IF foto != "" AND deskripsi != "" AND koordinat != "" THEN
+        self.bukaKunciSimpan()
+        -> True
+    ELSE
+        -> False
+```
+
+### 5.4.2 Algoritma/Query
+
+**Nama Kelas:** *Laporan*  
+**Nama Operasi:** *urutkanBerdasarkanPrioritas(listLaporan: List of Laporan)*  
+**ID Algoritma:** *Algo-005*
+
+```text
+Procedure urutkanBerdasarkanPrioritas(input/output listLaporan: List of Laporan)
+
+KAMUS LOKAL
+    i: Integer
+    temp: Laporan
+
+ALGORITMA
+    travevrsal i [0...listLaporan.length - 1]
+        traversal j [0...listLaporan.length - i - 2]
+            if (listLaporan[j].skorPrioritas.skor < listLaporan[j+1].skorPrioritas.skor) then
+                temp = listLaporan[j]
+                listLaporan[j] = listLaporan[j+1]
+                listLaporan[j+1] = temp+
+```
+
+## 5.5 Kelas Lokasi
+
+**Nama Kelas:** *Lokasi*  
+**ID Kelas:** *C05*
+
+Tabel 5.5.1. Operasi Kelas Lokasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *setLokasiLaporan(koordinat: String)* | *Public* | *Menentukan koordinat geografis lokasi kerusakan* |
+| *getWilayah()* | *Public* | *Mengambil nama wilayah berdasarkan koordinat* |
+
+Tabel 5.5.2. Atribut Kelas Lokasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *koordinat* | *Private* | *String* |
+| *wilayah* | *Private* | *String* |
+
+### 5.5.1 Algoritma/Query
+
+**Nama Kelas:** *Lokasi*  
+**Nama Operasi:** *setLokasiLaporan(koordinat: String)*  
+**ID Algoritma:** *Algo-006*
+
+```text
+Procedure setLokasiLaporan(input koordinat: string)
+
+KAMUS LOKAL
+
+ALGORITMA
+    self.koordinat <- koordinat
+    self.wilayah <- GoogleMapsAdapter.getWilayahFromCoordinates(koordinat)
+```
+
+
+Tabel 5.5.3. Query Operasi setLokasiLaporan(koordinat: String)
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-005* | *INSERT INTO lokasi (id_laporan, koordinat, wilayah) VALUES (?, ?, ?);* | *Menyimpan informasi posisi geografis laporan ke dalam basis data* |
 
 <br>
 
