@@ -705,9 +705,17 @@ Tabel 5.1. Daftar Kelas Perancangan dan Kelas Analisis Terkait
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 | :--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL atau -]* |
-| ... | *...* | *...* |
+| 1 | *Pelapor* | *Pelapor* |
+| 2 | *Admin* | *Admin* |
+| 3 | *PemerintahDaerah* | *PemerintahDaerah* |
+| 4 | *Laporan* | *Laporan* |
+| 5 | *Lokasi* | *Lokasi* |
+| 6 | *Fasilitas* | *Fasilitas* |
+| 7 | *Verifikasi* | *Verifikasi* |
+| 8 | *SkorPrioritas* | *SkorPrioritas* |
+| 9 | *RiwayatStatus* | *RiwayatStatus* |
+| 10 | *Notifikasi* | *Notifikasi* |
+| 11 | *KonfirmasiDuplikat* | *KonfirmasiDuplikat* |
 
 Untuk **setiap kelas**, identifikasi operasi berdasarkan tanggung jawab kelas beserta *visibility*-nya, serta atribut beserta *visibility* dan tipenya. Buat subbab tersendiri untuk setiap kelas.
 
