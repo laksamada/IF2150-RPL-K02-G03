@@ -91,6 +91,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | Claude | Membuatkan query SQL untuk tabel query pada bagian 5.6 sampai 5.11 (karena belum memahami cara menyusun query) | "Tolong buatkan query untuk setiap operasi yang ada algoritmanya, sekalian jelaskan maksudnya" | Query hasil AI dipakai sebagai bahan belajar |
 | Claude | Memeriksa algoritma pada BAB 5 DPPL beserta kesesuaiannya dengan diagram kelas dan SKPL | "Tolong periksa algoritma yang ada pada bab 5 apakah sudah sesuai dengan diagram kelas dan kebutuhan pada SKPL" | AI menandai typo pada beberapa algo serta atribut kategori kerusakan yang belum jelas siapa pengisinya |
+| Stitch | Mengambil konsep dasar desain UI untuk layar Login, Beranda, Detail Laporan, dan Buat Laporan | "Buatkan layar mobile Buat Laporan untuk aplikasi pelaporan kerusakan fasilitas umum berisi foto kerusakan, kategori, lokasi, dan deskripsi" | Hasil desain hanya dipakai sebagai konsep awal. Elemen yang tidak ada di DPPL seperti SLA, validasi AI, komentar warga, dan ikon profil dihapus, lalu teks disesuaikan dengan aplikasi SILEMBUR |
 ---
 
 ### Pernyataan Integritas dan Persetujuan
