@@ -1047,3 +1047,7 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 | *C09-RiwayatStatus* | *UC05-Memantau Status dan Riwayat Penanganan Laporan*<br>*UC08-Melacak Riwayat Perubahan Status per Fasilitas* |
 | *C10-Notifikasi* | *UC02-Memverifikasi Laporan dan Menghitung Prioritas* |
 | *C11-KonfirmasiDuplikat* | *UC07-Mengonfirmasi dan Menggabungkan Laporan Duplikat* |
+
+# Lampiran
+
+Figma: https://www.figma.com/design/ewLyeeZbIkVAsxEOJItaNX/Untitled?node-id=0-1&t=ysapFCmwkCZC1Qwe-1
