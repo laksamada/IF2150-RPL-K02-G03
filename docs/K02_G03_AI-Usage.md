@@ -29,6 +29,7 @@
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
 
 ---
 
@@ -84,6 +85,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | Claude | Mengecek kesesuaian setiap diagram pada DPPL dengan SKPL dan APL | "Tolong cek apakah tiap diagram sudah sesuai dengan skenario use case dan kelas pada SKPL" | AI menandai bagian diagram yang belum konsisten (Perbaikan diagram dikerjakan sendiri oleh kelompok) |
 
+### Milestone 8
+
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude | Membuatkan query SQL untuk tabel query pada bagian 5.6 sampai 5.11 (karena belum memahami cara menyusun query) | "Tolong buatkan query untuk setiap operasi yang ada algoritmanya, sekalian jelaskan maksudnya" | Query hasil AI dipakai sebagai bahan belajar |
+| Claude | Memeriksa algoritma pada BAB 5 DPPL beserta kesesuaiannya dengan diagram kelas dan SKPL | "Tolong periksa algoritma yang ada pada bab 5 apakah sudah sesuai dengan diagram kelas dan kebutuhan pada SKPL" | AI menandai typo pada beberapa algo serta atribut kategori kerusakan yang belum jelas siapa pengisinya |
 ---
 
 ### Pernyataan Integritas dan Persetujuan
