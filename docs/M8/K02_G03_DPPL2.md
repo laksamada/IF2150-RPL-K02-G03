@@ -1300,28 +1300,99 @@ Tabel 5.11.3. Query Operasi gabungLaporan()
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+## 6.1 Rancangan Antarmuka [I-01]
 
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
-
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
+**Antarmuka:** *I-01*  
+**Nama Layar:** *Login*
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
+<img alt="Rancangan Antarmuka Login" src="./assets/diagram/I-01.jpeg" width="50%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka [I-01] - Login</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+Tabel 6.1. Spesifikasi Objek Antarmuka [I-01]
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
+| *O-0101* | *Tab peran* | *Masyarakat dan Petugas* | *Menentukan peran pengguna yang akan masuk* |
+| *O-0102* | *Form login* | *Email atau nomor HP, kata sandi, dan ingat saya* | *Menerima data akun pengguna, diperiksa oleh Validasi* |
+| *O-0103* | *Button masuk* | *Masuk* | *Memeriksa akun melalui Autentikasi, menuju I-02 untuk Masyarakat dan I-08 untuk Petugas* |
+| *O-0104* | *Card bantuan* | *Kesulitan masuk dan tombol Hubungi Bantuan* | *Membuka kanal layanan bantuan aplikasi* |
 
+## 6.2 Rancangan Antarmuka [I-02]
+
+**Antarmuka:** *I-02*  
+**Nama Layar:** *Beranda*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Beranda" src="./assets/diagram/I-02.jpeg" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka [I-02] - Beranda</i>
+</p>
+
+Tabel 6.2. Spesifikasi Objek Antarmuka [I-02]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0201* | *Button notifikasi* | *Ikon lonceng* | *Menunjukkan notifikasi hasil verifikasi laporan, terimaNotifikasi()* |
+| *O-0202* | *Card ringkasan* | *Jumlah laporan masuk, diproses, dan tuntas* | *Menunjukkan jumlah laporan berdasarkan status* |
+| *O-0203* | *Tab filter status* | *Semua, Menunggu, Diproses, Selesai* | *Menunjukkan laporan yang sesuai dengan filter, filterLaporan()* |
+| *O-0204* | *Card laporan* | *Informasi umum laporan dan tombol aksi Detail* | *Tombol aksi menuju ke I-03, getDetailLaporan()* |
+| *O-0205* | *Navigasi lapor* | *Lapor* | *Menuju I-04, buatLaporanBaru()* |
+
+## 6.3 Rancangan Antarmuka [I-03]
+
+**Antarmuka:** *I-03*  
+**Nama Layar:** *Detail Laporan*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Detail Laporan Publik" src="./assets/diagram/I-03.1.jpeg" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.3.1. Rancangan Antarmuka [I-03] - Detail Laporan Publik</i>
+</p>
+
+<p align="center">
+<img alt="Rancangan Antarmuka Detail Laporan Saya" src="./assets/diagram/I-03.2.jpeg" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.3.2. Rancangan Antarmuka [I-03] - Detail Laporan Saya</i>
+</p>
+
+Tabel 6.3. Spesifikasi Objek Antarmuka [I-03]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0301* | *Card header* | *ID laporan, status, kategori, dan tanggal laporan* | *Menunjukkan informasi utama laporan, getDetailLaporan()* |
+| *O-0302* | *Image* | *Foto kerusakan* | *Menunjukkan foto laporan dan dapat diperbesar* |
+| *O-0303* | *Card lokasi* | *Nama fasilitas, wilayah, dan peta* | *Menunjukkan lokasi laporan di peta, getWilayah()* |
+| *O-0304* | *Card deskripsi* | *Deskripsi kerusakan* | *Menunjukkan deskripsi kerusakan dari pelapor* |
+| *O-0305* | *Card riwayat* | *Riwayat penanganan beserta timestamp* | *Hanya tampil pada Laporan Saya, bukaRiwayatLaporan() getRiwayatStatus() getPerubahan()* |
+
+## 6.4 Rancangan Antarmuka [I-04]
+
+**Antarmuka:** *I-04*  
+**Nama Layar:** *Buat Laporan*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Buat Laporan" src="./assets/diagram/I-04.jpeg" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka [I-04]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0401* | *Upload foto* | *Tombol Ambil Foto dan Pilih Galeri* | *Mengambil foto kerusakan dari kamera atau galeri* |
+| *O-0402* | *Pilihan kategori* | *Jalan Berlubang, Lampu Jalan Mati, Pohon Tumbang, Lainnya* | *Menentukan kategori kerusakan laporan* |
+| *O-0403* | *Interactive map* | *Peta, pin lokasi, dan wilayah otomatis* | *Menentukan titik lokasi kerusakan, setLokasiLaporan() getWilayah()* |
+| *O-0404* | *Text area* | *Deskripsi kerusakan* | *Menerima deskripsi kerusakan dari pelapor* |
+| *O-0405* | *Button kirim* | *Kirim Laporan* | *Aktif jika form lengkap, validasiIsianFormulir() bukaKunciSimpan(). Menyimpan laporan, konfirmasiSimpanLaporan()* |
 
 ## 6.8 Rancangan Antarmuka [ID Layar 8]
 
