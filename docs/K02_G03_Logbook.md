@@ -29,6 +29,7 @@
 - [Milestone 5](#milestone-5)
 - [Milestone 6](#milestone-6)
 - [Milestone 7](#milestone-7)
+- [Milestone 8](#milestone-8)
 
 ---
 
@@ -135,6 +136,22 @@
 | *21-10-2026* | *Satya Radhityan Yahya* | *Mengisi BAB 5 dan 6* | *2* | *Done* | *-* |
 | *21-10-2026* | *Kevin Lincoln Hutabarat* | *Menambahkan UC03,UC04,UC05* | *2* | *Done* | *-* |
 | *21-10-2026* | *Muhammad Dhiya Rafi* | *Menambahkan UC06,UC07,UC08* | *2* | *Done* | *-* |
+
+### Milestone 8
+
+**Periode:** 25-10-2026 - 28-10-2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| *25-10-2026* | *Kevin Lincoln Hutabarat* | *Memperbarui identitas dokumen DDPL* | *1* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Dhiya Rafi* | *Mengisi Form Asistensi Milestone 6* | *1* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Pandu Pulunggana* | *Menambahkan link figma* | *1* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Pandu Pulunggana* | *Membuat UI untuk I01-I04* | *2* | *Done* | *-* |
+| *28-10-2026* | *Mochamad Fachri Alfaridzi* | *Mengisi 5.6-5.11* | *2* | *Done* | *-* |
+| *28-10-2026* | *Mochamad Fachri Alfaridzi* | *Memperbarui dokumen deklarasi penggunaan AI untuk Milestone 8* | *1* | *Done* | *-* |
+| *28-10-2026* | *Satya Radhityan Yahya* | *Membuat UI untuk I08-I10* | *2* | *Done* | *-* |
+| *28-10-2026* | *Kevin Lincoln Hutabarat* | *Membuat UI untuk I05-I07* | *2* | *Done* | *-* |
+| *28-10-2026* | *Muhammad Dhiya Rafi* | *Mengisi 5.1-5.5* | *2* | *Done* | *-* |
 
 ---
 
