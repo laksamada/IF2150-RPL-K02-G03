@@ -63,7 +63,6 @@ Dokumen DPPL ini menjelaskan rancangan perangkat lunak SILEMBUR yang disusun dar
 SILEMBUR (Sistem Informasi Lembur) adalah aplikasi web mobile untuk melaporkan kerusakan fasilitas umum seperti jalan berlubang, lampu penerangan jalan yang mati, dan pohon tumbang. Nama "lembur" diambil dari bahasa Sunda yang berarti kampung. Masyarakat membuat laporan berisi foto, lokasi GPS, dan deskripsi kerusakan. Admin kemudian memverifikasi laporan tersebut sebelum diteruskan ke pemerintah daerah. Kanal pengaduan yang ada saat ini, seperti SP4N-LAPOR dan JAKI, memperlakukan setiap laporan sebagai pengaduan terpisah. Akibatnya laporan duplikat menumpuk, prioritas penanganan tidak langsung terlihat, dan riwayat kerusakan suatu fasilitas sulit ditelusuri. SILEMBUR menangani masalah tersebut dengan menggabungkan laporan duplikat, menghitung skor prioritas setiap laporan terverifikasi, dan mencatat riwayat status per fasilitas. Cakupan sistem dibatasi pada satu kota dengan tiga jenis pengguna, yaitu masyarakat umum, admin, dan pemerintah daerah.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
-Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
 
 Tabel 1.3. Definisi Istilah dan Singkatan
 
@@ -90,7 +89,6 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *ID* | *Singkatan dari Identifier, yaitu penanda unik untuk setiap kebutuhan, use case, atau kelas.* |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
@@ -121,9 +119,8 @@ Dokumen DPPL SILEMBUR ini terdiri dari lima bab. BAB 1 berisi pendahuluan dokume
 
 ## 2.1 Rancangan Lingkungan Implementasi
 
-Sebutkan *operating system*, DBMS, *development tools*, *filing system*, dan bahasa pemrograman yang digunakan.
-
 Tabel 2.1 Komponen Lingkungan Implementasi
+
 | Komponen | Spesifikasi |
 | :--- | :--- |
 | *Server* | *Node.js v24, dijalankan pada layanan cloud* |
@@ -135,11 +132,6 @@ Tabel 2.1 Komponen Lingkungan Implementasi
 | *Language* | *JavaScript* |
 
 ## 2.2 Style/Pattern Arsitektur Acuan
-
-Tentukan *architectural style* atau *pattern* yang menjadi acuan aplikasi, misalnya *layered architecture*, *client-server*, *repository*, *pipe and filter*, atau MVC (*Model-View-Controller*).
-
-
-Gunakan hasil **BAB 1 Style/Pattern Arsitektur Acuan pada dokumen APL**, termasuk alasan pemilihan dan gambar penerapannya pada P/L kelompok. Gunakan komponen aplikasi sendiri pada gambar, bukan hanya contoh pola umum.
 
 Gaya arsitektur utama yang dipilih adalah MVC yang dibangun di atas pola klien-server. Bagian dan peran dari MVC, yaitu:
 - Model: Menyimpan data dan logika bisnis. Model bertanggung jawab dalam manajemen data, termasuk pengambilan, penyimpanan, dan pemrosesan data. 
@@ -179,10 +171,6 @@ Model MVC dipilih karena bisa diterapkan untuk aplikasi mobile. MVC bisa diimple
 
 
 ## 2.3 Identifikasi Komponen / Modul / Subsistem
-
-Identifikasi komponen, modul, atau subsistem penyusun aplikasi berdasarkan *pattern* yang telah ditetapkan. Jelaskan tanggung jawab masing-masing komponen. Pengelompokan dapat mengikuti lapisan arsitektur atau fungsi/peran komponen dalam sistem.
-
-Ambil dari **Tabel 2.1 dokumen APL**, lalu kelompokkan berdasarkan lapisan (Model/View/Controller). Kolom **Jenis** diisi sesuai pattern, misalnya View, Controller, Model, Service, Repository. Satu komponen merepresentasikan saatu tanggung jawab utama yang jelas,
 
 Tabel 2.3. Identifikasi Komponen/Modul/Subsistem
 
@@ -1401,6 +1389,72 @@ Tabel 6.4. Spesifikasi Objek Antarmuka [I-04]
 | *O-0403* | *Interactive map* | *Peta, pin lokasi, dan wilayah otomatis* | *Menentukan titik lokasi kerusakan, setLokasiLaporan() getWilayah()* |
 | *O-0404* | *Text area* | *Deskripsi kerusakan* | *Menerima deskripsi kerusakan dari pelapor* |
 | *O-0405* | *Button kirim* | *Kirim Laporan* | *Aktif jika form lengkap, validasiIsianFormulir() bukaKunciSimpan(). Menyimpan laporan, konfirmasiSimpanLaporan()* |
+
+## 6.5 Rancangan Antarmuka [I-05]
+
+**Antarmuka:** *I-05*  
+**Nama Layar:** *Dashboard Admin: Daftar Laporan Masuk*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Dashboard Admin: Daftar Laporan Masuk" src="./assets/diagram/ID-05.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka [I-05]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0501* | *Card laporan* | *ID laporan, status, judul, lokasi, dan kapan dilaporkan* | *Menunjukkan informasi utama laporan, getDetailLaporan()* |
+| *O-0502* | *Image* | *Foto kerusakan* | *Menunjukkan foto laporan dan dapat diperbesar* |
+| *O-0503* | *Top Bar* | *Berisi deskripsi halaman* | *Menunjukkan deskripsi dashboard, settings, filter, search* |
+| *O-0504* | *Bottom bar* | *Berisi daftar menu* | *Menunjukkan menu dashboard, laporan, notifikasi, profil* |
+
+## 6.4 Rancangan Antarmuka [I-06]
+
+**Antarmuka:** *I-06*  
+**Nama Layar:** *Verifikasi Laporan*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Verifikasi Laporan" src="./assets/diagram/ID-06.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka [I-06]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0601* | *Card deskripsi laporan* | *ID laporan, status, judul, lokasi, tanggal laporan* | *Menunjukkan informasi utama laporan, getDetailLaporan()* |
+| *O-0602* | *Image* | *Foto kerusakan* | *Menunjukkan foto laporan dan dapat diperbesar* |
+| *O-0603* | *Top Bar* | *Berisi deskripsi halaman* | *Menunjukkan deskripsi dashboard, settings, filter, search* |
+| *O-0604* | *Bottom bar* | *Berisi daftar menu* | *Menunjukkan menu dashboard, laporan, notifikasi, profil* |
+| *O-0605* | *Slider* | *Skor Prioritas* | *Menunjukkan skor prioritas yang akan diinput admin* |
+| *O-0606* | *Button* | *Setuju dan Tolak* | *Menunjukkan opsi untuk menyetujui atau menolak laporan* |
+
+## 6.7 Rancangan Antarmuka [I-07]
+
+**Antarmuka:** *I-07*  
+**Nama Layar:** *Penggabungan Laporan Duplikat*
+
+<p align="center">
+<img alt="Rancangan Antarmuka Penggabungan Laporan Duplikat" src="./assets/diagram/ID-07 (2).png" width="50%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka [I-04] - Buat Laporan</i>
+</p>
+
+Tabel 6.7. Spesifikasi Objek Antarmuka [I-04]
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *O-0701* | *Card laporan* | *ID laporan, status, judul, lokasi, dan kapan dilaporkan* | *Menunjukkan informasi utama laporan, getDetailLaporan()* |
+| *O-0702* | *Image* | *Foto kerusakan* | *Menunjukkan foto laporan dan dapat diperbesar* |
+| *O-0703* | *Top Bar* | *Berisi deskripsi halaman* | *Menunjukkan deskripsi dashboard, settings, filter, search* |
+| *O-0704* | *Bottom bar* | *Berisi daftar menu* | *Menunjukkan menu dashboard, laporan, notifikasi, profil* |
+| *O-0606* | *Button* | *Gabbungkan laporan, gabung, batal* | *Menunjukkan opsi untuk menggabungkan laporan, serta menyetujui atau menolak penggabungan* |
 
 ## 6.8 Rancangan Antarmuka [ID Layar 8]
 
