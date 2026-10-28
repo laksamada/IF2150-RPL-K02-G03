@@ -983,6 +983,319 @@ Tabel 5.5.3. Query Operasi setLokasiLaporan(koordinat: String)
 
 <br>
 
+## 5.6 Kelas Fasilitas
+
+**Nama Kelas:** *Fasilitas*  
+**ID Kelas:** *C06*
+
+Tabel 5.6.1. Operasi Kelas Fasilitas
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getLaporan()* | *Public* | *Mengambil laporan yang tercatat pada fasilitas* |
+| *cariFasilitas(keyword: String)* | *Public* | *Mencari fasilitas berdasarkan nama atau lokasi fasilitas* |
+| *getDetailFasilitas()* | *Public* | *Mengambil rincian fasilitas berupa nama, lokasi, dan jumlah kerusakan berulang* |
+| *getJumlahLaporan()* | *Public* | *Menghitung jumlah laporan kerusakan pada fasilitas dalam satu periode* |
+
+Tabel 5.6.2. Atribut Kelas Fasilitas
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idFasilitas* | *Private* | *Integer* |
+| *namaFasilitas* | *Private* | *String* |
+| *lokasiFasilitas* | *Private* | *String* |
+| *jumlahKerusakanBerulang* | *Private* | *Integer* |
+
+### 5.6.1 Algoritma/Query
+
+**Nama Kelas:** *Fasilitas*  
+**Nama Operasi:** *getJumlahLaporan()*  
+**ID Algoritma:** *Algo-007*
+
+```text
+function getJumlahLaporan() -> Integer
+{ Menghitung jumlah laporan kerusakan pada fasilitas selama 90 hari terakhir,laporan yang ditolak atau sudah digabung tidak ikut dihitung }
+
+KAMUS LOKAL
+    constant PERIODE: Integer = 90   
+    jumlah: Integer
+
+ALGORITMA
+    jumlah <- hitungLaporanDalamPeriode(self.idFasilitas, PERIODE)
+    if (jumlah != self.jumlahKerusakanBerulang) then
+        self.jumlahKerusakanBerulang <- jumlah
+    -> jumlah
+```
+
+Tabel 5.6.3. Query Operasi getJumlahLaporan()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-006* | *SELECT COUNT(\*) FROM laporan WHERE id_fasilitas = ? AND tanggal_laporan >= NOW() - INTERVAL '90 days' AND status_laporan NOT IN ('Ditolak', 'Digabung');* | *Menghitung jumlah laporan kerusakan pada fasilitas dalam periode 90 hari terakhir* |
+| *Q-007* | *UPDATE fasilitas SET jumlah_kerusakan_berulang = ? WHERE id_fasilitas = ?;* | *Memperbarui jumlah kerusakan berulang fasilitas di basis data* |
+
+## 5.7 Kelas Verifikasi
+
+**Nama Kelas:** *Verifikasi*  
+**ID Kelas:** *C07*
+
+Tabel 5.7.1. Operasi Kelas Verifikasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *simpanVerifikasi(keputusan: String, catatan: String)* | *Public* | *Menyimpan keputusan dan catatan alasan verifikasi dari admin* |
+| *tahanLaporan()* | *Public* | *Menahan laporan yang belum terverifikasi agar tidak diteruskan ke pemerintah daerah* |
+| *teruskanKePemerintah()* | *Public* | *Meneruskan laporan yang disetujui ke pemerintah daerah dan memicu perhitungan skor prioritas* |
+
+Tabel 5.7.2. Atribut Kelas Verifikasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idVerifikasi* | *Private* | *Integer* |
+| *keputusan* | *Private* | *String* |
+| *catatanAlasan* | *Private* | *String* |
+| *waktuVerifikasi* | *Private* | *String* |
+
+### 5.7.1 Algoritma/Query
+
+**Nama Kelas:** *Verifikasi*  
+**Nama Operasi:** *teruskanKePemerintah()*  
+**ID Algoritma:** *Algo-008*
+
+```text
+procedure teruskanKePemerintah()
+{ I.S. laporan sudah diputuskan oleh admin dan masih tertahan }
+{ F.S. jika disetujuimaka status laporan menjadi Terverifikasi dan laporan memiliki skor prioritas,jika tidak laporan tetap ditahan }
+
+KAMUS LOKAL
+    skorPrioritas: SkorPrioritas
+
+ALGORITMA
+    if (self.keputusan = "Disetujui") then
+        laporan.updateStatus("Terverifikasi")
+        skorPrioritas <- createSkorPrioritas(laporan)   
+        skorPrioritas.hitungSkor()
+    else
+        self.tahanLaporan()
+```
+
+Tabel 5.7.3. Query Operasi teruskanKePemerintah()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-008* | *INSERT INTO skor_prioritas (id_laporan, jumlah_pelapor, lama_menunggu, frekuensi_berulang, skor) VALUES (?, 1, 0, 0, 0);* | *Membuat entri skor prioritas awal untuk laporan yang baru terverifikasi sebelum skornya dihitung* |
+
+## 5.8 Kelas SkorPrioritas
+
+**Nama Kelas:** *SkorPrioritas*  
+**ID Kelas:** *C08*
+
+Tabel 5.8.1. Operasi Kelas SkorPrioritas
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *hitungSkor()* | *Public* | *Menghitung skor prioritas berdasarkan kategori kerusakan, jumlah pelapor, lama menunggu, dan frekuensi berulang* |
+| *getSkor()* | *Public* | *Mengembalikan nilai skor prioritas laporan* |
+
+Tabel 5.8.2. Atribut Kelas SkorPrioritas
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *jumlahPelapor* | *Private* | *Integer* |
+| *lamaMenunggu* | *Private* | *Integer* |
+| *frekuensiBerulang* | *Private* | *Integer* |
+| *namaFasilitasInduk* | *Private* | *String* |
+| *skor* | *Private* | *Integer* |
+
+### 5.8.1 Algoritma/Query
+
+**Nama Kelas:** *SkorPrioritas*  
+**Nama Operasi:** *hitungSkor()*  
+**ID Algoritma:** *Algo-009*
+
+```text
+function hitungSkor() -> Integer
+{ Menghitung ulang skor prioritas laporan}
+
+KAMUS LOKAL
+    bobotKategori: Integer
+
+ALGORITMA
+    depend on (laporan.kategoriKerusakan)
+        "Pohon Tumbang"    : bobotKategori <- 30
+        "Jalan Berlubang"  : bobotKategori <- 20
+        "Lampu Jalan Mati" : bobotKategori <- 10
+        else               : bobotKategori <- 5
+
+    self.jumlahPelapor <- 1 + jumlahLaporanTergabung(laporan.idLaporan)
+    self.lamaMenunggu <- selisihHari(laporan.tanggalLaporan, hariIni())
+    self.frekuensiBerulang <- laporan.fasilitas.getJumlahLaporan()
+
+    self.skor <- bobotKategori + (5 * self.jumlahPelapor) + (2 * self.lamaMenunggu) + (10 * self.frekuensiBerulang)
+    -> self.skor
+```
+
+Tabel 5.8.3. Query Operasi hitungSkor()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-009* | *SELECT COUNT(\*) FROM laporan WHERE id_laporan_induk = ?;* | *Menghitung jumlah laporan duplikat yang sudah digabung ke laporan ini untuk menentukan jumlah pelapor* |
+| *Q-010* | *UPDATE skor_prioritas SET jumlah_pelapor = ?, lama_menunggu = ?, frekuensi_berulang = ?, skor = ? WHERE id_laporan = ?;* | *Menyimpan hasil perhitungan skor prioritas terbaru ke basis data* |
+
+## 5.9 Kelas RiwayatStatus
+
+**Nama Kelas:** *RiwayatStatus*  
+**ID Kelas:** *C09*
+
+Tabel 5.9.1. Operasi Kelas RiwayatStatus
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *getPerubahan()* | *Public* | *Mengambil data perubahan status berupa tanggal dan deskripsi perubahan* |
+
+Tabel 5.9.2. Atribut Kelas RiwayatStatus
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idRiwayat* | *Private* | *Integer* |
+| *tanggalPerubahan* | *Private* | *String* |
+| *deskripsiPerubahan* | *Private* | *String* |
+
+### 5.9.1 Algoritma/Query
+
+**Nama Kelas:** *RiwayatStatus*  
+**Nama Operasi:** *getPerubahan()*  
+**ID Algoritma:** *Algo-010*
+
+```text
+function getPerubahan() -> RiwayatStatus
+{ Mengambil data satu perubahan status dari basis data berdasarkan idRiwayat (NIL jika data riwayat tidak ditemukan) }
+
+KAMUS LOKAL
+    data: RiwayatStatus
+
+ALGORITMA
+    data <- ambilRiwayat(self.idRiwayat)
+    if (data = NIL) then
+        -> NIL
+    else
+        self.tanggalPerubahan <- data.tanggalPerubahan
+        self.deskripsiPerubahan <- data.deskripsiPerubahan
+        -> self
+```
+
+Tabel 5.9.3. Query Operasi getPerubahan()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-011* | *SELECT tanggal_perubahan, deskripsi_perubahan FROM riwayat_status WHERE id_riwayat = ?;* | *Mengambil tanggal dan deskripsi dari satu entri riwayat perubahan status* |
+
+## 5.10 Kelas Notifikasi
+
+**Nama Kelas:** *Notifikasi*  
+**ID Kelas:** *C10*
+
+Tabel 5.10.1. Operasi Kelas Notifikasi
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *kirimNotifikasi()* | *Public* | *Mengirimkan hasil verifikasi beserta alasannya kepada pelapor* |
+
+Tabel 5.10.2. Atribut Kelas Notifikasi
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *idNotifikasi* | *Private* | *Integer* |
+| *isiPesan* | *Private* | *String* |
+| *waktuKirim* | *Private* | *String* |
+
+### 5.10.1 Algoritma/Query
+
+**Nama Kelas:** *Notifikasi*  
+**Nama Operasi:** *kirimNotifikasi()*  
+**ID Algoritma:** *Algo-011*
+
+```text
+procedure kirimNotifikasi()
+{ I.S. isiPesan sudah berisi keputusan dan catatan alasan verifikasi }
+{ F.S. notifikasi tersimpan di database dan diterima oleh pelapor laporan }
+
+KAMUS LOKAL
+
+ALGORITMA
+    if (self.isiPesan != "") then
+        self.waktuKirim <- waktuSekarang()
+        pelapor.terimaNotifikasi()
+    else
+        { jika isi pesan kosong, notifikasi tidak dikirim }
+```
+
+Tabel 5.10.3. Query Operasi kirimNotifikasi()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-012* | *INSERT INTO notifikasi (id_laporan, id_pelapor, isi_pesan, waktu_kirim) VALUES (?, ?, ?, NOW());* | *Menyimpan notifikasi hasil verifikasi untuk pelapor ke basis data* |
+
+## 5.11 Kelas KonfirmasiDuplikat
+
+**Nama Kelas:** *KonfirmasiDuplikat*  
+**ID Kelas:** *C11*
+
+Tabel 5.11.1. Operasi Kelas KonfirmasiDuplikat
+
+| Nama Operasi | Visibility (private, public) | Keterangan |
+| :--- | :--- | :--- |
+| *simpanKandidat()* | *Public* | *Menyimpan laporan-laporan yang ditandai admin sebagai kandidat duplikat* |
+| *warning()* | *Public* | *Menampilkan peringatan konfirmasi sebelum laporan digabungkan* |
+| *gabungLaporan()* | *Public* | *Menggabungkan seluruh kandidat duplikat menjadi satu laporan induk* |
+
+Tabel 5.11.2. Atribut Kelas KonfirmasiDuplikat
+
+| Nama Atribut | Visibility (private, public) | Tipe |
+| :--- | :--- | :--- |
+| *daftarKandidat* | *Private* | *List of Laporan* |
+| *namaFasilitasInduk* | *Private* | *String* |
+
+### 5.11.1 Algoritma/Query
+
+**Nama Kelas:** *KonfirmasiDuplikat*  
+**Nama Operasi:** *gabungLaporan()*  
+**ID Algoritma:** *Algo-012*
+
+```text
+function gabungLaporan() -> Laporan
+{Laporan yang paling awal dibuat dijadikan laporan induk, laporan lain berstatus Digabung }
+
+KAMUS LOKAL
+    induk: Laporan
+    i: Integer
+
+ALGORITMA
+    if (self.daftarKandidat.length < 2) then
+        -> NIL   
+    else
+        induk <- self.daftarKandidat[0]
+        traversal i [1..self.daftarKandidat.length-1]
+            if (self.daftarKandidat[i].tanggalLaporan < induk.tanggalLaporan) then
+                induk <- self.daftarKandidat[i]
+
+        traversal i [0..self.daftarKandidat.length-1]
+            if (self.daftarKandidat[i].idLaporan != induk.idLaporan) then
+                self.daftarKandidat[i].updateStatus("Digabung")
+
+        self.namaFasilitasInduk <- induk.fasilitas.namaFasilitas
+        induk.skorPrioritas.hitungSkor()
+        -> induk
+```
+
+Tabel 5.11.3. Query Operasi gabungLaporan()
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| *Q-013* | *UPDATE laporan SET status_laporan = 'Digabung', id_laporan_induk = ? WHERE id_laporan = ?;* | *Menandai laporan duplikat sebagai Digabung dan menghubungkannya ke laporan induk* |
+
+<br>
+
 ---
 
 # BAB 6: Perancangan Antarmuka
