@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   ActivityIndicator,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,15 +18,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { bayangan, huruf, jarak, radius, warna, warnaStatus } from '../../theme/tokens';
 import { PESAN } from '@silembur/shared';
 
-/** Kerangka layar: area aman + latar + (opsional) scroll. */
-export function Layar({ children, gulir = true, style, tepi = ['top'] }) {
+/**
+ * Kerangka layar: area aman + latar + (opsional) scroll.
+ * Tarik-untuk-muat-ulang (hanya saat gulir): isi `onSegarkan` (fungsi) dan `menyegarkan` (boolean).
+ */
+export function Layar({ children, gulir = true, style, tepi = ['top'], onSegarkan, menyegarkan = false }) {
   const Isi = gulir ? ScrollView : View;
+  const segarkan =
+    gulir && onSegarkan ? (
+      <RefreshControl refreshing={menyegarkan} onRefresh={onSegarkan} colors={[warna.primer]} tintColor={warna.primer} />
+    ) : undefined;
   return (
     <SafeAreaView style={s.layar} edges={tepi}>
       <Isi
         style={gulir ? undefined : [s.isi, style]}
         contentContainerStyle={gulir ? [s.isi, style] : undefined}
         keyboardShouldPersistTaps="handled"
+        refreshControl={segarkan}
       >
         {children}
       </Isi>
@@ -66,6 +75,23 @@ export function Kartu({ children, style, onPress }) {
     );
   }
   return <View style={[s.kartu, style]}>{children}</View>;
+}
+
+/** Pil pilihan untuk tab/filter (mis. O-0203 tab status, filter wilayah). */
+export function Chip({ label, aktif, onPress, ikon, style }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected: !!aktif }}
+      onPress={onPress}
+      style={({ pressed }) => [s.chip, aktif && s.chipAktif, pressed && { opacity: 0.85 }, style]}
+    >
+      {ikon ? (
+        <Ionicons name={ikon} size={14} color={aktif ? warna.putih : warna.teksLembut} style={{ marginRight: jarak.xs }} />
+      ) : null}
+      <Text style={[s.chipTeks, aktif && { color: warna.putih }]}>{label}</Text>
+    </Pressable>
+  );
 }
 
 export function LencanaStatus({ status }) {
@@ -171,6 +197,19 @@ const s = StyleSheet.create({
     marginBottom: jarak.m,
     ...bayangan,
   },
+  chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: jarak.m,
+    paddingVertical: 6,
+    borderRadius: radius.pil,
+    backgroundColor: warna.permukaan,
+    borderWidth: 1,
+    borderColor: warna.garis,
+    marginRight: jarak.s,
+  },
+  chipAktif: { backgroundColor: warna.primer, borderColor: warna.primer },
+  chipTeks: { fontSize: 13, fontWeight: '600', color: warna.teks },
   lencana: { alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: radius.pil },
   lencanaTeks: { fontSize: 12, fontWeight: '700' },
   label: { ...huruf.label, marginBottom: jarak.xs, fontSize: 14, color: warna.teks },

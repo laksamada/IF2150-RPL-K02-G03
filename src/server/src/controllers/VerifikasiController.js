@@ -1,6 +1,7 @@
 /**
  * VerifikasiController (DPPL Tabel 2.3): keputusan verifikasi admin, notifikasi, pemicu skor prioritas.
  * Pemilik: P4. Kontrak: src/docs/API.md#uc02
+ * Semua endpoint di sini khusus ADMIN, sehingga identitas pelapor boleh ikut di respons (KNF02).
  */
 import { z } from 'zod';
 import { KEPUTUSAN, SEMUA_STATUS, STATUS } from '@silembur/shared';
@@ -18,6 +19,14 @@ export const skemaKeputusan = z
     message: 'Catatan alasan wajib diisi untuk keputusan Ditolak atau Revisi',
     path: ['catatan'],
   });
+
+const kosongJadiUndefined = (v) => (v === '' ? undefined : v);
+
+/** Skema query GET /admin/laporan. */
+export const skemaDaftarAdmin = z.object({
+  status: z.preprocess(kosongJadiUndefined, z.enum([...SEMUA_STATUS]).optional()),
+  q: z.preprocess(kosongJadiUndefined, z.string().trim().max(100).optional()),
+});
 
 /** GET /api/admin/laporan?status=&q= -> { data: LaporanAdmin[] } */
 export async function daftarLaporanAdmin(req, res) {

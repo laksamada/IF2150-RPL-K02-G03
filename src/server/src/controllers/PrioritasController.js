@@ -1,9 +1,22 @@
+/**
+ * PrioritasController (DPPL Tabel 2.3): daftar laporan prioritas pemda + pembaruan status penanganan
+ * (UC03, KF17, KF18, KF19, gap G8, G10, G14).
+ * Pemilik: P5. Kontrak: src/docs/API.md#uc03
+ */
 import { z } from 'zod';
-import { STATUS } from '@silembur/shared';
-import { pool } from '../db/pool.js'; 
-import { getLaporanTerverifikasi } from '../models/laporan/prioritas.js';
-import { ubahStatus } from '../models/laporan/status.js';
-import { hitungSkor } from '../models/skorPrioritas/skor.js';
+import { SEMUA_KATEGORI, STATUS, STATUS_PRIORITAS } from '@silembur/shared';
+import { pool, withTransaction } from '../db/pool.js';
+import { periksa } from '../middleware/validasi.js';
+import { Laporan, SkorPrioritas } from '../models/index.js';
+import { HttpError, paramId } from '../utils/http.js';
+
+const kosongJadiUndefined = (v) => (typeof v === 'string' && v.trim() === '' ? undefined : v);
+
+export const skemaFilterPrioritas = z.object({
+  kategori: z.preprocess(kosongJadiUndefined, z.enum(SEMUA_KATEGORI).optional()),
+  wilayah: z.preprocess(kosongJadiUndefined, z.string().trim().optional()),
+  status: z.preprocess(kosongJadiUndefined, z.enum([...STATUS_PRIORITAS, STATUS.SELESAI]).optional()),
+});
 
 export const skemaUbahStatus = z.object({
   status: z.enum([STATUS.DIPROSES, STATUS.SELESAI]),
@@ -11,51 +24,37 @@ export const skemaUbahStatus = z.object({
 });
 
 /**
- * GET /api/prioritas?kategori=&wilayah=&status=
+ * KF17: hitung ulang skor yang sudah lebih dari 1 jam (lama menunggu bertambah).
+ * Tiap laporan dalam transaksinya sendiri; kegagalan satu laporan tidak menggagalkan daftar
+ * (skor lama tetap dipakai). hitungSkor boleh mengembalikan null.
  */
-export async function daftarPrioritas(req, res, next) {
-  try {
-    const { kategori, wilayah, status } = req.query;
-
-    // Hitung ulang skor yang kadaluarsa (> 1 jam) - KF17
-    const kadaluarsa = await pool.query(
-      `SELECT id_laporan FROM skor_prioritas WHERE dihitung_pada < NOW() - INTERVAL '1 hour'`
-    );
-    for (const row of kadaluarsa.rows) {
-      await hitungSkor(pool, row.id_laporan);
+async function hitungUlangSkorKadaluarsa() {
+  const daftarId = await Laporan.getIdSkorKadaluarsa(pool, { menit: 60 });
+  for (const id of daftarId) {
+    try {
+      await withTransaction((db) => SkorPrioritas.hitungSkor(db, id));
+    } catch (err) {
+      console.error(`Gagal menghitung ulang skor laporan #${id}: ${err.message}`);
     }
-
-    const data = await getLaporanTerverifikasi(pool, { kategori, wilayah, status });
-    res.json({ data });
-  } catch (err) {
-    next(err);
   }
 }
 
-/**
- * PATCH /api/laporan/:id/status
- */
-export async function perbaruiStatus(req, res, next) {
-  try {
-    const idLaporan = parseInt(req.params.id, 10);
-    const { status, keterangan } = skemaUbahStatus.parse(req.body);
-    const idPengguna = req.pengguna.id;
+/** GET /api/prioritas?kategori=&wilayah=&status= -> { data: LaporanPrioritas[] } urut skor DESC (Q-004) */
+export async function daftarPrioritas(req, res) {
+  const filter = periksa(skemaFilterPrioritas, req.query);
+  await hitungUlangSkorKadaluarsa();
+  const data = await Laporan.getLaporanTerverifikasi(pool, filter);
+  res.json({ data });
+}
 
-    await withTransaction(async (db) => {
-      await ubahStatus(db, {
-        idLaporan,
-        statusBaru: status,
-        deskripsi: keterangan,
-        idPengguna,
-      });
-    });
-
-    // Ambil data laporan terbarui
-    const laporanList = await getLaporanTerverifikasi(pool, { status });
-    const laporan = laporanList.find((l) => l.id === idLaporan);
-
-    res.json({ laporan });
-  } catch (err) {
-    next(err);
-  }
+/** PATCH /api/laporan/:id/status  body: { status, keterangan } -> { laporan: LaporanPrioritas } (gap G8) */
+export async function perbaruiStatus(req, res) {
+  const idLaporan = paramId(req);
+  const { status, keterangan } = req.valid.body;
+  const laporan = await withTransaction(async (db) => {
+    await Laporan.ubahStatus(db, { idLaporan, statusBaru: status, deskripsi: keterangan, idPengguna: req.pengguna.id });
+    return Laporan.getLaporanPrioritas(db, idLaporan);
+  });
+  if (!laporan) throw new HttpError(404, `Laporan #${idLaporan} tidak ditemukan`);
+  res.json({ laporan });
 }

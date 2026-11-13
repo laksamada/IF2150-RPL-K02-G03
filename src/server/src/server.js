@@ -5,6 +5,20 @@
 import os from 'node:os';
 import { buatApp } from './app.js';
 import { config } from './config.js';
+import { pastikanFotoContoh } from './db/seed.js';
+
+if (config.jwtSecretBawaan) {
+  console.warn(
+    'PERINGATAN: JWT_SECRET belum diatur, server memakai rahasia bawaan yang terlihat di repo publik.\n' +
+      '  Salin server/.env.example menjadi server/.env lalu isi JWT_SECRET dengan string acak panjang.',
+  );
+}
+
+// Hosting berdisk sementara (mis. paket gratis tanpa volume) menghapus UPLOAD_DIR saat server tidur/deploy ulang,
+// padahal laporan seed tetap merujuk seed/*.png. Tulis ulang yang hilang; gagal tidak menghentikan server.
+pastikanFotoContoh()
+  .then((n) => n && console.log(`Foto contoh seed ditulis ulang: ${n} file.`))
+  .catch((err) => console.warn('Foto contoh seed tidak dapat ditulis ulang:', err.message));
 
 const app = buatApp();
 

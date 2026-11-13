@@ -1,6 +1,7 @@
  /*
  * Pemilik: P4.
  * Admin BOLEH melihat identitas pelapor (dibutuhkan untuk verifikasi & notifikasi).
+ * Fungsi di file ini hanya dipakai controller /admin/* (KNF02).
  */
 import { STATUS } from '@silembur/shared';
 import { urlFoto } from '../../utils/http.js';
@@ -60,7 +61,16 @@ export async function getLaporanUntukAdmin(db, { status, keyword }) {
   throw belumDiimplementasi('P4', 'getLaporanMenungguVerifikasi (KF06)');
 }
 
-/** Detail lengkap untuk I-06, termasuk pratinjau skor (hitungNilaiSkor) dan riwayat verifikasi. */
+/** Satu laporan sebagai DTO LaporanAdmin, null jika tidak ada. */
+export async function getLaporanAdmin(db, idLaporan) {
+  const { rows } = await db.query(`SELECT ${KOLOM_ADMIN} ${FROM_ADMIN} WHERE l.id_laporan = $1`, [idLaporan]);
+  return rows[0] ? keLaporanAdmin(rows[0]) : null;
+}
+
+/**
+ * Detail lengkap untuk I-06: LaporanAdmin + pratinjauSkor (hitungNilaiSkor dengan nilai saat ini, tidak disimpan;
+ * gap G3) + riwayat status (terawal -> terakhir) + histori verifikasi. null jika laporan tidak ada.
+ */
 export async function getDetailLaporanAdmin(db, idLaporan) {
   const laporan = await getLaporanAdminById(db, idLaporan);
   if (!laporan) return null;

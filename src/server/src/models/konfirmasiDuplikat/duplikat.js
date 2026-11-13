@@ -93,10 +93,23 @@ export async function getKandidatDuplikat(db) {
 }
 
 /**
+ * Tahap kemajuan laporan aktif (gap G15): belum diverifikasi < Terverifikasi < Diproses.
+ * Perlu Revisi setara Menunggu Verifikasi karena sama-sama belum diverifikasi.
+ */
+const TAHAP_STATUS = Object.freeze({
+  [STATUS.MENUNGGU_VERIFIKASI]: 0,
+  [STATUS.PERLU_REVISI]: 0,
+  [STATUS.TERVERIFIKASI]: 1,
+  [STATUS.DIPROSES]: 2,
+});
+
+/**
  * Algo-012 gabungLaporan(), dijalankan dalam transaksi yang sedang berjalan (`db` = client withTransaction).
  *  1. Kunci semua laporan terpilih; tolak bila ada yang tidak ditemukan (404), tidak aktif (409),
  *     atau berbeda kategori (400, gap G15).
- *  2. Induk = tanggal_laporan paling awal (seri: id terkecil).
+ *  2. Induk = tanggal_laporan paling awal (seri: id terkecil). Induk harus berstatus paling lanjut
+ *     di kelompoknya (tahapStatus); bila ada anak yang lebih lanjut, tolak (409, gap G15) agar laporan
+ *     Terverifikasi/Diproses tidak hilang dari daftar prioritas pemda (KF08, KF18).
  *  3. Laporan lain -> status "Digabung" + id_laporan_induk (Q-013), pindah ke fasilitas induk.
  *     Laporan yang sebelumnya sudah digabung ke laporan anak ikut dialihkan ke induk baru,
  *     sehingga jumlah pelapor tidak berkurang (KF15).
@@ -132,6 +145,17 @@ export async function gabungLaporan(db, { idLaporanList, idAdmin }) {
 
   const [induk, ...anak] = rows;
   const idAnak = anak.map((r) => r.id_laporan);
+
+  const lebihLanjut = anak.filter((r) => TAHAP_STATUS[r.status_laporan] > TAHAP_STATUS[induk.status_laporan]);
+  if (lebihLanjut.length) {
+    const daftar = lebihLanjut.map((r) => `#${r.id_laporan} (${r.status_laporan})`).join(', ');
+    throw new HttpError(
+      409,
+      `Laporan induk #${induk.id_laporan} (laporan terlama) masih berstatus ${induk.status_laporan}, `
+        + `sedangkan ${daftar} sudah lebih lanjut. Laporan induk harus sudah sama atau lebih lanjut `
+        + 'statusnya sebelum laporan lain digabungkan ke dalamnya.',
+    );
+  }
 
   for (const a of anak) {
     await ubahStatus(db, {

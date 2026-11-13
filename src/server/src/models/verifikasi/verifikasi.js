@@ -1,6 +1,9 @@
 /**
  * Model Verifikasi (C07) — simpanVerifikasi, tahanLaporan, teruskanKePemerintah (Algo-002, Algo-008, Q-003).
  * Pemilik: P4.
+ *
+ * tahanLaporan() tidak butuh query: laporan yang tidak disetujui otomatis "tertahan" karena statusnya
+ * (Ditolak / Perlu Revisi) tidak termasuk STATUS_PRIORITAS sehingga tidak tampil di daftar pemda (KF08).
  */
 import { KEPUTUSAN, KEPUTUSAN_KE_STATUS, STATUS } from '@silembur/shared';
 import { HttpError } from '../../utils/http.js';

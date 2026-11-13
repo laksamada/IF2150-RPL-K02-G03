@@ -5,6 +5,9 @@
  * - Token login dipasang otomatis (setTokenApi dipanggil AuthContext).
  * - Timeout 5 detik (ATURAN.TIMEOUT_MS) -> ApiError berpesan "Tolong muat ulang halaman" (skenario alternatif UC04/05/06).
  * - Error server diseragamkan menjadi ApiError { status, message, details }.
+ * - 401 pada permintaan bertoken (token kedaluwarsa/dicabut) -> penangan sesi berakhir dari AuthContext
+ *   dipanggil agar aplikasi kembali ke login. /auth/login dan /auth/google dikecualikan: 401 di sana berarti
+ *   kredensial salah dan cukup ditampilkan sebagai pesan error.
  */
 import Constants from 'expo-constants';
 import { ATURAN, PESAN } from '@silembur/shared';
@@ -12,6 +15,21 @@ import { ATURAN, PESAN } from '@silembur/shared';
 let token = null;
 export function setTokenApi(t) {
   token = t;
+}
+
+let penanganSesiBerakhir = null;
+/** Didaftarkan AuthContext: dipanggil sekali saat permintaan bertoken ditolak 401. `null` untuk melepas. */
+export function setPenanganSesiBerakhir(fn) {
+  penanganSesiBerakhir = fn;
+}
+
+const PATH_TANPA_SESI = ['/auth/login', '/auth/google'];
+
+/** Beri tahu AuthContext bila token yang dikirim ditolak (401) dan masih token yang aktif. */
+function periksaSesiBerakhir(status, path, tokenDikirim) {
+  if (status !== 401 || !tokenDikirim || tokenDikirim !== token) return;
+  if (PATH_TANPA_SESI.includes(path)) return;
+  penanganSesiBerakhir?.();
 }
 
 function tentukanBaseUrl() {
@@ -53,7 +71,8 @@ export async function request(method, path, { query, body, form, timeoutMs = ATU
         .join('&')
     : '';
   const headers = { Accept: 'application/json' };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  const tokenDikirim = token;
+  if (tokenDikirim) headers.Authorization = `Bearer ${tokenDikirim}`;
   if (body) headers['Content-Type'] = 'application/json';
 
   const controller = new AbortController();
@@ -76,9 +95,42 @@ export async function request(method, path, { query, body, form, timeoutMs = ATU
   if (res.status === 204) return null;
   const data = await res.json().catch(() => null);
   if (!res.ok) {
+    periksaSesiBerakhir(res.status, path, tokenDikirim);
     throw new ApiError(res.status, data?.error?.message ?? `Permintaan gagal (${res.status})`, data?.error?.details);
   }
   return data;
+}
+
+/**
+ * Upload multipart lewat XMLHttpRequest bawaan React Native.
+ * Sejak Expo SDK 58, `fetch` global adalah `expo/fetch` yang tidak mendukung bagian FormData berbentuk
+ * `{ uri, type, name }` (foto dari expo-image-picker), sehingga upload foto selalu gagal. XHR React Native
+ * masih membaca file dari `uri` secara native. Pola error sama dengan request(): ApiError { status, message, details }.
+ */
+function kirimMultipart(method, path, form, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, `${BASE_URL}/api${path}`);
+    xhr.setRequestHeader('Accept', 'application/json');
+    const tokenDikirim = token;
+    if (tokenDikirim) xhr.setRequestHeader('Authorization', `Bearer ${tokenDikirim}`);
+    xhr.timeout = timeoutMs;
+    xhr.onload = () => {
+      if (xhr.status === 204) return resolve(null);
+      let data = null;
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch {
+        data = null;
+      }
+      if (xhr.status >= 200 && xhr.status < 300) return resolve(data);
+      periksaSesiBerakhir(xhr.status, path, tokenDikirim);
+      reject(new ApiError(xhr.status, data?.error?.message ?? `Permintaan gagal (${xhr.status})`, data?.error?.details));
+    };
+    xhr.ontimeout = () => reject(new ApiError(0, PESAN.MUAT_ULANG));
+    xhr.onerror = () => reject(new ApiError(0, `Tidak dapat terhubung ke server (${BASE_URL}). ${PESAN.MUAT_ULANG}`));
+    xhr.send(form);
+  });
 }
 
 export const api = {
@@ -86,6 +138,6 @@ export const api = {
   post: (path, body, opsi) => request('POST', path, { ...opsi, body }),
   put: (path, body, opsi) => request('PUT', path, { ...opsi, body }),
   patch: (path, body, opsi) => request('PATCH', path, { ...opsi, body }),
-  /** Kirim multipart (foto). Biarkan fetch mengisi Content-Type + boundary. */
-  kirimForm: (method, path, form, opsi) => request(method, path, { ...opsi, form, timeoutMs: 30_000 }),
+  /** Kirim multipart (foto). Content-Type + boundary diisi otomatis oleh XHR. */
+  kirimForm: (method, path, form, opsi) => kirimMultipart(method, path, form, opsi?.timeoutMs ?? 30_000),
 };

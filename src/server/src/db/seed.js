@@ -104,6 +104,28 @@ async function tulisFotoContoh() {
   }
 }
 
+/**
+ * Tulis ulang foto contoh seed yang hilang dari UPLOAD_DIR tanpa menyentuh basis data.
+ * Dipanggil saat server start: di hosting dengan disk sementara (mis. paket gratis tanpa volume), isi disk hilang
+ * setiap server tidur/deploy ulang, padahal baris laporan seed tetap merujuk `seed/*.png`.
+ * @returns {Promise<number>} jumlah file yang ditulis ulang
+ */
+export async function pastikanFotoContoh() {
+  let ditulis = 0;
+  for (const { file, warna } of Object.values(FOTO)) {
+    const tujuan = path.join(config.uploadDir, file);
+    const ada = await fs.access(tujuan).then(
+      () => true,
+      () => false,
+    );
+    if (ada) continue;
+    await fs.mkdir(path.dirname(tujuan), { recursive: true });
+    await fs.writeFile(tujuan, buatPng(warna));
+    ditulis += 1;
+  }
+  return ditulis;
+}
+
 export async function seed({ log = console.log } = {}) {
   await tulisFotoContoh();
   const hash = await bcrypt.hash('silembur123', 10);

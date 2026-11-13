@@ -17,6 +17,11 @@ function keForm({ foto, ...isian }) {
 }
 
 export const laporanApi = {
+  /** POST /laporan -> { laporan: LaporanSaya } (status "Menunggu Verifikasi"). */
   buat: (data) => api.kirimForm('POST', '/laporan', keForm(data)),
+  /**
+   * PUT /laporan/:id/revisi -> { laporan: LaporanSaya }. Semua field opsional; kirim hanya yang berubah
+   * (foto baru, kategori, deskripsi, latitude+longitude+sumberLokasi). 409 bila status bukan "Perlu Revisi".
+   */
   revisi: (id, data) => api.kirimForm('PUT', `/laporan/${id}/revisi`, keForm(data)),
 };

@@ -1,6 +1,8 @@
 /**
  * Profil & keluar (dipakai ketiga peran). Pemilik: P1.
  */
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { useAuth } from '../../auth/AuthContext';
 import { Kartu, Layar, Tombol } from '../../components/ui';
@@ -9,7 +11,13 @@ import { huruf, jarak } from '../../theme/tokens';
 const NAMA_PERAN = { PELAPOR: 'Masyarakat', ADMIN: 'Admin', PEMDA: 'Pemerintah Daerah' };
 
 export default function ProfilScreen() {
-  const { pengguna, keluar } = useAuth();
+  const { pengguna, keluar, segarkanPengguna } = useAuth();
+  // Data profil (mis. jumlah laporan) dimuat ulang setiap tab Profil dibuka.
+  useFocusEffect(
+    useCallback(() => {
+      segarkanPengguna();
+    }, [segarkanPengguna]),
+  );
   if (!pengguna) return null;
   return (
     <Layar>

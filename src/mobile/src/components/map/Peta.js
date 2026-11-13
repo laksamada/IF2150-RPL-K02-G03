@@ -18,6 +18,10 @@ import { PUSAT_KOTA } from './konstanta';
 export { PUSAT_KOTA };
 const provider = Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT;
 
+// Ketukan pada ikon tempat (POI) Google Maps tidak memicu onPress, sehingga pin tidak terpasang.
+// Peta pemilih lokasi menyembunyikan POI agar setiap ketukan menandai titik kerusakan (KF03).
+const GAYA_TANPA_POI = [{ featureType: 'poi', stylers: [{ visibility: 'off' }] }];
+
 function wilayahAwal(titik, delta = 0.01) {
   return { ...(titik ?? PUSAT_KOTA), latitudeDelta: delta, longitudeDelta: delta };
 }
@@ -30,6 +34,7 @@ export function PetaPilih({ nilai, onUbah, tinggi = 220 }) {
         style={StyleSheet.absoluteFill}
         initialRegion={wilayahAwal(nilai, nilai ? 0.005 : 0.08)}
         onPress={(e) => onUbah?.(e.nativeEvent.coordinate)}
+        customMapStyle={GAYA_TANPA_POI}
       >
         {nilai ? (
           <Marker draggable coordinate={nilai} onDragEnd={(e) => onUbah?.(e.nativeEvent.coordinate)} />

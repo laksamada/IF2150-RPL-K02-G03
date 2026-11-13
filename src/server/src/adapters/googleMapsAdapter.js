@@ -11,6 +11,7 @@
  * Kontrak (dipakai P2, P5):
  *   getWilayahFromCoordinates(lat, lng) -> Promise<{ wilayah: string, alamat: string }>
  *   jarakMeter(a, b) -> number   // haversine, a/b = { lat, lng }
+ *   diKotaBandung(lat, lng) -> boolean   // false bila wilayahOffline memberi "Luar Kota Bandung"
  */
 import { config } from '../config.js';
 import { KECAMATAN_BANDUNG, SEMUA_WILAYAH } from './wilayahBandung.js';
@@ -26,7 +27,8 @@ export function jarakMeter(a, b) {
   return 2 * RADIUS_BUMI_M * Math.asin(Math.sqrt(h));
 }
 
-export function wilayahOffline(lat, lng) {
+/** Kecamatan Bandung terdekat dari titik beserta jaraknya (meter). */
+function kecamatanTerdekat(lat, lng) {
   let terdekat = KECAMATAN_BANDUNG[0];
   let min = Infinity;
   for (const k of KECAMATAN_BANDUNG) {
@@ -36,6 +38,20 @@ export function wilayahOffline(lat, lng) {
       terdekat = k;
     }
   }
+  return { terdekat, min };
+}
+
+/**
+ * Lingkup satu kota (SKPL/DPPL 1.2): true bila titik berada dalam BATAS_KOTA_M dari pusat salah satu
+ * kecamatan Kota Bandung. Aturan yang sama dengan wilayahOffline ("Luar Kota Bandung").
+ */
+export function diKotaBandung(lat, lng) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+  return kecamatanTerdekat(lat, lng).min <= BATAS_KOTA_M;
+}
+
+export function wilayahOffline(lat, lng) {
+  const { terdekat, min } = kecamatanTerdekat(lat, lng);
   if (min > BATAS_KOTA_M) return { wilayah: 'Luar Kota Bandung', alamat: `${lat.toFixed(5)}, ${lng.toFixed(5)}` };
   return { wilayah: terdekat.nama, alamat: `Kec. ${terdekat.nama}, Kota Bandung` };
 }

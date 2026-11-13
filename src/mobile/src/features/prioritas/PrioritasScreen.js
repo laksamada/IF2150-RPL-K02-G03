@@ -1,143 +1,124 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, TextInput } from 'react-native';
+/**
+ * I-08 Laporan Terverifikasi (dashboard pemerintah daerah) — UC03, UC06 langkah 1. Pemilik: P5.
+ * Spesifikasi objek antarmuka: docs/M8/K02_G03_DPPL2.md (BAB 6, I-08).
+ *
+ *  - FasilitasBerulangPreview di atas (KF14); "Tampilkan lebih banyak" -> I-09 filter berulang.
+ *  - O-0801 dropdown wilayah, O-0802 filter kategori (KF19), O-0803 peta semua titik,
+ *    O-0804 kartu laporan urut skor (KF18) + aksi Mulai Tangani / Tandai Selesai (gap G8).
+ *  - Kosong -> "Belum ada laporan" (UC03 alternatif 1 & 2). Gagal/timeout -> "Tolong muat ulang halaman".
+ */
+import { useState } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { PESAN, SEMUA_KATEGORI } from '@silembur/shared';
 import { pemdaApi } from '../../api/pemda';
+import { referensiApi } from '../../api/referensi';
+import { PetaTampil } from '../../components/map/Peta';
+import { TampilanGagal, TampilanKosong, TampilanMemuat } from '../../components/ui';
+import { useApi } from '../../hooks/useApi';
+import { huruf, jarak, radius, warna } from '../../theme/tokens';
+import { judulLaporan } from '../../utils/format';
 import FasilitasBerulangPreview from '../fasilitas/FasilitasBerulangPreview';
-import { STATUS } from '@silembur/shared';
+import { useMuatSaatFokus } from '../warga/useMuatSaatFokus';
+import KartuLaporanPrioritas from './KartuLaporanPrioritas';
+import { PilihanChip, PilihWilayah } from './komponen';
 
 export default function PrioritasScreen() {
   const router = useRouter();
-  const [laporan, setLaporan] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [kategoriFilter, setKategoriFilter] = useState('');
-  const [wilayahFilter, setWilayahFilter] = useState('');
-  const [keteranganInput, setKeteranganInput] = useState({});
-  const [updatingId, setUpdatingId] = useState(null);
+  const [kategori, setKategori] = useState('');
+  const [wilayah, setWilayah] = useState('');
 
-  const muatData = async () => {
-    setLoading(true);
-    try {
-      const res = await pemdaApi.prioritas({
-        kategori: kategoriFilter || undefined,
-        wilayah: wilayahFilter || undefined,
-      });
-      setLaporan(res.data || []);
-    } catch (err) {
-      Alert.alert('Gagal', 'Tolong muat ulang halaman');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    muatData();
-  }, [kategoriFilter, wilayahFilter]);
-
-  const handleUbahStatus = async (id, statusBaru) => {
-    const ket = keteranganInput[id];
-    if (!ket || ket.trim() === '') {
-      Alert.alert('Peringatan', 'Keterangan penanganan wajib diisi');
-      return;
-    }
-
-    setUpdatingId(id);
-    try {
-      await pemdaApi.ubahStatus(id, { status: statusBaru, keterangan: ket });
-      Alert.alert('Sukses', `Status berhasil diperbarui menjadi ${statusBaru}`);
-      setKeteranganInput((prev) => ({ ...prev, [id]: '' }));
-      muatData();
-    } catch (err) {
-      Alert.alert('Gagal', err.message || 'Gagal mengubah status');
-    } finally {
-      setUpdatingId(null);
-    }
-  };
-
-  const renderHeader = () => (
-    <View>
-      <FasilitasBerulangPreview onLihatSemua={() => router.push('/pemda/fasilitas?berulang=true')} />
-      <View style={styles.filterSection}>
-        <Text style={styles.sectionTitle}>Daftar Prioritas Laporan</Text>
-      </View>
-    </View>
+  const referensi = useApi(() => referensiApi.ambil(), []);
+  const { data, memuat, error, muatUlang } = useApi(
+    () => pemdaApi.prioritas({ kategori, wilayah }),
+    [kategori, wilayah],
   );
+  // Kembali dari I-10 (status bisa sudah diubah di sana): muat ulang agar tombol aksi tidak usang (409).
+  useMuatSaatFokus(muatUlang);
+  const laporan = data?.data ?? [];
+  const titik = laporan
+    .filter((l) => l.lokasi?.latitude !== undefined && l.lokasi?.latitude !== null)
+    .map((l) => ({
+      id: l.id,
+      latitude: l.lokasi.latitude,
+      longitude: l.lokasi.longitude,
+      judul: judulLaporan({ kategori: l.kategori, alamat: l.lokasi.alamat, wilayah: l.lokasi.wilayah }),
+    }));
 
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <View style={styles.cardHeader}>
-        <Text style={styles.kategoriText}>{item.kategori}</Text>
-        <Text style={styles.skorText}>Skor: {item.skor?.nilai ?? 0}</Text>
-      </View>
+  const bukaFasilitas = (id) => router.push(`/pemda/fasilitas/${id}`);
 
-      <Text style={styles.deskripsi}>{item.deskripsi}</Text>
-      <Text style={styles.lokasi}>{item.lokasi?.alamat || item.lokasi?.wilayah}</Text>
-      <Text style={styles.status}>Status: {item.status}</Text>
-
-      <View style={styles.aksiContainer}>
-        <TextInput
-          style={styles.inputKet}
-          placeholder="Tulis keterangan penanganan..."
-          value={keteranganInput[item.id] || ''}
-          onChangeText={(text) => setKeteranganInput({ ...keteranganInput, [item.id]: text })}
-        />
-
-        {updatingId === item.id ? (
-          <ActivityIndicator color="#0066CC" />
-        ) : (
-          <View style={styles.buttonGroup}>
-            {item.status === STATUS.TERVERIFIKASI && (
-              <TouchableOpacity
-                style={[styles.btn, styles.btnProses]}
-                onPress={() => handleUbahStatus(item.id, STATUS.DIPROSES)}
-              >
-                <Text style={styles.btnText}>Mulai Tangani</Text>
-              </TouchableOpacity>
-            )}
-            {item.status === STATUS.DIPROSES && (
-              <TouchableOpacity
-                style={[styles.btn, styles.btnSelesai]}
-                onPress={() => handleUbahStatus(item.id, STATUS.SELESAI)}
-              >
-                <Text style={styles.btnText}>Tandai Selesai</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-      </View>
-    </View>
-  );
+  let isi;
+  if (memuat && !data) isi = <TampilanMemuat />;
+  else if (error) isi = <TampilanGagal pesan={error.message || PESAN.MUAT_ULANG} onCobaLagi={muatUlang} />;
+  else if (laporan.length === 0) isi = <TampilanKosong pesan={PESAN.BELUM_ADA_LAPORAN} />;
+  else
+    isi = (
+      <>
+        <PetaTampil titik={titik} tinggi={200} />
+        <Text style={[huruf.kecil, { marginVertical: jarak.m }]}>
+          {laporan.length} laporan, diurutkan dari skor prioritas tertinggi.
+        </Text>
+        {laporan.map((l) => (
+          <KartuLaporanPrioritas
+            key={l.id}
+            laporan={l}
+            bisaUbahStatus
+            onStatusBerubah={muatUlang}
+            onBukaFasilitas={bukaFasilitas}
+          />
+        ))}
+      </>
+    );
 
   return (
-    <FlatList
-      data={laporan}
-      keyExtractor={(item) => item.id.toString()}
-      ListHeaderComponent={renderHeader}
-      renderItem={renderItem}
-      contentContainerStyle={styles.container}
-      ListEmptyComponent={
-        !loading && <Text style={styles.emptyText}>Belum ada laporan</Text>
-      }
-    />
+    <SafeAreaView style={s.layar} edges={['top']}>
+      <View style={s.atas}>
+        <Text style={s.judulAtas}>Laporan Terverifikasi</Text>
+        <Text style={s.subAtas}>Prioritas penanganan kerusakan fasilitas umum</Text>
+      </View>
+
+      <ScrollView
+        contentContainerStyle={s.isi}
+        keyboardShouldPersistTaps="handled"
+        refreshControl={<RefreshControl refreshing={memuat && !!data} onRefresh={muatUlang} colors={[warna.primer]} />}
+      >
+        <FasilitasBerulangPreview
+          onLihatSemua={() => router.push({ pathname: '/pemda/fasilitas', params: { berulang: 'true' } })}
+          onPilih={bukaFasilitas}
+        />
+
+        <Text style={[huruf.label, s.labelFilter]}>Wilayah</Text>
+        <PilihWilayah nilai={wilayah} daftar={referensi.data?.wilayah ?? []} onUbah={setWilayah} />
+
+        <Text style={[huruf.label, s.labelFilter]}>Kategori</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filterKategori}>
+          <PilihanChip label="Semua" aktif={!kategori} onPress={() => setKategori('')} />
+          {SEMUA_KATEGORI.map((k) => (
+            <PilihanChip key={k} label={k} aktif={kategori === k} onPress={() => setKategori(k)} />
+          ))}
+        </ScrollView>
+
+        {isi}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: '#F5F5F5', flexGrow: 1 },
-  filterSection: { marginBottom: 12 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#222' },
-  card: { backgroundColor: '#FFF', padding: 14, borderRadius: 8, marginBottom: 12, elevation: 1 },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  kategoriText: { fontWeight: 'bold', fontSize: 14, color: '#333' },
-  skorText: { fontWeight: 'bold', color: '#D32F2F' },
-  deskripsi: { fontSize: 13, color: '#555', marginBottom: 4 },
-  lokasi: { fontSize: 12, color: '#888', marginBottom: 4 },
-  status: { fontSize: 12, fontWeight: '600', color: '#0066CC', marginBottom: 8 },
-  aksiContainer: { marginTop: 6, borderTopWidth: 1, borderTopColor: '#EEE', paddingTop: 8 },
-  inputKet: { borderWidth: 1, borderColor: '#DDD', borderRadius: 4, paddingHorizontal: 8, paddingVertical: 4, fontSize: 12, marginBottom: 8 },
-  buttonGroup: { flexDirection: 'row', justifyContent: 'flex-end' },
-  btn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 4 },
-  btnProses: { backgroundColor: '#FF9800' },
-  btnSelesai: { backgroundColor: '#4CAF50' },
-  btnText: { color: '#FFF', fontSize: 12, fontWeight: 'bold' },
-  emptyText: { textAlign: 'center', color: '#888', marginTop: 20 },
+const s = StyleSheet.create({
+  layar: { flex: 1, backgroundColor: warna.latar },
+  atas: {
+    backgroundColor: warna.primer,
+    paddingHorizontal: jarak.l,
+    paddingTop: jarak.m,
+    paddingBottom: jarak.l,
+    borderBottomLeftRadius: radius.l,
+    borderBottomRightRadius: radius.l,
+  },
+  judulAtas: { fontSize: 22, fontWeight: '800', color: warna.putih },
+  subAtas: { fontSize: 13, color: warna.primerMuda, marginTop: jarak.xs },
+  isi: { padding: jarak.l, paddingBottom: jarak.xxl, flexGrow: 1 },
+  // ScrollView horizontal bawaan RN ber-flexGrow 1; tanpa ini baris chip melar saat daftar masih memuat.
+  filterKategori: { marginBottom: jarak.l, flexGrow: 0 },
+  labelFilter: { marginBottom: jarak.xs, marginTop: jarak.s },
 });

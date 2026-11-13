@@ -1,5 +1,5 @@
 /**
- * I-05 Dashboard Admin — UC02, UC06. Pemilik: P4.
+ * I-05 Dashboard Admin: Daftar Laporan Masuk — UC02, UC06. Pemilik: P4.
  * Spesifikasi objek antarmuka: docs/M8/K02_G03_DPPL2.md (BAB 6, I-05). Tugas: src/docs/tasks/P4.md
  * Antrean laporan Menunggu Verifikasi (O-0501/0502) + pencarian (O-0503) + badge laporan baru
  * + pratinjau fasilitas kerusakan berulang (komponen P5).

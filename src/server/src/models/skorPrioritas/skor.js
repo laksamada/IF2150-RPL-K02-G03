@@ -4,7 +4,8 @@
  *
  * Kontrak untuk pemanggil lain (P1 setelah gabung duplikat, P5 saat refresh daftar prioritas):
  *   await hitungSkor(db, idLaporan)  -> Promise<number|null>   (null jika laporan belum punya skor)
- * Stub di bawah TIDAK melempar error agar alur P1/P5 tetap bisa dites sebelum P4 selesai.
+ *
+ * Skor selalu dihitung server, tidak pernah diinput admin (gap G3).
  */
 //import { belumDiimplementasi } from '../../utils/http.js';
 
@@ -14,6 +15,7 @@ import { getJumlahLaporan } from '../fasilitas/berulang.js';
 /**
  * Bagian murni Algo-009 (tanpa DB), mudah diuji:
  *   skor = bobotKategori + 5*jumlahPelapor + 2*lamaMenunggu + 10*frekuensiBerulang
+ * Kategori di luar tabel bobot memakai bobot "Lainnya" (cabang `else` Algo-009).
  */
 export function hitungNilaiSkor({ kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang }) {
   const bobot = BOBOT_KATEGORI[kategori];

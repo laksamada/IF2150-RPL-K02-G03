@@ -16,6 +16,12 @@
         "buildType": "apk"
       }
     },
+    "demo": {
+      "extends": "preview",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://if2150-rpl-k02-g03-production.up.railway.app"
+      }
+    },
     "production": {
       "android": {
         "buildType": "app-bundle"

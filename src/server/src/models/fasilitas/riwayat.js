@@ -1,127 +1,62 @@
+/**
+ * Model Fasilitas — pencarian & riwayat fasilitas (DPPL C06 cariFasilitas, getDetailFasilitas, getLaporan;
+ * UC08, KF22, KF23).
+ * Pemilik: P5. Tanpa identitas pelapor (KNF02, gap G9).
+ */
 import { PESAN } from '@silembur/shared';
+import { getLaporanPerFasilitas } from '../laporan/prioritas.js';
+import { KOLOM_FASILITAS } from './berulang.js';
 
 /**
  * Cari fasilitas berdasarkan nama, lokasi, atau wilayah (ILIKE).
+ * Bila keyword diisi tetapi tidak ada hasil -> pesan = PESAN.FASILITAS_TIDAK_DITEMUKAN (UC08 alternatif 1).
+ * @param {{ keyword?: string, hanyaBerulang?: boolean }} filter
+ * @returns {Promise<{ data: object[], pesan?: string }>}
  */
-export async function cariFasilitas(db, { keyword, hanyaBerulang }) {
-  const conditions = [];
+export async function cariFasilitas(db, { keyword, hanyaBerulang = false } = {}) {
+  const kata = keyword?.trim() ?? '';
   const params = [];
-
-  if (keyword && keyword.trim() !== '') {
-    params.push(`%${keyword.trim()}%`);
-    const idx = params.length;
-    conditions.push(`(nama_fasilitas ILIKE $${idx} OR lokasi_fasilitas ILIKE $${idx} OR wilayah ILIKE $${idx})`);
+  const syarat = [];
+  if (kata) {
+    // Karakter wildcard LIKE dari pengguna di-escape agar dicari apa adanya.
+    params.push(`%${kata.replace(/[\\%_]/g, (c) => `\\${c}`)}%`);
+    syarat.push('(nama_fasilitas ILIKE $1 OR lokasi_fasilitas ILIKE $1 OR wilayah ILIKE $1)');
   }
+  if (hanyaBerulang) syarat.push('kandidat_evaluasi = TRUE');
 
-  if (hanyaBerulang) {
-    conditions.push(`kandidat_evaluasi = true`);
-  }
-
-  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
-
-  const query = `
-    SELECT 
-      id_fasilitas AS id,
-      nama_fasilitas AS nama,
-      kategori,
-      lokasi_fasilitas AS lokasi,
-      latitude,
-      longitude,
-      wilayah,
-      jumlah_kerusakan_berulang AS "jumlahKerusakanBerulang",
-      kandidat_evaluasi AS "kandidatEvaluasi"
-    FROM fasilitas
-    ${whereClause}
-    ORDER BY nama_fasilitas ASC;
-  `;
-
-  const { rows } = await db.query(query, params);
-
-  let pesan;
-  if (keyword && rows.length === 0) {
-    pesan = PESAN.FASILITAS_TIDAK_DITEMUKAN;
-  }
-
-  return { data: rows, pesan };
+  const { rows } = await db.query(
+    `SELECT ${KOLOM_FASILITAS}
+       FROM fasilitas
+      ${syarat.length ? `WHERE ${syarat.join(' AND ')}` : ''}
+      ORDER BY kandidat_evaluasi DESC, jumlah_kerusakan_berulang DESC, nama_fasilitas ASC`,
+    params,
+  );
+  const hasil = { data: rows };
+  if (kata && rows.length === 0) hasil.pesan = PESAN.FASILITAS_TIDAK_DITEMUKAN;
+  return hasil;
 }
 
 /**
- * Mengambil detail fasilitas, laporan terkait, dan riwayat status (terbaru dulu, tanpa pelapor).
+ * Detail fasilitas + laporan yang menunjuknya + riwayat status semua laporan itu, terbaru dulu (KF23).
+ * @returns {Promise<{ fasilitas, laporan, riwayat } | null>} null bila fasilitas tidak ada.
  */
 export async function getDetailFasilitas(db, idFasilitas) {
-  // 1. Data fasilitas
-  const resFas = await db.query(
-    `SELECT 
-      id_fasilitas AS id,
-      nama_fasilitas AS nama,
-      kategori,
-      lokasi_fasilitas AS lokasi,
-      latitude,
-      longitude,
-      wilayah,
-      jumlah_kerusakan_berulang AS "jumlahKerusakanBerulang",
-      kandidat_evaluasi AS "kandidatEvaluasi"
-     FROM fasilitas WHERE id_fasilitas = $1`,
-    [idFasilitas]
-  );
-  if (resFas.rows.length === 0) return null;
+  const { rows } = await db.query(`SELECT ${KOLOM_FASILITAS} FROM fasilitas WHERE id_fasilitas = $1`, [idFasilitas]);
+  if (rows.length === 0) return null;
 
-  // 2. Laporan terkait
-  const resLap = await db.query(
-    `SELECT 
-      l.id_laporan AS id,
-      l.kategori_kerusakan AS kategori,
-      l.deskripsi_laporan AS deskripsi,
-      l.foto_laporan AS foto,
-      l.status_laporan AS status,
-      l.tanggal_laporan AS "tanggalLaporan",
-      json_build_object(
-        'latitude', lok.latitude,
-        'longitude', lok.longitude,
-        'wilayah', lok.wilayah,
-        'alamat', lok.alamat
-      ) AS lokasi,
-      json_build_object(
-        'id', f.id_fasilitas,
-        'nama', f.nama_fasilitas
-      ) AS fasilitas,
-      CASE 
-        WHEN sp.skor IS NOT NULL THEN json_build_object(
-          'nilai', sp.skor,
-          'jumlahPelapor', sp.jumlah_pelapor,
-          'lamaMenunggu', sp.lama_menunggu,
-          'frekuensiBerulang', sp.frekuensi_berulang
-        )
-        ELSE NULL
-      END AS skor
-     FROM laporan l
-     JOIN lokasi lok ON l.id_laporan = lok.id_laporan
-     JOIN fasilitas f ON l.id_fasilitas = f.id_fasilitas
-     LEFT JOIN skor_prioritas sp ON l.id_laporan = sp.id_laporan
-     WHERE l.id_fasilitas = $1
-     ORDER BY l.tanggal_laporan DESC`,
-    [idFasilitas]
+  const laporan = await getLaporanPerFasilitas(db, idFasilitas);
+  const riwayat = await db.query(
+    `SELECT rs.id_riwayat AS id,
+            rs.id_laporan AS "idLaporan",
+            rs.status_lama AS "statusLama",
+            rs.status_baru AS "statusBaru",
+            rs.deskripsi_perubahan AS deskripsi,
+            rs.tanggal_perubahan AS tanggal
+       FROM riwayat_status rs
+       JOIN laporan l ON l.id_laporan = rs.id_laporan
+      WHERE l.id_fasilitas = $1
+      ORDER BY rs.tanggal_perubahan DESC, rs.id_riwayat DESC`,
+    [idFasilitas],
   );
-
-  // 3. Riwayat status gabungan semua laporan di fasilitas ini (KF23)
-  const resRiw = await db.query(
-    `SELECT 
-      rs.id_riwayat AS id,
-      rs.id_laporan AS "idLaporan",
-      rs.status_lama AS "statusLama",
-      rs.status_baru AS "statusBaru",
-      rs.deskripsi_perubahan AS deskripsi,
-      rs.tanggal_perubahan AS tanggal
-     FROM riwayat_status rs
-     JOIN laporan l ON rs.id_laporan = l.id_laporan
-     WHERE l.id_fasilitas = $1
-     ORDER BY rs.tanggal_perubahan DESC`,
-    [idFasilitas]
-  );
-
-  return {
-    fasilitas: resFas.rows[0],
-    laporan: resLap.rows,
-    riwayat: resRiw.rows,
-  };
+  return { fasilitas: rows[0], laporan, riwayat: riwayat.rows };
 }

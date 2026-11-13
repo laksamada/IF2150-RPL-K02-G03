@@ -1,115 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { pemdaApi } from '../../api/pemda';
+/**
+ * Pratinjau fasilitas kerusakan berulang (UC06 langkah 1, KF14). Dipasang di I-08 (pemda) dan I-05 (admin, P4).
+ * Pemilik: P5.
+ *
+ *   <FasilitasBerulangPreview onLihatSemua={() => router.push('/admin/fasilitas?berulang=true')}
+ *                             onPilih={(idFasilitas) => router.push(`/admin/fasilitas/${idFasilitas}`)} />
+ *
+ * Maksimal 3 fasilitas + tombol "Tampilkan lebih banyak"; kosong -> PESAN.BELUM_ADA_FASILITAS_BERULANG.
+ */
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { PESAN } from '@silembur/shared';
+import { pemdaApi } from '../../api/pemda';
+import { Kartu, Tombol } from '../../components/ui';
+import { useApi } from '../../hooks/useApi';
+import { huruf, jarak, radius, warna } from '../../theme/tokens';
 
-export default function FasilitasBerulangPreview({ onLihatSemua }) {
-  const [loading, setLoading] = useState(true);
-  const [list, setList] = useState([]);
+const MAKS = 3;
 
-  useEffect(() => {
-    let mounted = true;
-    pemdaApi.fasilitasBerulang(3)
-      .then((res) => {
-        if (mounted) setList(res.data || []);
-      })
-      .catch(() => {})
-      .finally(() => {
-        if (mounted) setLoading(false);
-      });
-    return () => { mounted = false; };
-  }, []);
+export default function FasilitasBerulangPreview({ onLihatSemua, onPilih }) {
+  const { data, memuat, error, muatUlang } = useApi(() => pemdaApi.fasilitasBerulang(MAKS), []);
+  const daftar = data?.data ?? [];
 
-  if (loading) {
-    return (
-      <View style={styles.cardContainer}>
-        <ActivityIndicator color="#0066CC" />
+  let isi;
+  if (memuat && !data) isi = <ActivityIndicator color={warna.primer} style={{ marginVertical: jarak.m }} />;
+  else if (error)
+    isi = (
+      <View style={s.gagal}>
+        <Text style={[huruf.kecil, { flex: 1 }]}>{error.message || PESAN.MUAT_ULANG}</Text>
+        <Tombol judul="Muat ulang" varian="teks" onPress={muatUlang} />
       </View>
     );
-  }
+  else if (daftar.length === 0) isi = <Text style={huruf.kecil}>{PESAN.BELUM_ADA_FASILITAS_BERULANG}</Text>;
+  else
+    isi = daftar.map((f) => (
+      <Pressable
+        key={f.id}
+        disabled={!onPilih}
+        onPress={() => onPilih?.(f.id)}
+        style={({ pressed }) => [s.baris, pressed && { opacity: 0.7 }]}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={[huruf.isi, { fontWeight: '600' }]} numberOfLines={1}>
+            {f.nama}
+          </Text>
+          <Text style={huruf.kecil} numberOfLines={1}>
+            {f.lokasi}
+          </Text>
+        </View>
+        <View style={s.lencana}>
+          <Text style={s.lencanaTeks}>{f.jumlahKerusakanBerulang} laporan</Text>
+        </View>
+      </Pressable>
+    ));
 
   return (
-    <View style={styles.cardContainer}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Fasilitas Rusak Berulang</Text>
-        <TouchableOpacity onPress={onLihatSemua}>
-          <Text style={styles.link}>Tampilkan lebih banyak</Text>
-        </TouchableOpacity>
-      </View>
-
-      {list.length === 0 ? (
-        <Text style={styles.emptyText}>{PESAN.BELUM_ADA_FASILITAS_BERULANG || 'Belum ada fasilitas rusak berulang'}</Text>
-      ) : (
-        list.map((item) => (
-          <View key={item.id} style={styles.itemRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.itemNama}>{item.nama}</Text>
-              <Text style={styles.itemWilayah}>{item.wilayah}</Text>
-            </View>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{item.jumlahKerusakanBerulang} Laporan</Text>
-            </View>
-          </View>
-        ))
-      )}
-    </View>
+    <Kartu>
+      <Text style={huruf.subjudul}>Fasilitas Kerusakan Berulang</Text>
+      <Text style={[huruf.kecil, { marginBottom: jarak.s }]}>Kandidat evaluasi dalam 90 hari terakhir</Text>
+      {isi}
+      {onLihatSemua && daftar.length > 0 ? (
+        <Tombol judul="Tampilkan lebih banyak" varian="teks" onPress={onLihatSemua} />
+      ) : null}
+    </Kartu>
   );
 }
 
-const styles = StyleSheet.create({
-  cardContainer: {
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-    elevation: 2,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333333',
-  },
-  link: {
-    fontSize: 12,
-    color: '#0066CC',
-    fontWeight: '600',
-  },
-  emptyText: {
-    fontSize: 13,
-    color: '#666666',
-    fontStyle: 'italic',
-  },
-  itemRow: {
+const s = StyleSheet.create({
+  baris: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    gap: jarak.m,
+    paddingVertical: jarak.s,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: warna.garis,
   },
-  itemNama: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#222222',
-  },
-  itemWilayah: {
-    fontSize: 12,
-    color: '#777777',
-  },
-  badge: {
-    backgroundColor: '#FFE5E5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  badgeText: {
-    fontSize: 11,
-    color: '#CC0000',
-    fontWeight: 'bold',
-  },
+  lencana: { backgroundColor: warna.bahayaMuda, borderRadius: radius.pil, paddingHorizontal: 10, paddingVertical: 4 },
+  lencanaTeks: { color: warna.bahaya, fontWeight: '700', fontSize: 12 },
+  gagal: { flexDirection: 'row', alignItems: 'center' },
 });

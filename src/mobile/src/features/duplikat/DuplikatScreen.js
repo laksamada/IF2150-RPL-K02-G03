@@ -20,6 +20,7 @@ import { Kartu, TampilanGagal, TampilanKosong, TampilanMemuat, Tombol } from '..
 import { useApi } from '../../hooks/useApi';
 import { huruf, jarak, radius, warna } from '../../theme/tokens';
 import { kodeLaporan } from '../../utils/format';
+import { useMuatSaatFokus } from '../warga/useMuatSaatFokus';
 import KartuLaporanAktif from './KartuLaporanAktif';
 
 function cocok(kelompok, kataKunci) {
@@ -35,6 +36,8 @@ function cocok(kelompok, kataKunci) {
 
 export default function DuplikatScreen() {
   const { data, memuat, error, muatUlang } = useApi(() => adminApi.kandidatDuplikat(), []);
+  // Kembali dari tab/layar lain (mis. laporan baru ditolak di verifikasi): daftar laporan aktif dimuat ulang.
+  useMuatSaatFokus(muatUlang);
   const [modePilih, setModePilih] = useState(false);
   const [dipilih, setDipilih] = useState([]);
   const [kataKunci, setKataKunci] = useState('');

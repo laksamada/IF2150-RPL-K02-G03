@@ -126,6 +126,39 @@ describe('POST /api/admin/duplikat/gabung (Algo-012, KF15, KF17)', () => {
     expect((await ambil(ditolak)).status_laporan).toBe(STATUS.DITOLAK);
   });
 
+  it('menolak anak Terverifikasi digabung ke induk Menunggu Verifikasi (409) tanpa mengubah apa pun (G15)', async () => {
+    const f = await buatFasilitas();
+    const induk = await buatLaporan({ idFasilitas: f, hariLalu: 6 });
+    const terverifikasi = await buatLaporan({ idFasilitas: f, hariLalu: 2, status: STATUS.TERVERIFIKASI });
+    const riwayatInduk = await jumlahRiwayat(induk);
+    const riwayatAnak = await jumlahRiwayat(terverifikasi);
+
+    const res = await gabung([induk, terverifikasi]);
+
+    expect(res.status).toBe(409);
+    expect(res.body.error.message).toMatch(/induk/i);
+    expect(await ambil(induk)).toMatchObject({ status_laporan: STATUS.MENUNGGU_VERIFIKASI, id_laporan_induk: null });
+    expect(await ambil(terverifikasi)).toMatchObject({ status_laporan: STATUS.TERVERIFIKASI, id_laporan_induk: null });
+    expect(await jumlahRiwayat(induk)).toBe(riwayatInduk);
+    expect(await jumlahRiwayat(terverifikasi)).toBe(riwayatAnak);
+  });
+
+  it('tetap menggabungkan bila induk lebih lanjut dari anaknya (G15)', async () => {
+    const f = await buatFasilitas();
+    const induk = await buatLaporan({ idFasilitas: f, hariLalu: 7, status: STATUS.DIPROSES });
+    const terverifikasi = await buatLaporan({ idFasilitas: f, hariLalu: 3, status: STATUS.TERVERIFIKASI });
+    const menunggu = await buatLaporan({ idFasilitas: f, hariLalu: 1 });
+
+    const res = await gabung([menunggu, terverifikasi, induk]);
+
+    expect(res.status).toBe(200);
+    expect(res.body.idLaporanInduk).toBe(induk);
+    expect(res.body.digabung).toEqual([terverifikasi, menunggu]);
+    expect((await ambil(induk)).status_laporan).toBe(STATUS.DIPROSES);
+    expect(await ambil(terverifikasi)).toMatchObject({ status_laporan: STATUS.DIGABUNG, id_laporan_induk: induk });
+    expect(await ambil(menunggu)).toMatchObject({ status_laporan: STATUS.DIGABUNG, id_laporan_induk: induk });
+  });
+
   it('menolak kategori berbeda (400)', async () => {
     const f = await buatFasilitas();
     const a = await buatLaporan({ idFasilitas: f, kategori: KATEGORI.LAMPU_JALAN_MATI });

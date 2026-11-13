@@ -106,6 +106,41 @@ npx eas-cli@latest build -p android --profile preview
 ```
 Profil build ada di `mobile/eas.json`. Unduh APK dari tautan yang diberikan, lalu lampirkan di GitHub Release.
 
+## Deploy uji coba (Railway + Neon)
+
+Server API di [Railway](https://railway.com) (dibangun dari `src/Dockerfile`), basis data di [Neon](https://neon.tech), foto di *volume* Railway (disk permanen).
+**Jangan pernah meng-commit connection string, kata sandi, atau kunci apa pun** — repo ini publik; semua rahasia diisi lewat dashboard Railway.
+
+1. **Neon** — buat project (region Singapore), salin *connection string* (sudah berisi `sslmode=require`).
+2. **Seed sekali** dari laptop (folder `src/`), mengarah ke Neon. Perintah ini **menghapus seluruh data** lalu mengisi ulang:
+   ```bash
+   DATABASE_URL="<connection string Neon>" npm run db:migrate && DATABASE_URL="<connection string Neon>" npm run db:seed
+   ```
+3. **Railway** — *New Project → Deploy from GitHub repo*, pilih repo ini. Di *Settings* service:
+   - *Source*: branch `main`, **Root Directory `/src`** (Railway otomatis memakai `Dockerfile` di folder itu).
+   - *Deploy → Healthcheck Path*: `/api/health`.
+4. **Variables** service:
+
+   | Variabel | Isi |
+   | :--- | :--- |
+   | `DATABASE_URL` | connection string Neon |
+   | `JWT_SECRET` | string acak panjang, mis. hasil `openssl rand -hex 32` |
+   | `UPLOAD_DIR` | `/data/uploads` |
+   | `GOOGLE_MAPS_API_KEY` | opsional; kosong = wilayah dari daftar kecamatan offline |
+
+5. **Volume** — *Attach Volume* ke service dengan *mount path* `/data`, agar foto laporan tidak hilang saat deploy ulang.
+   Migrasi berjalan otomatis setiap server start; foto contoh seed dibuat ulang otomatis bila belum ada.
+6. **Domain** — *Settings → Networking → Generate Domain*, lalu cek `https://<domain>/api/health` → `{"status":"ok",...}`.
+7. **Aplikasi** — dengan Expo Go: jalankan `EXPO_PUBLIC_API_URL=https://<domain> npx expo start` dari `src/mobile`.
+   Atau build APK profil `demo` setelah mengganti `EXPO_PUBLIC_API_URL` di `mobile/eas.json` dengan domain Railway:
+   ```bash
+   npx eas-cli@latest build -p android --profile demo
+   ```
+   Agar peta tampil di APK, isi `GOOGLE_MAPS_ANDROID_API_KEY` di *Environment variables* project Expo (environment `preview`).
+
+Penyimpanan Google Cloud Storage tetap didukung (`STORAGE_DRIVER=gcs`, lihat bagian Integrasi Google) bila tidak memakai volume.
+Aplikasi menunggu jawaban server maksimal 5 detik ("Tolong muat ulang halaman"), jadi **buka `/api/health` beberapa menit sebelum demo** untuk memastikan server dan Neon sudah aktif.
+
 ## Continuous Integration
 
 Setiap push ke `main` dan setiap pull request menjalankan `.github/workflows/ci.yml`: test server dengan PostgreSQL 18, lalu bundle aplikasi Android dan iOS.
