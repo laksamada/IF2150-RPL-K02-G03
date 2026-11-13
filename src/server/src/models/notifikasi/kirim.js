@@ -5,17 +5,14 @@
 
 /**
  * Simpan notifikasi untuk pelapor. Tidak mengirim jika isiPesan kosong (Algo-011).
- * @returns {Promise<number|null>} id_notifikasi, atau null bila tidak dikirim.
+ * @returns {Promise<number|null>} id_notifikasi, atau null bila tidak ada yang dikirim.
  */
 export async function kirimNotifikasi(db, { idLaporan, idPelapor, isiPesan }) {
-  const pesan = (isiPesan ?? '').trim();
-  if (!pesan) return null;
-  // Q-012
+  if (!isiPesan || !isiPesan.trim()) return null;
   const { rows } = await db.query(
-    `INSERT INTO notifikasi (id_laporan, id_pelapor, isi_pesan, waktu_kirim)
-     VALUES ($1, $2, $3, NOW())
-     RETURNING id_notifikasi`,
-    [idLaporan, idPelapor, pesan],
+    `INSERT INTO notifikasi (id_laporan, id_pelapor, isi_pesan)
+     VALUES ($1, $2, $3) RETURNING id_notifikasi`,
+    [idLaporan, idPelapor, isiPesan],
   );
   return rows[0].id_notifikasi;
 }

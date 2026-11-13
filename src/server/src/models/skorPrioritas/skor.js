@@ -7,7 +7,9 @@
  *
  * Skor selalu dihitung server, tidak pernah diinput admin (gap G3).
  */
-import { BOBOT_KATEGORI, KATEGORI } from '@silembur/shared';
+//import { belumDiimplementasi } from '../../utils/http.js';
+
+import { BOBOT_KATEGORI } from '@silembur/shared';
 import { getJumlahLaporan } from '../fasilitas/berulang.js';
 
 /**
@@ -16,32 +18,32 @@ import { getJumlahLaporan } from '../fasilitas/berulang.js';
  * Kategori di luar tabel bobot memakai bobot "Lainnya" (cabang `else` Algo-009).
  */
 export function hitungNilaiSkor({ kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang }) {
-  const bobotKategori = BOBOT_KATEGORI[kategori] ?? BOBOT_KATEGORI[KATEGORI.LAINNYA];
-  return bobotKategori + 5 * jumlahPelapor + 2 * lamaMenunggu + 10 * frekuensiBerulang;
+  const bobot = BOBOT_KATEGORI[kategori];
+  if (bobot === undefined) throw new Error(`Kategori tidak dikenal: ${kategori}`);
+  return bobot + 5 * jumlahPelapor + 2 * lamaMenunggu + 10 * frekuensiBerulang;
 }
 
-/** Q-008: buat baris skor awal saat laporan disetujui (idempoten bila baris sudah ada). */
+
+/** Q-008: buat baris skor awal saat laporan disetujui. */
 export async function buatSkorAwal(db, idLaporan) {
   await db.query(
-    `INSERT INTO skor_prioritas (id_laporan, jumlah_pelapor, lama_menunggu, frekuensi_berulang, skor)
-     VALUES ($1, 1, 0, 0, 0)
-     ON CONFLICT (id_laporan) DO NOTHING`,
+    'INSERT INTO skor_prioritas (id_laporan) VALUES ($1) ON CONFLICT (id_laporan) DO NOTHING',
     [idLaporan],
   );
 }
 
 /**
- * Komponen masukan Algo-009 untuk satu laporan, dibaca dari kondisi basis data saat ini.
- *  - jumlahPelapor     = 1 + jumlah laporan yang digabung ke laporan ini (Q-009)
- *  - lamaMenunggu      = hari penuh sejak tanggal_laporan (dibulatkan ke bawah)
- *  - frekuensiBerulang = Fasilitas.getJumlahLaporan(id_fasilitas)
- * @returns {Promise<{ kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang } | null>} null jika laporan tidak ada.
+ * Komponen skor laporan saat ini TANPA menyimpan apa pun ke skor_prioritas
+ * (dipakai hitungSkor dan pratinjau skor read-only di I-06, gap G3).
+ * jumlahPelapor = 1 + laporan tergabung (Q-009); lamaMenunggu = hari penuh sejak tanggal_laporan;
+ * frekuensiBerulang = getJumlahLaporan(fasilitas).
+ * @returns {Promise<{kategori:string, jumlahPelapor:number, lamaMenunggu:number, frekuensiBerulang:number}|null>}
  */
 export async function getKomponenSkor(db, idLaporan) {
   const { rows } = await db.query(
     `SELECT l.kategori_kerusakan, l.id_fasilitas,
-            GREATEST(0, FLOOR(EXTRACT(EPOCH FROM (NOW() - l.tanggal_laporan)) / 86400))::int AS lama_menunggu,
-            (SELECT COUNT(*) FROM laporan a WHERE a.id_laporan_induk = l.id_laporan) AS jumlah_tergabung
+            1 + (SELECT COUNT(*) FROM laporan t WHERE t.id_laporan_induk = l.id_laporan) AS jumlah_pelapor,
+            GREATEST(0, FLOOR(EXTRACT(EPOCH FROM (NOW() - l.tanggal_laporan)) / 86400))::int AS lama_menunggu
        FROM laporan l
       WHERE l.id_laporan = $1`,
     [idLaporan],
@@ -50,15 +52,16 @@ export async function getKomponenSkor(db, idLaporan) {
   const r = rows[0];
   return {
     kategori: r.kategori_kerusakan,
-    jumlahPelapor: 1 + Number(r.jumlah_tergabung),
+    jumlahPelapor: Number(r.jumlah_pelapor),
     lamaMenunggu: Number(r.lama_menunggu),
     frekuensiBerulang: await getJumlahLaporan(db, r.id_fasilitas),
   };
 }
 
 /**
- * Algo-009 lengkap: hitung ulang skor dari kondisi terkini lalu simpan (Q-010 + dihitung_pada).
- * @returns {Promise<number|null>} skor baru, atau null jika laporan belum punya baris skor_prioritas.
+ * Algo-009 lengkap: jumlahPelapor = 1 + laporan tergabung (Q-009), lamaMenunggu = hari sejak tanggal_laporan,
+ * frekuensiBerulang = getJumlahLaporan(fasilitas) (models/fasilitas/berulang.js), simpan (Q-010).
+ * @returns {Promise<number|null>} null bila laporan belum punya baris skor_prioritas.
  */
 export async function hitungSkor(db, idLaporan) {
   const ada = await db.query('SELECT 1 FROM skor_prioritas WHERE id_laporan = $1', [idLaporan]);
@@ -66,15 +69,15 @@ export async function hitungSkor(db, idLaporan) {
 
   const komponen = await getKomponenSkor(db, idLaporan);
   if (!komponen) return null;
-  const skor = hitungNilaiSkor(komponen);
+  const nilai = hitungNilaiSkor(komponen);
 
   await db.query(
     `UPDATE skor_prioritas
-        SET jumlah_pelapor = $1, lama_menunggu = $2, frekuensi_berulang = $3, skor = $4, dihitung_pada = NOW()
-      WHERE id_laporan = $5`,
-    [komponen.jumlahPelapor, komponen.lamaMenunggu, komponen.frekuensiBerulang, skor, idLaporan],
+        SET jumlah_pelapor = $2, lama_menunggu = $3, frekuensi_berulang = $4, skor = $5, dihitung_pada = NOW()
+      WHERE id_laporan = $1`,
+    [idLaporan, komponen.jumlahPelapor, komponen.lamaMenunggu, komponen.frekuensiBerulang, nilai],
   );
-  return skor;
+  return nilai;
 }
 
 /** getSkor(): baca skor tersimpan. */
