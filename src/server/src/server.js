@@ -14,7 +14,7 @@ if (config.jwtSecretBawaan) {
   );
 }
 
-// Hosting berdisk sementara (mis. Render gratis) menghapus UPLOAD_DIR saat server tidur/deploy ulang,
+// Hosting berdisk sementara (mis. paket gratis tanpa volume) menghapus UPLOAD_DIR saat server tidur/deploy ulang,
 // padahal laporan seed tetap merujuk seed/*.png. Tulis ulang yang hilang; gagal tidak menghentikan server.
 pastikanFotoContoh()
   .then((n) => n && console.log(`Foto contoh seed ditulis ulang: ${n} file.`))

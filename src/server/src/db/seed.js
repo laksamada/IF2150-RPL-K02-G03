@@ -106,7 +106,7 @@ async function tulisFotoContoh() {
 
 /**
  * Tulis ulang foto contoh seed yang hilang dari UPLOAD_DIR tanpa menyentuh basis data.
- * Dipanggil saat server start: di hosting dengan disk sementara (mis. Render gratis), isi disk hilang
+ * Dipanggil saat server start: di hosting dengan disk sementara (mis. paket gratis tanpa volume), isi disk hilang
  * setiap server tidur/deploy ulang, padahal baris laporan seed tetap merujuk `seed/*.png`.
  * @returns {Promise<number>} jumlah file yang ditulis ulang
  */
