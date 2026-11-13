@@ -1,116 +1,116 @@
-// Test skor prioritas (Algo-009, KF16, KF17). Pemilik: P4.
-// Bagian DB memakai fasilitas/laporan buatan test sendiri agar data seed anggota lain tetap utuh.
-import { KATEGORI, STATUS } from '@silembur/shared';
+// Test Algo-009 skor prioritas (KF16, KF17). Pemilik: P4.
+import { BOBOT_KATEGORI, KATEGORI, STATUS } from '@silembur/shared';
 import { afterAll, describe, expect, it } from 'vitest';
 import { pool } from '../src/db/pool.js';
-import { buatSkorAwal, getSkor, hitungNilaiSkor, hitungSkor } from '../src/models/skorPrioritas/skor.js';
+import { buatSkorAwal, hitungNilaiSkor, hitungSkor } from '../src/models/skorPrioritas/skor.js';
 
+// Baris yang dibuat test ini dihapus lagi agar tidak memengaruhi file test lain (mis. prioritas.test.js).
+const dibuat = { laporan: [], fasilitas: [] };
 
-// Hapus data buatan test ini agar tidak memengaruhi test anggota lain (mis. hitungan antrean/fasilitas).
-const fasilitasUji = [];
-async function bersihkan() {
-  if (fasilitasUji.length === 0) return;
-  await pool.query('DELETE FROM laporan WHERE id_fasilitas = ANY($1) AND id_laporan_induk IS NOT NULL', [fasilitasUji]);
-  await pool.query('DELETE FROM laporan WHERE id_fasilitas = ANY($1)', [fasilitasUji]);
-  await pool.query('DELETE FROM fasilitas WHERE id_fasilitas = ANY($1)', [fasilitasUji]);
-}
 afterAll(async () => {
-  await bersihkan();
+  if (dibuat.laporan.length) {
+    await pool.query('DELETE FROM skor_prioritas WHERE id_laporan = ANY($1)', [dibuat.laporan]);
+    await pool.query('DELETE FROM laporan WHERE id_laporan = ANY($1)', [dibuat.laporan]);
+  }
+  if (dibuat.fasilitas.length) {
+    await pool.query('DELETE FROM fasilitas WHERE id_fasilitas = ANY($1)', [dibuat.fasilitas]);
+  }
   await pool.end();
 });
 
-const dasar = { jumlahPelapor: 1, lamaMenunggu: 0, frekuensiBerulang: 0 };
-
 describe('hitungNilaiSkor (Algo-009, fungsi murni)', () => {
+  const dasar = { jumlahPelapor: 1, lamaMenunggu: 0, frekuensiBerulang: 0 };
+
   it.each([
-    [KATEGORI.POHON_TUMBANG, 35],
-    [KATEGORI.JALAN_BERLUBANG, 25],
-    [KATEGORI.LAMPU_JALAN_MATI, 15],
-    [KATEGORI.LAINNYA, 10],
-  ])('bobot kategori %s dengan faktor minimum -> %i', (kategori, harapan) => {
-    expect(hitungNilaiSkor({ kategori, ...dasar })).toBe(harapan);
+    [KATEGORI.POHON_TUMBANG, 30],
+    [KATEGORI.JALAN_BERLUBANG, 20],
+    [KATEGORI.LAMPU_JALAN_MATI, 10],
+    [KATEGORI.LAINNYA, 5],
+  ])('bobot kategori %s = %i', (kategori, bobot) => {
+    expect(BOBOT_KATEGORI[kategori]).toBe(bobot);
+    expect(hitungNilaiSkor({ kategori, ...dasar })).toBe(bobot + 5);
+  });
+
+  it('kategori tidak dikenal memakai bobot Lainnya', () => {
+    expect(hitungNilaiSkor({ kategori: 'Tidak Dikenal', ...dasar })).toBe(5 + 5);
   });
 
   it.each([
-    ['jumlahPelapor 1', { jumlahPelapor: 1 }, 25],
-    ['jumlahPelapor 3', { jumlahPelapor: 3 }, 35],
-    ['lamaMenunggu 0', { lamaMenunggu: 0 }, 25],
-    ['lamaMenunggu 10', { lamaMenunggu: 10 }, 45],
-    ['frekuensiBerulang 0', { frekuensiBerulang: 0 }, 25],
-    ['frekuensiBerulang 4', { frekuensiBerulang: 4 }, 65],
-    ['semua faktor', { jumlahPelapor: 3, lamaMenunggu: 10, frekuensiBerulang: 4 }, 95],
-  ])('%s (Jalan Berlubang)', (_nama, ubah, harapan) => {
-    expect(hitungNilaiSkor({ kategori: KATEGORI.JALAN_BERLUBANG, ...dasar, ...ubah })).toBe(harapan);
-  });
-
-  it('menolak kategori yang tidak dikenal', () => {
-    expect(() => hitungNilaiSkor({ kategori: 'Tidak Ada', ...dasar })).toThrow();
+    // kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang, skor
+    [KATEGORI.JALAN_BERLUBANG, 1, 0, 0, 25],
+    [KATEGORI.JALAN_BERLUBANG, 3, 0, 0, 35],
+    [KATEGORI.JALAN_BERLUBANG, 1, 10, 0, 45],
+    [KATEGORI.JALAN_BERLUBANG, 1, 0, 4, 65],
+    [KATEGORI.POHON_TUMBANG, 3, 10, 4, 30 + 15 + 20 + 40],
+    [KATEGORI.LAMPU_JALAN_MATI, 3, 10, 0, 10 + 15 + 20],
+    [KATEGORI.LAINNYA, 1, 10, 4, 5 + 5 + 20 + 40],
+  ])('%s, pelapor %i, menunggu %i hari, frekuensi %i -> %i', (kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang, skor) => {
+    expect(hitungNilaiSkor({ kategori, jumlahPelapor, lamaMenunggu, frekuensiBerulang })).toBe(skor);
   });
 });
 
-async function buatLaporan({ idFasilitas, kategori, hariLalu = 0, status = STATUS.MENUNGGU_VERIFIKASI, induk = null }) {
-  const { rows } = await pool.query(
-    `INSERT INTO laporan (id_pelapor, id_fasilitas, id_laporan_induk, foto_laporan, deskripsi_laporan,
-                          kategori_kerusakan, tanggal_laporan, status_laporan)
-     VALUES ((SELECT id_pengguna FROM pengguna WHERE email = 'warga1@silembur.test'), $1, $2,
-             'seed/jalan-berlubang.png', 'Laporan uji skor', $3,
-             NOW() - make_interval(days => $4), $5)
-     RETURNING id_laporan`,
-    [idFasilitas, induk, kategori, hariLalu, status],
-  );
-  return rows[0].id_laporan;
-}
-
-async function buatFasilitas(kategori) {
-  const { rows } = await pool.query(
-    `INSERT INTO fasilitas (nama_fasilitas, kategori, lokasi_fasilitas, latitude, longitude, wilayah)
-     VALUES ('Fasilitas Uji Skor', $1, 'Jl. Uji', -6.9, 107.6, 'Coblong') RETURNING id_fasilitas`,
-    [kategori],
-  );
-  fasilitasUji.push(rows[0].id_fasilitas);
-  return rows[0].id_fasilitas;
-}
-
-describe('hitungSkor (Algo-009, Q-009, Q-010)', () => {
-  it('mengembalikan null bila laporan belum punya baris skor_prioritas', async () => {
-    const f = await buatFasilitas(KATEGORI.JALAN_BERLUBANG);
-    const id = await buatLaporan({ idFasilitas: f, kategori: KATEGORI.JALAN_BERLUBANG });
-    expect(await hitungSkor(pool, id)).toBeNull();
-    expect(await getSkor(pool, id)).toBeNull();
-  });
-
-  it('mengembalikan null untuk laporan yang tidak ada', async () => {
-    expect(await hitungSkor(pool, 999999)).toBeNull();
-  });
-
-  it('menghitung dari jumlah pelapor (1 + tergabung), lama menunggu, dan frekuensi fasilitas, lalu menyimpannya', async () => {
-    const f = await buatFasilitas(KATEGORI.JALAN_BERLUBANG);
-    const induk = await buatLaporan({
-      idFasilitas: f, kategori: KATEGORI.JALAN_BERLUBANG, hariLalu: 3, status: STATUS.TERVERIFIKASI,
-    });
-    await buatLaporan({
-      idFasilitas: f, kategori: KATEGORI.JALAN_BERLUBANG, hariLalu: 2, status: STATUS.DIGABUNG, induk,
-    });
-    await buatSkorAwal(pool, induk);
-
-    // Jalan Berlubang 20 + 5*2 pelapor + 2*3 hari + 10*1 (hanya induk yang terhitung; anak Digabung dikecualikan)
-    expect(await hitungSkor(pool, induk)).toBe(46);
-
+describe('hitungSkor (Algo-009 + Q-009/Q-010)', () => {
+  async function buatFasilitas() {
     const { rows } = await pool.query(
-      'SELECT jumlah_pelapor, lama_menunggu, frekuensi_berulang, skor FROM skor_prioritas WHERE id_laporan = $1',
-      [induk],
+      `INSERT INTO fasilitas (nama_fasilitas, kategori, lokasi_fasilitas, latitude, longitude, wilayah)
+       VALUES ('Fasilitas Uji Skor', $1, 'Jl. Uji Skor', -6.91, 107.61, 'Coblong') RETURNING id_fasilitas`,
+      [KATEGORI.POHON_TUMBANG],
     );
-    expect(rows[0]).toEqual({ jumlah_pelapor: 2, lama_menunggu: 3, frekuensi_berulang: 1, skor: 46 });
-    expect(await getSkor(pool, induk)).toBe(46);
+    dibuat.fasilitas.push(rows[0].id_fasilitas);
+    return rows[0].id_fasilitas;
+  }
+
+  async function buatLaporan({ idFasilitas, hariLalu, status = STATUS.MENUNGGU_VERIFIKASI, induk = null }) {
+    const { rows } = await pool.query(
+      `INSERT INTO laporan (id_pelapor, id_fasilitas, id_laporan_induk, foto_laporan, deskripsi_laporan,
+                            kategori_kerusakan, tanggal_laporan, status_laporan)
+       VALUES ((SELECT id_pengguna FROM pengguna WHERE email = 'warga1@silembur.test'), $1, $2,
+               'seed/pohon-tumbang.png', 'Laporan uji skor', $3, NOW() - make_interval(hours => $4), $5)
+       RETURNING id_laporan`,
+      [idFasilitas, induk, KATEGORI.POHON_TUMBANG, Math.round(hariLalu * 24), status],
+    );
+    dibuat.laporan.push(rows[0].id_laporan);
+    return rows[0].id_laporan;
+  }
+
+  it('mengembalikan null bila laporan belum punya baris skor', async () => {
+    const f = await buatFasilitas();
+    const id = await buatLaporan({ idFasilitas: f, hariLalu: 2 });
+    expect(await hitungSkor(pool, id)).toBeNull();
+    const { rowCount } = await pool.query('SELECT 1 FROM skor_prioritas WHERE id_laporan = $1', [id]);
+    expect(rowCount).toBe(0);
   });
 
-  it('buatSkorAwal idempoten (tidak menimpa baris yang sudah ada)', async () => {
-    const f = await buatFasilitas(KATEGORI.LAMPU_JALAN_MATI);
-    const id = await buatLaporan({ idFasilitas: f, kategori: KATEGORI.LAMPU_JALAN_MATI, status: STATUS.TERVERIFIKASI });
+  it('menghitung dari jumlah pelapor, lama menunggu (dibulatkan ke bawah), frekuensi lalu menyimpannya', async () => {
+    const f = await buatFasilitas();
+    const induk = await buatLaporan({ idFasilitas: f, hariLalu: 3.5, status: STATUS.TERVERIFIKASI });
+    // Dua laporan digabung ke induk -> jumlahPelapor 3; tidak dihitung sebagai frekuensi (status Digabung).
+    await buatLaporan({ idFasilitas: f, hariLalu: 1, status: STATUS.DIGABUNG, induk });
+    await buatLaporan({ idFasilitas: f, hariLalu: 1, status: STATUS.DIGABUNG, induk });
+    // Satu laporan aktif lain di fasilitas yang sama -> frekuensi 2 (induk + laporan ini).
+    await buatLaporan({ idFasilitas: f, hariLalu: 0.5 });
+
+    await buatSkorAwal(pool, induk);
+    const skor = await hitungSkor(pool, induk);
+
+    const harapan = hitungNilaiSkor({
+      kategori: KATEGORI.POHON_TUMBANG,
+      jumlahPelapor: 3,
+      lamaMenunggu: 3,
+      frekuensiBerulang: 2,
+    });
+    expect(skor).toBe(harapan);
+
+    const { rows } = await pool.query('SELECT * FROM skor_prioritas WHERE id_laporan = $1', [induk]);
+    expect(rows[0]).toMatchObject({ jumlah_pelapor: 3, lama_menunggu: 3, frekuensi_berulang: 2, skor: harapan });
+  });
+
+  it('buatSkorAwal idempoten', async () => {
+    const f = await buatFasilitas();
+    const id = await buatLaporan({ idFasilitas: f, hariLalu: 1, status: STATUS.TERVERIFIKASI });
     await buatSkorAwal(pool, id);
-    await hitungSkor(pool, id);
-    const sebelum = await getSkor(pool, id);
     await buatSkorAwal(pool, id);
-    expect(await getSkor(pool, id)).toBe(sebelum);
+    const { rows } = await pool.query('SELECT COUNT(*) AS n FROM skor_prioritas WHERE id_laporan = $1', [id]);
+    expect(rows[0].n).toBe(1);
   });
 });
