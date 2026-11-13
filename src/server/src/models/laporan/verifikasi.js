@@ -1,114 +1,72 @@
- /*
+/**
+ * Model Verifikasi (C07) — simpanVerifikasi, tahanLaporan, teruskanKePemerintah (Algo-002, Algo-008, Q-003).
  * Pemilik: P4.
- * Admin BOLEH melihat identitas pelapor (dibutuhkan untuk verifikasi & notifikasi).
- * Fungsi di file ini hanya dipakai controller /admin/* (KNF02).
+ *
+ * tahanLaporan() tidak butuh query: laporan yang tidak disetujui otomatis "tertahan" karena statusnya
+ * (Ditolak / Perlu Revisi) tidak termasuk STATUS_PRIORITAS sehingga tidak tampil di daftar pemda (KF08).
  */
-import { STATUS } from '@silembur/shared';
-import { urlFoto } from '../../utils/http.js';
-import { getKomponenSkor, hitungNilaiSkor } from '../skorPrioritas/skor.js';
+import { KEPUTUSAN, KEPUTUSAN_KE_STATUS, STATUS } from '@silembur/shared';
+import { HttpError } from '../../utils/http.js';
+import { ubahStatus } from '../laporan/status.js';
+import { kirimNotifikasi } from '../notifikasi/kirim.js';
+import { buatSkorAwal, hitungSkor } from '../skorPrioritas/skor.js';
 
-const SELECT_ADMIN = `
-  SELECT l.id_laporan, l.id_fasilitas, l.id_laporan_induk, l.foto_laporan, l.deskripsi_laporan,
-         l.kategori_kerusakan, l.tanggal_laporan, l.status_laporan,
-         lo.latitude, lo.longitude, lo.wilayah, lo.alamat,
-         p.id_pengguna AS pelapor_id, p.nama AS pelapor_nama, p.email AS pelapor_email,
-         f.nama_fasilitas, sp.skor
-    FROM laporan l
-    JOIN pengguna p ON p.id_pengguna = l.id_pelapor
-    LEFT JOIN lokasi lo ON lo.id_laporan = l.id_laporan
-    LEFT JOIN fasilitas f ON f.id_fasilitas = l.id_fasilitas
-    LEFT JOIN skor_prioritas sp ON sp.id_laporan = l.id_laporan`;
-
-function toLaporanAdmin(r) {
-  return {
-    id: r.id_laporan,
-    kategori: r.kategori_kerusakan,
-    deskripsi: r.deskripsi_laporan,
-    foto: urlFoto(r.foto_laporan),
-    status: r.status_laporan,
-    tanggalLaporan: r.tanggal_laporan,
-    lokasi:
-      r.latitude === null || r.latitude === undefined
-        ? null
-        : { latitude: r.latitude, longitude: r.longitude, wilayah: r.wilayah, alamat: r.alamat },
-    fasilitas: r.id_fasilitas ? { id: r.id_fasilitas, nama: r.nama_fasilitas } : null,
-    pelapor: { id: r.pelapor_id, nama: r.pelapor_nama, email: r.pelapor_email },
-    skor: r.skor ?? null,
-    idLaporanInduk: r.id_laporan_induk,
-  };
-}
-
-export async function getLaporanAdminById(db, idLaporan) {
-  const { rows } = await db.query(`${SELECT_ADMIN} WHERE l.id_laporan = $1`, [idLaporan]);
-  return rows[0] ? toLaporanAdmin(rows[0]) : null;
-}
-import { belumDiimplementasi } from '../../utils/http.js';
-
-/** getLaporanMenungguVerifikasi(): daftar laporan per status (default "Menunggu Verifikasi"), terlama dulu. */
-export async function getLaporanUntukAdmin(db, { status, keyword }) {
-  const params = [status || STATUS.MENUNGGU_VERIFIKASI];
-  let kondisi = 'l.status_laporan = $1';
-  if (keyword) {
-    // Escape wildcard LIKE agar kata kunci dicari apa adanya.
-    params.push(`%${keyword.replace(/[\\%_]/g, '\\$&')}%`);
-    kondisi += ' AND (l.deskripsi_laporan ILIKE $2 OR lo.alamat ILIKE $2)';
-  }
+/** Q-003: catat keputusan admin. @returns {Promise<number>} id_verifikasi */
+export async function simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, catatan }) {
   const { rows } = await db.query(
-    `${SELECT_ADMIN} WHERE ${kondisi} ORDER BY l.tanggal_laporan ASC, l.id_laporan ASC`,
-    params,
+    `INSERT INTO verifikasi (id_laporan, id_admin, keputusan, catatan_alasan)
+     VALUES ($1, $2, $3, $4) RETURNING id_verifikasi`,
+    [idLaporan, idAdmin, keputusan, catatan ?? ''],
   );
-  return rows.map(toLaporanAdmin);
-  throw belumDiimplementasi('P4', 'getLaporanMenungguVerifikasi (KF06)');
-}
-
-/** Satu laporan sebagai DTO LaporanAdmin, null jika tidak ada. */
-export async function getLaporanAdmin(db, idLaporan) {
-  const { rows } = await db.query(`SELECT ${KOLOM_ADMIN} ${FROM_ADMIN} WHERE l.id_laporan = $1`, [idLaporan]);
-  return rows[0] ? keLaporanAdmin(rows[0]) : null;
+  return rows[0].id_verifikasi;
 }
 
 /**
- * Detail lengkap untuk I-06: LaporanAdmin + pratinjauSkor (hitungNilaiSkor dengan nilai saat ini, tidak disimpan;
- * gap G3) + riwayat status (terawal -> terakhir) + histori verifikasi. null jika laporan tidak ada.
+ * Algo-002 tetapkanKeputusan + Algo-008 teruskanKePemerintah, dalam satu transaksi:
+ *   1. simpanVerifikasi
+ *   2. ubahStatus sesuai KEPUTUSAN_KE_STATUS (Disetujui -> Terverifikasi, Ditolak, Revisi -> Perlu Revisi)
+ *   3. jika Disetujui: buatSkorAwal (Q-008) lalu hitungSkor
+ *   4. kirimNotifikasi ke pelapor berisi keputusan + catatan (KF07)
+ * Laporan yang belum Terverifikasi otomatis "tertahan" karena tidak masuk STATUS_PRIORITAS (KF08).
+ *
+ * WAJIB dipanggil dengan client dari withTransaction().
+ * @returns {Promise<{ skor: number|null }>}
+ * @throws HttpError 404 bila laporan tidak ada, 409 bila status bukan "Menunggu Verifikasi".
  */
-export async function getDetailLaporanAdmin(db, idLaporan) {
-  const laporan = await getLaporanAdminById(db, idLaporan);
-  if (!laporan) return null;
+export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, catatan }) {
+  // Kunci baris: dua admin yang memutuskan bersamaan tidak bisa sama-sama lolos.
+  const { rows } = await db.query(
+    'SELECT id_pelapor, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
+    [idLaporan],
+  );
+  if (rows.length === 0) throw new HttpError(404, Laporan #${idLaporan} tidak ditemukan);
+  const { id_pelapor: idPelapor, status_laporan: statusSekarang } = rows[0];
+  if (statusSekarang !== STATUS.MENUNGGU_VERIFIKASI) {
+    throw new HttpError(
+      409,
+      Laporan #${idLaporan} berstatus "${statusSekarang}"; hanya laporan "${STATUS.MENUNGGU_VERIFIKASI}" yang bisa diverifikasi,
+    );
+  }
 
-  const { kategori, ...komponen } = await getKomponenSkor(db, idLaporan);
-  const pratinjauSkor = { nilai: hitungNilaiSkor({ kategori, ...komponen }), ...komponen };
+  const catatanBersih = (catatan ?? '').trim();
+  await simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, catatan: catatanBersih });
+  await ubahStatus(db, {
+    idLaporan,
+    statusBaru: KEPUTUSAN_KE_STATUS[keputusan],
+    deskripsi: catatanBersih ? ${keputusan}. Catatan: ${catatanBersih} : ${keputusan}.,
+    idPengguna: idAdmin,
+  });
 
-  const riwayat = (
-    await db.query(
-      `SELECT id_riwayat AS id, status_lama AS "statusLama", status_baru AS "statusBaru",
-              deskripsi_perubahan AS deskripsi, tanggal_perubahan AS tanggal
-         FROM riwayat_status
-        WHERE id_laporan = $1
-        ORDER BY tanggal_perubahan ASC, id_riwayat ASC`,
-      [idLaporan],
-    )
-  ).rows;
+  let skor = null;
+  if (keputusan === KEPUTUSAN.DISETUJUI) {
+    await buatSkorAwal(db, idLaporan);
+    skor = await hitungSkor(db, idLaporan);
+  }
 
-  const verifikasi = (
-    await db.query(
-      `SELECT v.keputusan, v.catatan_alasan AS catatan, v.waktu_verifikasi AS waktu, a.nama AS admin
-         FROM verifikasi v
-         JOIN pengguna a ON a.id_pengguna = v.id_admin
-        WHERE v.id_laporan = $1
-        ORDER BY v.waktu_verifikasi DESC, v.id_verifikasi DESC`,
-      [idLaporan],
-    )
-  ).rows;
-
-  return { ...laporan, pratinjauSkor, riwayat, verifikasi };
-  throw belumDiimplementasi('P4', 'getDetailLaporan admin (I-06)');
-}
-
-/** Jumlah laporan "Menunggu Verifikasi" untuk badge notifikasi admin (UC02 langkah 1). */
-export async function hitungLaporanBaru(db) {
-  const { rows } = await db.query('SELECT COUNT(*) AS jumlah FROM laporan WHERE status_laporan = $1', [
-    STATUS.MENUNGGU_VERIFIKASI,
-  ]);
-  return Number(rows[0].jumlah);
-  throw belumDiimplementasi('P4', 'hitungLaporanBaru (badge admin)');
+  await kirimNotifikasi(db, {
+    idLaporan,
+    idPelapor,
+    isiPesan: Laporan #${idLaporan}: ${keputusan}.${catatanBersih ? ` ${catatanBersih} : ''}`,
+  });
+  return { skor };
 }
