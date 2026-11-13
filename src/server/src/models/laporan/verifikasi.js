@@ -29,7 +29,7 @@ export async function simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, cata
  *   4. kirimNotifikasi ke pelapor berisi keputusan + catatan (KF07)
  * Laporan yang belum Terverifikasi otomatis "tertahan" karena tidak masuk STATUS_PRIORITAS (KF08).
  *
- * WAJIB dipanggil dengan client dari withTransaction().
+ * WAJIB dipanggil dengan `client` dari withTransaction().
  * @returns {Promise<{ skor: number|null }>}
  * @throws HttpError 404 bila laporan tidak ada, 409 bila status bukan "Menunggu Verifikasi".
  */
@@ -39,12 +39,12 @@ export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, cat
     'SELECT id_pelapor, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
     [idLaporan],
   );
-  if (rows.length === 0) throw new HttpError(404, Laporan #${idLaporan} tidak ditemukan);
+  if (rows.length === 0) throw new HttpError(404, `Laporan #${idLaporan} tidak ditemukan`);
   const { id_pelapor: idPelapor, status_laporan: statusSekarang } = rows[0];
   if (statusSekarang !== STATUS.MENUNGGU_VERIFIKASI) {
     throw new HttpError(
       409,
-      Laporan #${idLaporan} berstatus "${statusSekarang}"; hanya laporan "${STATUS.MENUNGGU_VERIFIKASI}" yang bisa diverifikasi,
+      `Laporan #${idLaporan} berstatus "${statusSekarang}"; hanya laporan "${STATUS.MENUNGGU_VERIFIKASI}" yang bisa diverifikasi`,
     );
   }
 
@@ -53,7 +53,7 @@ export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, cat
   await ubahStatus(db, {
     idLaporan,
     statusBaru: KEPUTUSAN_KE_STATUS[keputusan],
-    deskripsi: catatanBersih ? ${keputusan}. Catatan: ${catatanBersih} : ${keputusan}.,
+    deskripsi: catatanBersih ? `${keputusan}. Catatan: ${catatanBersih}` : `${keputusan}.`,
     idPengguna: idAdmin,
   });
 
@@ -66,7 +66,7 @@ export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, cat
   await kirimNotifikasi(db, {
     idLaporan,
     idPelapor,
-    isiPesan: Laporan #${idLaporan}: ${keputusan}.${catatanBersih ? ` ${catatanBersih} : ''}`,
+    isiPesan: `Laporan #${idLaporan}: ${keputusan}.${catatanBersih ? ` ${catatanBersih}` : ''}`,
   });
   return { skor };
 }
