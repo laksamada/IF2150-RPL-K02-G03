@@ -7,24 +7,27 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## *SILEMBUR*
+### *LOGO*
+<p align="center">
+<img alt="Logo SILEMBUR" src="./assets/logo.jpeg" width="40%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: *Amanda Aurellia Salsabila*
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | *K02* |
+| Kelompok | *G03* |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| *13525059* | *Muhammad Pandu Pulunggana* |
+| *13525128* | *Mochamad Fachri Alfaridzi* |
+| *13525101* | *Kevin Lincoln Hutabarat* |
+| *13525035* | *Muhammad Dhiya Rafi* |
+| *13525098* | *Satya Radhityan Yahya* |
 
 ---
 
@@ -73,6 +76,8 @@ Tuliskan uraian ringkas mengenai isi dokumen, tujuan pembuatan dokumen HIUPL ini
 ## 1.2 Lingkup Masalah
 Tuliskan lingkup masalah, yaitu membangun perangkat lunak *[nama perangkat lunak]*. Jelaskan dengan singkat dan jelas deskripsi aplikasi serta keterkaitannya dengan perangkat lunak atau sistem lain (jika ada). Bagian ini maksimal berisi satu paragraf, dapat diambil dari SKPL/DPPL.
 
+SILEMBUR (Sistem Informasi Lembur) adalah aplikasi web mobile untuk melaporkan kerusakan fasilitas umum seperti jalan berlubang, lampu penerangan jalan yang mati, dan pohon tumbang. Nama "lembur" diambil dari bahasa Sunda yang berarti kampung. Masyarakat membuat laporan berisi foto, lokasi GPS, dan deskripsi kerusakan. Admin kemudian memverifikasi laporan tersebut sebelum diteruskan ke pemerintah daerah. Kanal pengaduan yang ada saat ini, seperti SP4N-LAPOR dan JAKI, memperlakukan setiap laporan sebagai pengaduan terpisah. Akibatnya laporan duplikat menumpuk, prioritas penanganan tidak langsung terlihat, dan riwayat kerusakan suatu fasilitas sulit ditelusuri. SILEMBUR menangani masalah tersebut dengan menggabungkan laporan duplikat, menghitung skor prioritas setiap laporan terverifikasi, dan mencatat riwayat status per fasilitas. Cakupan sistem dibatasi pada satu kota dengan tiga jenis pengguna, yaitu masyarakat umum, admin, dan pemerintah daerah.
+
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
 
@@ -115,6 +120,14 @@ Tabel 1.4. Aturan Penomoran
 ## 1.5 Referensi
 Cantumkan daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuatan dokumen dan pengembangan P/L, **minimal dokumen SKPL, APL, DPPL, dan Implementasi (Tugas 9)**. Tambahkan dokumentasi *framework*/*library*/*testing tool* atau referensi lain apabila digunakan.
 
+- Kelompok K02 G03. *Spesifikasi Kebutuhan Perangkat Lunak (SKPL) SILEMBUR*
+- Kelompok K02 G03. *Arsitektur Perangkat Lunak (APL) SILEMBUR*
+- Kelompok K02 G03. *DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL) SILEMBUR*
+- Kelompok K02 G03. *DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL) 2 SILEMBUR*
+- Kelompok K02 G03. *IMPLEMENTASI SILEMBUR*
+- Powerpoint Modul dari Edunex kelas Software Engineering [Parent Class]
+- Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson
+
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi bab, dengan maksimal 1 paragraf.
 
@@ -128,8 +141,11 @@ Bagian ini diisi dengan *System Overview*, dalam bentuk gambar dan narasi yang m
 
 Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
 
+Silembur merupakan sistem aplikasi pelaporan untuk fasilitas umum yang mengalami kerusakan. Laporan dapat dibuat oleh masyarakat umum, pengguna cukup mencantumkan detail yang diperlukan melalui antarmuka aplikasi lalu menyimpan laporan tersebut. Setelah itu, admin akan memverifikasi apakah laporan tersebut valid atau tidak valid. Laporan yang sudah valid akan disimpan di database yang dapat Pemerintah Daerah akses untuk melakukan penanganan lebih lanjut. Proses perbaikan fasilitas akan diperbaharui secara berkala melalui aplikasi sehingga pengguna juga dapat memantau perkembangan dari perbaikan yang dilakukan.
+
+[text](../M5/K02_G03_SKPL.md)
 <p align="center">
-<img alt="System Overview / Use Case Diagram" src="./assets/contoh-uc-diagram.webp" width="90%">
+<img alt="System Overview / Use Case Diagram" src="./assets/diagram_silembur.png" width="90%">
 </p>
 <p align="center">
 <i>Gambar 2.1. Use Case Diagram [Nama P/L]</i>
