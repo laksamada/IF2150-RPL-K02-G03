@@ -226,74 +226,319 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
 | ID Kelas | Nama Kelas | Tingkat | Alasan | Test Case Terkait |
 | :--- | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *Mendalam* | *Memuat `hitungTotal()` dan transisi status pembayaran* | *C02-UT01 s.d. C02-UT08* |
-| *C03* | *Keranjang* | *Sedang* | *Delegasi sederhana ke Produk dan Pesanan* | *C03-UT01 s.d. C03-UT03, INT-TC02* |
-| *C01* | *Pelanggan* | *Tidak perlu* | *Hanya menyimpan data akun, tanpa logika* | *-* |
-| *[CXX]* | *[Nama kelas]* | *[Mendalam/Sedang/Tidak perlu]* | *[Alasan penentuan tingkat pengujian]* | *[ID test case atau -]* |
-| *...* | *...* | *...* | *...* | *...* |
+| C01 | Pelapor | Sedang | Mengoordinasikan penyimpanan laporan dan pembacaan laporan milik pelapor. Validasi dan penyimpanan didelegasikan ke Laporan | C01-UT01 s.d. C01-UT07 |
+| C02 | Admin | Sedang | Meneruskan keputusan verifikasi ke Verifikasi dan mengambil daftar laporan dari Laporan | C02-UT01 s.d. C02-UT04 |
+| C03 | PemerintahDaerah | Sedang | Meneruskan filter dan permintaan daftar prioritas ke Laporan dan Fasilitas | C03-UT01 s.d. C03-UT05 |
+| C04 | Laporan | Mendalam | Memuat validasi isian formulir (Algo-004), aturan transisi status (`ubahStatus()`), serta filter dan urutan prioritas | C04-UT01 s.d. C04-UT17 |
+| C05 | Lokasi | Mendalam | Memuat penentuan lokasi laporan (Algo-006) dan integrasi eksternal Google Maps untuk wilayah | C05-UT01 s.d. C05-UT05 |
+| C06 | Fasilitas | Mendalam | Memuat pencocokan fasilitas radius 30 m dan penandaan kandidat evaluasi berdasarkan ambang batas | C06-UT01 s.d. C06-UT12 |
+| C07 | Verifikasi | Mendalam | Memuat aturan keputusan setuju, tolak, dan revisi (Algo-002) serta penahanan laporan | C07-UT01 s.d. C07-UT06 |
+| C08 | SkorPrioritas | Mendalam | Memuat perhitungan skor prioritas (Algo-009) dan perhitungan ulang skor yang kedaluwarsa | C08-UT01 s.d. C08-UT06 |
+| C09 | RiwayatStatus | Sedang | Hanya mencatat dan membaca riwayat perubahan status tanpa perhitungan | C09-UT01 s.d. C09-UT03 |
+| C10 | Notifikasi | Sedang | Hanya menyimpan, membaca, dan menandai pesan notifikasi | C10-UT01 s.d. C10-UT06 |
+| C11 | KonfirmasiDuplikat | Mendalam | Memuat penggabungan laporan dalam satu transaksi (Algo-012), penentuan laporan induk, dan penolakan kategori berbeda | C11-UT01 s.d. C11-UT06 |
 
 ## 4.2 Pengujian Unit Kelas
 
 Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
 
-Cara menjalankan unit test: *[tuliskan perintah, mis. `pytest src/tests/`]*.
+Cara menjalankan unit test: dari folder `src`, jalankan `npm run db:up`, lalu `npm test`. Untuk coverage, pasang `@vitest/coverage-v8` dengan versi yang sama dengan Vitest, lalu jalankan `npx vitest run --coverage` dari folder `src/server`.
 
-Lokasi file test: *[path, mis. `src/tests/`]*.
+Lokasi file test: `src/server/tests/`.
 
-### 4.2.1 Kelas [Nama Kelas 1]
+### 4.2.1 Kelas Pelapor
 
-**ID Kelas:** *[C02]*  
-**Nama Kelas:** *[Pesanan]*  
-**Tingkat:** *[Mendalam]*
+**ID Kelas:** C01  
+**Nama Kelas:** Pelapor  
+**Tingkat:** Sedang
 
-Tabel 4.2.1. Hasil Pengujian Unit Kelas [C02]
+Tabel 4.2.1. Hasil Pengujian Unit Kelas C01
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *C02-UT01* | *`hitungTotal(): Decimal`* | *Normal* | *Pesanan berisi 2 item: 10.000 x 2 dan 5.000 x 1* | *Total = 25.000* | *[Hasil aktual]* | *Pass/Fail* |
-| *C02-UT02* | *`hitungTotal(): Decimal`* | *Batas* | *Pesanan berisi tepat 1 item dengan jumlah 1* | *Total = harga item tersebut* | *[...]* | *Pass/Fail* |
-| *C02-UT03* | *`hitungTotal(): Decimal`* | *Negatif* | *Pesanan tanpa item* | *Total = 0 atau melempar kesalahan sesuai rancangan* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| C01-UT01 | `konfirmasiSimpanLaporan()` | Normal | Panggil langsung dengan foto, deskripsi berspasi di awal dan akhir, kategori Jalan Berlubang, titik -6.9147, 107.6098 (Kota Bandung), wilayah dan alamat dari adapter | Laporan tersimpan berstatus Menunggu Verifikasi, deskripsi tanpa spasi tepi, baris lokasi terbentuk, jumlah laporan pelapor bertambah 1 | Laporan tersimpan berstatus Menunggu Verifikasi dengan deskripsi "Jalan berlubang di depan sekolah.", wilayah lokasi terisi, jumlah laporan bertambah 1 | Pass |
+| C01-UT02 | `konfirmasiSimpanLaporan()` | Gagal | Panggil langsung dengan deskripsi berisi spasi saja | Melempar `HttpError` 400, jumlah baris laporan dan jumlah laporan pelapor tidak berubah | Melempar `HttpError` berstatus 400, jumlah laporan dan jumlah laporan pelapor sama dengan sebelum pemanggilan | Pass |
+| C01-UT03 | `jumlahLaporan` | Normal | Kirim laporan baru lewat `POST /api/laporan` sebagai warga1, lalu revisi sebuah laporan lewat `PUT /api/laporan/:id/revisi` | Kolom `jumlah_laporan` bertambah 1 setelah laporan baru, tidak berubah setelah revisi | `jumlah_laporan` bertambah 1 setelah laporan baru dan tetap sama setelah revisi | Pass |
+| C01-UT04 |  |  |  |  |  |  |
+| C01-UT05 |  |  |  |  |  |  |
+| C01-UT06 |  |  |  |  |  |  |
+| C01-UT07 |  |  |  |  |  |  |
 
-Khusus kelas **Mendalam**:
+### 4.2.2 Kelas Admin
 
-Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
+**ID Kelas:** C02  
+**Nama Kelas:** Admin  
+**Tingkat:** Sedang
+
+Tabel 4.2.2. Hasil Pengujian Unit Kelas C02
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C02-UT01 |  |  |  |  |  |  |
+| C02-UT02 |  |  |  |  |  |  |
+| C02-UT03 |  |  |  |  |  |  |
+| C02-UT04 |  |  |  |  |  |  |
+
+### 4.2.3 Kelas PemerintahDaerah
+
+**ID Kelas:** C03  
+**Nama Kelas:** PemerintahDaerah  
+**Tingkat:** Sedang
+
+Tabel 4.2.3. Hasil Pengujian Unit Kelas C03
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C03-UT01 |  |  |  |  |  |  |
+| C03-UT02 |  |  |  |  |  |  |
+| C03-UT03 |  |  |  |  |  |  |
+| C03-UT04 |  |  |  |  |  |  |
+| C03-UT05 |  |  |  |  |  |  |
+
+### 4.2.4 Kelas Laporan
+
+**ID Kelas:** C04  
+**Nama Kelas:** Laporan  
+**Tingkat:** Mendalam
+
+Tabel 4.2.4. Hasil Pengujian Unit Kelas C04
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C04-UT01 | `validasiIsianFormulir()` | Normal | Foto, deskripsi, kategori Jalan Berlubang, dan koordinat lengkap, baik berbentuk teks "-6.9,107.6" maupun objek latitude dan longitude | `true` | Mengembalikan `true` untuk kedua bentuk koordinat | Pass |
+| C04-UT02 | `validasiIsianFormulir()` | Batas | Deskripsi tepat 300 karakter, lalu 301 karakter | 300 karakter `true`, 301 karakter `false` | 300 karakter `true`, 301 karakter `false` | Pass |
+| C04-UT03 | `validasiIsianFormulir()` | Negatif | Masing-masing: foto kosong, foto tidak ada, deskripsi kosong, deskripsi hanya spasi, koordinat kosong, koordinat tanpa longitude, kategori "Banjir" | `false` untuk setiap masukan | Mengembalikan `false` untuk ketujuh masukan | Pass |
+| C04-UT04 | `simpanLaporan()` | Normal | `POST /api/laporan` sebagai warga1 dengan foto PNG, kategori Lampu Jalan Mati, deskripsi, dan titik GPS sekitar 10 m dari fasilitas seed | Respons 201, status Menunggu Verifikasi, file foto tersimpan, lokasi bersumber GPS, riwayat pertama "Laporan berhasil diterima oleh sistem.", tanpa identitas pelapor | Respons 201 dengan status Menunggu Verifikasi, foto tersimpan di folder unggahan, lokasi bersumber GPS, satu baris riwayat sesuai, respons tidak memuat data pelapor | Pass |
+| C04-UT05 | `simpanLaporan()` | Negatif | `POST /api/laporan` tanpa foto, lalu masing-masing dengan deskripsi spasi, deskripsi 301 karakter, kategori "Banjir", latitude kosong, longitude "abc", dan sumber lokasi "SATELIT" | Respons 400 dengan nama field yang salah, tidak ada laporan tersimpan | Semua respons 400 dan menyebut field yang salah, jumlah laporan pelapor tidak bertambah | Pass |
+| C04-UT06 | `revisiLaporan()` | Normal | `PUT /api/laporan/:id/revisi` oleh warga2 pada laporan seed berstatus Perlu Revisi dengan deskripsi baru, lalu revisi laporan lain dengan foto, kategori Jalan Berlubang, dan titik manual baru | Respons 200, status kembali Menunggu Verifikasi, riwayat "Laporan direvisi oleh pelapor.", lokasi dan fasilitas ikut diperbarui saat titik atau kategori berubah | Respons 200, status Menunggu Verifikasi, riwayat Perlu Revisi ke Menunggu Verifikasi tercatat, koordinat menjadi -6.917500,107.619100 bersumber MANUAL, fasilitas berganti | Pass |
+| C04-UT07 | `revisiLaporan()` | Negatif | Revisi laporan berstatus Menunggu Verifikasi, revisi laporan milik pengguna lain, latitude tanpa longitude, id 999999, dan id "abc" | Berturut-turut 409, 404, 400, 404, 400, tanpa perubahan data | Respons berturut-turut 409, 404, 400, 404, 400, status laporan milik pengguna lain tetap Perlu Revisi | Pass |
+| C04-UT08 |  |  |  |  |  |  |
+| C04-UT09 |  |  |  |  |  |  |
+| C04-UT10 |  |  |  |  |  |  |
+| C04-UT11 |  |  |  |  |  |  |
+| C04-UT12 |  |  |  |  |  |  |
+| C04-UT13 |  |  |  |  |  |  |
+| C04-UT14 |  |  |  |  |  |  |
+| C04-UT15 |  |  |  |  |  |  |
+| C04-UT16 |  |  |  |  |  |  |
+| C04-UT17 |  |  |  |  |  |  |
+
+Tabel 4.2.4b. Ringkasan Cakupan Kelas C04
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+| Daftar operasi public pada DPPL |  |
+| Operasi yang diuji |  |
+| ID Algoritma yang tercakup |  |
+| Coverage (wajib ≥ 70%) |  |
 
-### 4.2.2 Kelas [Nama Kelas 2]
+### 4.2.5 Kelas Lokasi
 
-*[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
+**ID Kelas:** C05  
+**Nama Kelas:** Lokasi  
+**Tingkat:** Mendalam
+
+Tabel 4.2.5. Hasil Pengujian Unit Kelas C05
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C05-UT01 | `setLokasiLaporan(koordinat)` | Normal | Laporan tanpa lokasi, titik -6.9147, 107.6098 tanpa wilayah dan sumber | Satu baris lokasi dengan koordinat "-6.914700,107.609800", sumber GPS, wilayah kecamatan Bandung dari adapter | Satu baris lokasi tersimpan dengan koordinat dan sumber GPS sesuai, wilayah terisi kecamatan di Kota Bandung | Pass |
+| C05-UT02 | `setLokasiLaporan(koordinat)` | Batas | Panggil dua kali untuk laporan yang sama, kedua kalinya dengan -6.91750049, 107.61910051, sumber MANUAL, wilayah Regol | Baris lama ditimpa, tetap satu baris, koordinat dibulatkan menjadi "-6.917500,107.619101" | Tetap satu baris, koordinat "-6.917500,107.619101", sumber MANUAL, wilayah Regol | Pass |
+| C05-UT03 | `setLokasiLaporan(koordinat)` | Negatif | Panggil untuk id laporan 999999 yang tidak ada | Ditolak basis data (foreign key), tidak ada baris lokasi tersimpan | Pemanggilan gagal dengan error basis data, tidak ada baris lokasi untuk id 999999 | Pass |
+| C05-UT04 | `getWilayah()` | Normal | Laporan dengan lokasi berwilayah Coblong | "Coblong" | Mengembalikan "Coblong" | Pass |
+| C05-UT05 | `getWilayah()` | Negatif | Laporan yang belum punya lokasi, lalu id 999999 | `null` untuk keduanya | Mengembalikan `null` untuk keduanya | Pass |
+
+Tabel 4.2.5b. Ringkasan Cakupan Kelas C05
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `setLokasiLaporan(koordinat: String)`, `getWilayah(): String` |
+| Operasi yang diuji | `setLokasiLaporan()`, `getWilayah()` |
+| ID Algoritma yang tercakup | Algo-006, Q-005 |
+| Coverage (wajib ≥ 70%) | `src/server/src/models/lokasi/lokasi.js`: 100% baris, 85,71% cabang, diukur dengan `@vitest/coverage-v8` pada seluruh test suite. Bukti pada Tabel 4.6 |
+
+### 4.2.6 Kelas Fasilitas
+
+**ID Kelas:** C06  
+**Nama Kelas:** Fasilitas  
+**Tingkat:** Mendalam
+
+Tabel 4.2.6. Hasil Pengujian Unit Kelas C06
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C06-UT01 | `cariAtauBuatFasilitas()` | Normal | Laporan Lampu Jalan Mati sekitar 10 m dari fasilitas seed "PJU Jl. Dago Atas RT 03" | Laporan ditautkan ke fasilitas seed tersebut | Laporan ditautkan ke fasilitas "PJU Jl. Dago Atas RT 03" | Pass |
+| C06-UT02 | `cariAtauBuatFasilitas()` | Batas | Fasilitas Pohon Tumbang baru, lalu titik berjarak 29,9 m dan 30,1 m darinya dengan kategori sama | 29,9 m memakai fasilitas yang sama, 30,1 m membuat fasilitas baru | 29,9 m mengembalikan id fasilitas yang sama dengan `baru: false`, 30,1 m membuat fasilitas baru | Pass |
+| C06-UT03 | `cariAtauBuatFasilitas()` | Negatif | Titik sekitar 45 m dari fasilitas seed dengan kategori sama, lalu titik yang sama dengan fasilitas seed tetapi kategori Pohon Tumbang | Keduanya membuat fasilitas baru, fasilitas kedua berkategori Pohon Tumbang dengan wilayah sama dengan lokasi laporan | Keduanya membuat fasilitas baru, jumlah fasilitas bertambah dan kategori serta wilayah sesuai | Pass |
+| C06-UT04 |  |  |  |  |  |  |
+| C06-UT05 |  |  |  |  |  |  |
+| C06-UT06 |  |  |  |  |  |  |
+| C06-UT07 |  |  |  |  |  |  |
+| C06-UT08 |  |  |  |  |  |  |
+| C06-UT09 |  |  |  |  |  |  |
+| C06-UT10 |  |  |  |  |  |  |
+| C06-UT11 |  |  |  |  |  |  |
+| C06-UT12 |  |  |  |  |  |  |
+
+Tabel 4.2.6b. Ringkasan Cakupan Kelas C06
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL |  |
+| Operasi yang diuji |  |
+| ID Algoritma yang tercakup |  |
+| Coverage (wajib ≥ 70%) |  |
+
+### 4.2.7 Kelas Verifikasi
+
+**ID Kelas:** C07  
+**Nama Kelas:** Verifikasi  
+**Tingkat:** Mendalam
+
+Tabel 4.2.7. Hasil Pengujian Unit Kelas C07
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C07-UT01 |  |  |  |  |  |  |
+| C07-UT02 |  |  |  |  |  |  |
+| C07-UT03 |  |  |  |  |  |  |
+| C07-UT04 |  |  |  |  |  |  |
+| C07-UT05 |  |  |  |  |  |  |
+| C07-UT06 |  |  |  |  |  |  |
+
+Tabel 4.2.7b. Ringkasan Cakupan Kelas C07
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL |  |
+| Operasi yang diuji |  |
+| ID Algoritma yang tercakup |  |
+| Coverage (wajib ≥ 70%) |  |
+
+### 4.2.8 Kelas SkorPrioritas
+
+**ID Kelas:** C08  
+**Nama Kelas:** SkorPrioritas  
+**Tingkat:** Mendalam
+
+Tabel 4.2.8. Hasil Pengujian Unit Kelas C08
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C08-UT01 |  |  |  |  |  |  |
+| C08-UT02 |  |  |  |  |  |  |
+| C08-UT03 |  |  |  |  |  |  |
+| C08-UT04 |  |  |  |  |  |  |
+| C08-UT05 |  |  |  |  |  |  |
+| C08-UT06 |  |  |  |  |  |  |
+
+Tabel 4.2.8b. Ringkasan Cakupan Kelas C08
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL |  |
+| Operasi yang diuji |  |
+| ID Algoritma yang tercakup |  |
+| Coverage (wajib ≥ 70%) |  |
+
+### 4.2.9 Kelas RiwayatStatus
+
+**ID Kelas:** C09  
+**Nama Kelas:** RiwayatStatus  
+**Tingkat:** Sedang
+
+Tabel 4.2.9. Hasil Pengujian Unit Kelas C09
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C09-UT01 |  |  |  |  |  |  |
+| C09-UT02 |  |  |  |  |  |  |
+| C09-UT03 |  |  |  |  |  |  |
+
+### 4.2.10 Kelas Notifikasi
+
+**ID Kelas:** C10  
+**Nama Kelas:** Notifikasi  
+**Tingkat:** Sedang
+
+Tabel 4.2.10. Hasil Pengujian Unit Kelas C10
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C10-UT01 |  |  |  |  |  |  |
+| C10-UT02 |  |  |  |  |  |  |
+| C10-UT03 |  |  |  |  |  |  |
+| C10-UT04 |  |  |  |  |  |  |
+| C10-UT05 |  |  |  |  |  |  |
+| C10-UT06 |  |  |  |  |  |  |
+
+### 4.2.11 Kelas KonfirmasiDuplikat
+
+**ID Kelas:** C11  
+**Nama Kelas:** KonfirmasiDuplikat  
+**Tingkat:** Mendalam
+
+Tabel 4.2.11. Hasil Pengujian Unit Kelas C11
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C11-UT01 |  |  |  |  |  |  |
+| C11-UT02 |  |  |  |  |  |  |
+| C11-UT03 |  |  |  |  |  |  |
+| C11-UT04 |  |  |  |  |  |  |
+| C11-UT05 |  |  |  |  |  |  |
+| C11-UT06 |  |  |  |  |  |  |
+
+Tabel 4.2.11b. Ringkasan Cakupan Kelas C11
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL |  |
+| Operasi yang diuji |  |
+| ID Algoritma yang tercakup |  |
+| Coverage (wajib ≥ 70%) |  |
 
 <br>
 
 ## 4.3 Pengujian Integrasi
 
-Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada dokumen DPPL, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Apabila ada antarmuka tambahan yang belum didaftarkan pada dokumen DPPL, cantumkan juga.
+Pengujian integrasi memeriksa interaksi antarkomponen yang melewati batas, yaitu *Controller* ke *Model*, aplikasi ke basis data, dan aplikasi ke sistem eksternal. Daftar antarmuka mengacu pada komponen di Tabel 2.3 dan Logical View DPPL 2, dengan minimal satu test case untuk setiap antarmuka. Pengujian memakai komponen nyata, bukan *mock*. Antarmuka antarkomponen diberi ID IK-XX supaya tidak tertukar dengan ID layar I-XX.
 
 Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
 | ID Antarmuka | Komponen Asal | Komponen Tujuan | Jenis Batas | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
-| *I-01* | *KeranjangController* | *Keranjang (Model)* | *Controller - Model* | *INT-TC01, INT-TC02* |
-| *I-02* | *Pesanan (Model)* | *Database* | *Aplikasi - Basis data* | *INT-TC03* |
-| *I-03* | *PaymentGatewayAdapter* | *Payment Gateway (dummy)* | *Aplikasi - Sistem eksternal* | *INT-TC04, INT-TC05* |
-| *[I-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
-| *...* | *...* | *...* | *...* | *...* |
+| IK-01 |  |  |  |  |
+| IK-02 |  |  |  |  |
+| IK-03 |  |  |  |  |
+| IK-04 |  |  |  |  |
+| IK-05 |  |  |  |  |
+| IK-06 | LaporanController (buat dan revisi) | Laporan, Lokasi, Fasilitas (Model) | Controller - Model | INT-TC07, INT-TC08 |
+| IK-07 |  |  |  |  |
+| IK-08 |  |  |  |  |
+| IK-09 |  |  |  |  |
+| IK-10 |  |  |  |  |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
 | ID Pengujian | ID Antarmuka | Skenario | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *INT-TC01* | *I-01* | *Normal: tambah item ke keranjang* | *Panggil `tambahItem()` melalui KeranjangController dengan produk valid* | *Item tersimpan pada Keranjang dan tampil pada daftar item* | *[Hasil aktual]* | *Pass/Fail* |
-| *INT-TC03* | *I-02* | *Normal: simpan pesanan* | *Buat pesanan, lalu baca ulang langsung dari basis data* | *Baris pesanan ada dengan nilai total dan status yang sama* | *[...]* | *Pass/Fail* |
-| *INT-TC05* | *I-03* | *Gagal: gateway mengembalikan status gagal* | *Kirim otorisasi dengan saldo dummy tidak cukup* | *Status pesanan tidak berubah menjadi "Lunas", pesan gagal diteruskan ke pengguna* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| INT-TC01 |  |  |  |  |  |  |
+| INT-TC02 |  |  |  |  |  |  |
+| INT-TC03 |  |  |  |  |  |  |
+| INT-TC04 |  |  |  |  |  |  |
+| INT-TC05 |  |  |  |  |  |  |
+| INT-TC06 |  |  |  |  |  |  |
+| INT-TC07 | IK-06 | Normal: laporan baru melewati controller, model, dan basis data | `POST /api/laporan` lewat aplikasi Express nyata (Supertest) ke PostgreSQL nyata, lalu baca ulang tabel `laporan`, `lokasi`, `riwayat_status`, dan `pengguna` | Respons 201, data di keempat tabel konsisten dengan isi permintaan, foto tersimpan di penyimpanan | Respons 201, baris laporan, lokasi, dan riwayat tersimpan sesuai, `jumlah_laporan` bertambah 1, file foto ada | Pass |
+| INT-TC08 | IK-06 | Gagal: permintaan ditolak sebelum menyentuh basis data | Kirim laporan sebagai admin, tanpa token login, dan dengan titik di luar Kota Bandung | Berturut-turut 403, 401, dan 400. Untuk titik di luar kota, tidak ada laporan maupun foto yang tersimpan | Respons 403, 401, dan 400. Untuk titik di luar kota, jumlah laporan tidak bertambah dan tidak ada foto baru di penyimpanan | Pass |
+| INT-TC09 |  |  |  |  |  |  |
+| INT-TC10 |  |  |  |  |  |  |
+| INT-TC11 |  |  |  |  |  |  |
+| INT-TC12 |  |  |  |  |  |  |
+| INT-TC13 |  |  |  |  |  |  |
+| INT-TC14 |  |  |  |  |  |  |
+| INT-TC15 |  |  |  |  |  |  |
+| INT-TC16 |  |  |  |  |  |  |
 
 <br>
 
@@ -301,37 +546,123 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
 
-### 4.4.1 Use Case [Nama Use Case 1]
+### 4.4.1 Use Case Membuat Laporan Kerusakan Fasilitas
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC01  
+**Nama Use Case:** Membuat Laporan Kerusakan Fasilitas
 
-Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+Tabel 4.4.1. Hasil Pengujian Use Case UC01
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UC01-TC01* | *KF01* | *Normal* | *1. Buka halaman login.<br>2. Masukkan kredensial.<br>3. Klik tombol "Login".* | *User: rpl@gmail.com<br>Pass: 123456* | *Pengguna diarahkan ke Halaman Dashboard.* | *Pengguna diarahkan ke Halaman Dashboard sesuai hasil yang diharapkan.* | *Pass* |
-| *UC01-TC02* | *KF01* | *Alternatif 1: [Nama skenario]* | *[Langkah-langkah pengujian]* | *[Data masukan]* | *[Hasil yang diharapkan]* | *[Hasil aktual]* | *[Pass/Fail. Jika Fail: penjelasan dan solusi]* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| UC01-TC01 | KF01, KF02, KF03, KF04 | Normal | 1. Login sebagai pelapor.<br>2. Buka tab "Lapor".<br>3. Tekan "Ambil Foto" atau "Pilih Galeri".<br>4. Pilih kategori.<br>5. Tekan "Gunakan Lokasi Saya".<br>6. Isi deskripsi.<br>7. Tekan "Kirim Laporan", lalu "Kirim" pada dialog konfirmasi. | Akun: warga1@silembur.test / silembur123<br>Foto: foto jalan berlubang<br>Kategori: Jalan Berlubang<br>Lokasi: GPS di Kota Bandung<br>Deskripsi: "Lubang berdiameter 50 cm di lajur kiri, dekat halte." | Aplikasi membuka detail laporan baru dengan status Menunggu Verifikasi, foto, kategori, lokasi, dan deskripsi sesuai isian |  |  |
+| UC01-TC02 | KF01 | Alternatif 1: Pengguna tidak mengisi seluruh formulir | 1. Login sebagai pelapor.<br>2. Buka tab "Lapor".<br>3. Isi kategori dan deskripsi saja, tanpa foto dan lokasi.<br>4. Tekan "Kirim Laporan".<br>5. Lengkapi foto dan lokasi, lalu kirim. | Akun: warga1@silembur.test / silembur123<br>Kategori: Lampu Jalan Mati<br>Deskripsi: "Lampu jalan padam sejak dua hari." | Tombol "Kirim Laporan" tampak terkunci dengan keterangan "Lengkapi foto, kategori, lokasi, dan deskripsi untuk melanjutkan". Saat ditekan muncul pesan "Formulir belum lengkap" yang menyebut bagian yang kurang. Setelah dilengkapi, laporan terkirim seperti UC01-TC01 |  |  |
+| UC01-TC03 | KF05 | Tambahan: Pelapor merevisi laporan berstatus Perlu Revisi | 1. Login sebagai pelapor yang punya laporan berstatus Perlu Revisi.<br>2. Buka tab "Laporan Saya", pilih laporan berstatus Perlu Revisi.<br>3. Baca catatan admin, tekan "Revisi Laporan".<br>4. Ubah deskripsi.<br>5. Tekan "Kirim Revisi", lalu "Kirim" pada dialog konfirmasi. | Akun: warga2@silembur.test / silembur123 (punya laporan seed Perlu Revisi)<br>Deskripsi baru: "Jalan berlubang diameter sekitar 60 cm dan dalam 15 cm di lajur kiri." | Status laporan kembali menjadi Menunggu Verifikasi, deskripsi berubah, dan riwayat memuat "Laporan direvisi oleh pelapor." |  |  |
 
-### 4.4.2 Use Case [Nama Use Case 2]
+### 4.4.2 Use Case Memverifikasi Laporan dan Menghitung Prioritas
 
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
+**ID Use Case:** UC02  
+**Nama Use Case:** Memverifikasi Laporan dan Menghitung Prioritas
+
+Tabel 4.4.2. Hasil Pengujian Use Case UC02
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC02-TC01 |  |  |  |  |  |  |  |
+| UC02-TC02 |  |  |  |  |  |  |  |
+
+### 4.4.3 Use Case Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas
+
+**ID Use Case:** UC03  
+**Nama Use Case:** Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas
+
+Tabel 4.4.3. Hasil Pengujian Use Case UC03
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC03-TC01 |  |  |  |  |  |  |  |
+| UC03-TC02 |  |  |  |  |  |  |  |
+| UC03-TC03 |  |  |  |  |  |  |  |
+
+### 4.4.4 Use Case Melihat Daftar dan Detail Laporan Publik
+
+**ID Use Case:** UC04  
+**Nama Use Case:** Melihat Daftar dan Detail Laporan Publik
+
+Tabel 4.4.4. Hasil Pengujian Use Case UC04
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC04-TC01 |  |  |  |  |  |  |  |
+| UC04-TC02 |  |  |  |  |  |  |  |
+| UC04-TC03 |  |  |  |  |  |  |  |
+| UC04-TC04 |  |  |  |  |  |  |  |
+
+### 4.4.5 Use Case Memantau Status dan Riwayat Penanganan Laporan
+
+**ID Use Case:** UC05  
+**Nama Use Case:** Memantau Status dan Riwayat Penanganan Laporan
+
+Tabel 4.4.5. Hasil Pengujian Use Case UC05
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC05-TC01 |  |  |  |  |  |  |  |
+| UC05-TC02 |  |  |  |  |  |  |  |
+| UC05-TC03 |  |  |  |  |  |  |  |
+
+### 4.4.6 Use Case Meninjau Fasilitas dengan Kerusakan Berulang
+
+**ID Use Case:** UC06  
+**Nama Use Case:** Meninjau Fasilitas dengan Kerusakan Berulang
+
+Tabel 4.4.6. Hasil Pengujian Use Case UC06
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC06-TC01 |  |  |  |  |  |  |  |
+| UC06-TC02 |  |  |  |  |  |  |  |
+| UC06-TC03 |  |  |  |  |  |  |  |
+
+### 4.4.7 Use Case Mengonfirmasi dan Menggabungkan Laporan Duplikat
+
+**ID Use Case:** UC07  
+**Nama Use Case:** Mengonfirmasi dan Menggabungkan Laporan Duplikat
+
+Tabel 4.4.7. Hasil Pengujian Use Case UC07
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC07-TC01 |  |  |  |  |  |  |  |
+| UC07-TC02 |  |  |  |  |  |  |  |
+
+### 4.4.8 Use Case Melacak Riwayat Perubahan Status per Fasilitas
+
+**ID Use Case:** UC08  
+**Nama Use Case:** Melacak Riwayat Perubahan Status per Fasilitas
+
+Tabel 4.4.8. Hasil Pengujian Use Case UC08
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC08-TC01 |  |  |  |  |  |  |  |
+| UC08-TC02 |  |  |  |  |  |  |  |
 
 <br>
 
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
 
-Setiap KNF pada Tabel 3.2 SKPL diuji secara terukur berdasarkan parameter yang telah didefinisikan. Setiap pengujian memuat target terukur, metode dan alat yang sesuai dengan parameter (misalnya Chrome DevTools untuk *response time* dan inspeksi basis data untuk *security*), serta hasil aktual berupa angka atau data. KNF yang belum dipenuhi atau tidak diimplementasikan dicantumkan beserta alasan dan rencana perbaikan.
+Setiap KNF pada Tabel 3.2 SKPL diuji secara terukur berdasarkan parameter yang telah didefinisikan. Setiap pengujian memuat target terukur, metode dan alat yang sesuai dengan parameter, serta hasil aktual berupa angka atau data. KNF yang belum dipenuhi atau tidak diimplementasikan dicantumkan beserta alasan dan rencana perbaikan.
 
 Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KNF01-TC01* | *KNF01* | *Reliability* | *Tidak ada data hilang/ganda saat jaringan putus di tengah transaksi* | *Simulasi putus koneksi saat bayar, lalu cek status di DB* | *[Hasil aktual]* | *Pass/Fail* |
-| *KNF02-TC01* | *KNF02* | *Security* | *Password tersimpan sebagai hash, bukan plain-text* | *Inspeksi tabel pengguna di DB* | *[...]* | *Pass/Fail* |
-| *KNFXX-TC01* | *KNFXX* | *Response time* | *Halaman tampil ≤ 4 detik* | *Chrome DevTools, 5 kali ukur, ambil rata-rata* | *[Rata-rata ... detik, maks ... detik]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| KNF01-TC01 |  |  |  |  |  |  |
+| KNF02-TC01 |  |  |  |  |  |  |
+| KNF03-TC01 |  |  |  |  |  |  |
+| KNF04-TC01 |  |  |  |  |  |  |
+| KNF05-TC01 |  |  |  |  |  |  |
 
 <br>
 
@@ -343,13 +674,61 @@ Tabel 4.6. Bukti Hasil Pengujian
 
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
-| *C02-UT01 – C02-UT08* | *[Sisipkan hasil keluaran unit test]* |
-| *C02 (coverage)* | *[Sisipkan laporan coverage kelas C02]* |
-| *INT-TC01* | *[Sisipkan bukti pengujian integrasi]* |
-| *UC01-TC01* | *[Sisipkan tangkapan layar UC01-TC01 sesuai prosedur pengujian]* |
-| *UC01-TC02* | *[Sisipkan tangkapan layar UC01-TC02 sesuai prosedur pengujian]* |
-| *KNF01-TC01* | *[Sisipkan bukti pengukuran parameter KNF01-TC01]* |
-| *...* | *...* |
+| C01-UT01 – C01-UT03 | <img src="./assets/bagian2-vitest.png" width="90%"><br>Keluaran Vitest untuk `laporan-buat.test.js`, `lokasi.test.js`, dan `laporan-berulang.test.js` (43 test lulus) |
+| C01-UT04 – C01-UT07 |  |
+| C02-UT01 – C02-UT04 |  |
+| C03-UT01 – C03-UT05 |  |
+| C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
+| C04-UT08 – C04-UT10 |  |
+| C04-UT11 – C04-UT13 |  |
+| C04-UT14 – C04-UT17 |  |
+| C04 (coverage) |  |
+| C05-UT01 – C05-UT05 | Sama dengan bukti C01-UT01 – C01-UT03 (`lokasi.test.js`) |
+| C05 (coverage) | <img src="./assets/bagian2-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite (194 test lulus) |
+| C06-UT01 – C06-UT03 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `lokasi.test.js`) |
+| C06-UT04 – C06-UT12 |  |
+| C06 (coverage) |  |
+| C07-UT01 – C07-UT06 |  |
+| C07 (coverage) |  |
+| C08-UT01 – C08-UT06 |  |
+| C08 (coverage) |  |
+| C09-UT01 – C09-UT03 |  |
+| C10-UT01 – C10-UT04 |  |
+| C10-UT05 – C10-UT06 |  |
+| C11-UT01 – C11-UT06 |  |
+| C11 (coverage) |  |
+| INT-TC01 – INT-TC06 |  |
+| INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
+| INT-TC09 – INT-TC10 |  |
+| INT-TC11 – INT-TC12 |  |
+| INT-TC13 – INT-TC16 |  |
+| UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
+| UC01-TC02 | <img src="./assets/UC01-TC02a.png" width="30%"> <img src="./assets/UC01-TC02b.png" width="30%"><br>Tombol terkunci dan dialog "Formulir belum lengkap" |
+| UC01-TC03 | <img src="./assets/UC01-TC03a.png" width="30%"> <img src="./assets/UC01-TC03b.png" width="30%"> <img src="./assets/UC01-TC03c.png" width="30%"> <img src="./assets/UC01-TC03d.png" width="30%"><br>Catatan admin, dialog kirim revisi, riwayat penanganan, foto dan deskripsi setelah revisi |
+| UC02-TC01 |  |
+| UC02-TC02 |  |
+| UC03-TC01 |  |
+| UC03-TC02 |  |
+| UC03-TC03 |  |
+| UC04-TC01 |  |
+| UC04-TC02 |  |
+| UC04-TC03 |  |
+| UC04-TC04 |  |
+| UC05-TC01 |  |
+| UC05-TC02 |  |
+| UC05-TC03 |  |
+| UC06-TC01 |  |
+| UC06-TC02 |  |
+| UC06-TC03 |  |
+| UC07-TC01 |  |
+| UC07-TC02 |  |
+| UC08-TC01 |  |
+| UC08-TC02 |  |
+| KNF01-TC01 |  |
+| KNF02-TC01 |  |
+| KNF03-TC01 |  |
+| KNF04-TC01 |  |
+| KNF05-TC01 |  |
 
 <br>
 
