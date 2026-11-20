@@ -724,7 +724,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC04-TC03 | <img src="./assets/Bagian3/UC04-TC03.jpeg" width="45%"><br>Hasil filter kosong menampilkan "Belum ada laporan" |
 | UC04-TC04 | Tidak diuji pada eksekusi test-bagian3; suite server tidak menjalankan skenario timeout UI/aplikasi mobile |
 | UC05-TC01 | <img src="./assets/Bagian3/UC05-TC01a.jpeg" width="30%"> <img src="./assets/Bagian3/UC05-TC01b.jpeg" width="30%"> <img src="./assets/Bagian3/UC05-Tc01c.jpeg" width="30%"><br>Daftar laporan saya, detail dengan riwayat, dan tampilan detail laporan |
-| UC05-TC02 | Tidak diuji pada eksekusi test-bagian3; tidak ada test untuk akun pelapor tanpa laporan dan tampilan kosong UI |
+| UC05-TC02 | Tidak diuji pada eksekusi test-bagian3; tidak ada test untuk akun pelapor tanpa laporan dan tampilan kosong UI (belum ada cara untuk penghapusan laporan) |
 | UC05-TC03 | Tidak diuji pada eksekusi test-bagian3; suite server tidak menjalankan skenario timeout UI/aplikasi mobile |
 | UC06-TC01 |  |
 | UC06-TC02 |  |
