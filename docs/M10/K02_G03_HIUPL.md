@@ -136,7 +136,7 @@ Cantumkan daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuat
 - Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi bab, dengan maksimal 1 paragraf.
+Dokumen HIUPL SILEMBUR ini terdiri dari lima bab. BAB 1 berisi pendahuluan dokumen. BAB 2 membahas deskripsi umum perangkat lunak beserta use case diagram yang diambil dari SKPL. BAB 3 membahas implementasi yang meliputi lingkungan implementasi serta daftar kelas, antarmuka, dan file lain yang telah diimplementasikan sesuai DPPL. BAB 4 menyajikan hasil pengujian yang meliputi strategi dan kedalaman pengujian kelas, pengujian unit kelas, pengujian integrasi, pengujian use case, pengujian kebutuhan non fungsional, serta bukti hasil pengujian. BAB 5 menyajikan matriks kerunutan antara KF, KNF, use case, kelas perancangan, file implementasi, dan test case.
 
 <br>
 
