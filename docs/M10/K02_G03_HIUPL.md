@@ -155,7 +155,7 @@ Silembur merupakan sistem aplikasi pelaporan untuk fasilitas umum yang mengalami
 <img alt="System Overview / Use Case Diagram" src="./assets/diagram_silembur.png" width="90%">
 </p>
 <p align="center">
-<i>Gambar 2.1. Use Case Diagram [Nama P/L]</i>
+<i>Gambar 2.1. Use Case Diagram SILEMBUR</i>
 </p>
 
 <br>
@@ -174,13 +174,13 @@ Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | *[Spesifikasi perangkat keras]* |
-| *Operating System* | *[Nama dan versi OS]* |
-| *Bahasa Pemrograman* | *[Bahasa dan versi]* |
-| *Framework/Library* | *[Daftar framework/library beserta versi]* |
-| *DBMS* | *[Nama dan versi DBMS]* |
-| *Development Tools* | *[IDE, version control, tools lain]* |
-| *Testing Tools* | *[Framework unit test, alat ukur performa, alat coverage]* |
+| *Hardware* | *[...]* |
+| *Operating System* | *[...]. Aplikasi berjalan di Android dan iOS* |
+| *Bahasa Pemrograman* | *JavaScript (ECMAScript modules) pada Node.js 24* |
+| *Framework/Library* | *Server: Express 5.3.0, node-postgres (pg) 8.23.1, zod 4.6.7, multer 2.5.0, jsonwebtoken 9.0.3, bcryptjs 3.0.3, google-auth-library 11.3.3, @google-cloud/storage 8.4.0. Mobile: Expo SDK 58 (expo 58.0.23), React Native 0.88.1, React 19.3.0, Expo Router 58.0.30, react-native-maps 1.29.11, expo-location 58.0.20, expo-image-picker 58.0.10, expo-auth-session 58.0.17* |
+| *DBMS* | *PostgreSQL 18 (Docker Compose untuk lokal, Neon untuk deploy)* |
+| *Development Tools* | *[...], Git dan GitHub, Docker Desktop, Expo Go, EAS Build* |
+| *Testing Tools* | *Vitest 5.1.0, Supertest 7.3.1, @vitest/coverage-v8 5.1.0. Response time diukur dengan `performance.now()` dan `console.time` Node.js serta `EXPLAIN ANALYZE` PostgreSQL* |
 
 ## 3.2 Implementasi Modul
 
@@ -190,9 +190,17 @@ Tabel 3.2. Implementasi Modul
 
 | No | ID Kelas | Nama Modul/Kelas | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[C01]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[C02]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[...]* |
-| ... | *...* | *...* | *...* | *...* |
+| 1 | C01 | Pelapor | Tabel `pengguna` (peran `PELAPOR`), `src/server/src/models/laporan/buat.js`, `src/server/src/models/laporan/saya.js`, `src/server/src/models/notifikasi/inbox.js`, `src/mobile/src/features/warga/` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 2 | C02 | Admin | Tabel `pengguna` (peran `ADMIN`), `src/server/src/models/laporan/verifikasi.js`, `src/server/src/models/verifikasi/verifikasi.js`, `src/server/src/controllers/VerifikasiController.js`, `src/mobile/src/features/verifikasi/DashboardAdminScreen.js` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 3 | C03 | PemerintahDaerah | Tabel `pengguna` (peran `PEMDA`), `src/server/src/models/laporan/prioritas.js`, `src/server/src/controllers/PrioritasController.js`, `src/mobile/src/features/prioritas/PrioritasScreen.js` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 4 | C04 | Laporan | Tabel `laporan`, `src/server/src/models/laporan/` (`buat.js`, `status.js`, `verifikasi.js`, `publik.js`, `saya.js`, `prioritas.js`), `src/server/src/controllers/laporan/`, `src/server/src/controllers/LaporanController.js`, `src/mobile/src/features/pelaporan/BuatLaporanScreen.js` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 5 | C05 | Lokasi | Tabel `lokasi`, `src/server/src/models/lokasi/lokasi.js` | Server: `src/server/src/server.js` |
+| 6 | C06 | Fasilitas | Tabel `fasilitas`, `src/server/src/models/fasilitas/` (`cocokkan.js`, `berulang.js`, `riwayat.js`), `src/server/src/controllers/FasilitasController.js`, `src/mobile/src/features/fasilitas/` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 7 | C07 | Verifikasi | Tabel `verifikasi`, `src/server/src/models/verifikasi/verifikasi.js` | Server: `src/server/src/server.js` |
+| 8 | C08 | SkorPrioritas | Tabel `skor_prioritas`, `src/server/src/models/skorPrioritas/skor.js` | Server: `src/server/src/server.js` |
+| 9 | C09 | RiwayatStatus | Tabel `riwayat_status`, `src/server/src/models/riwayatStatus/riwayat.js`, `src/server/src/models/laporan/status.js` (`catatRiwayat()`) | Server: `src/server/src/server.js` |
+| 10 | C10 | Notifikasi | Tabel `notifikasi`, `src/server/src/models/notifikasi/kirim.js`, `src/server/src/models/notifikasi/inbox.js`, `src/server/src/controllers/NotifikasiController.js`, `src/mobile/src/features/warga/NotifikasiScreen.js` | Server: `src/server/src/server.js`<br>Mobile: APK Android |
+| 11 | C11 | KonfirmasiDuplikat | `src/server/src/models/konfirmasiDuplikat/duplikat.js`, `src/server/src/controllers/DuplikatController.js`, `src/mobile/src/features/duplikat/DuplikatScreen.js` (kolom `id_laporan_induk` pada tabel `laporan`) | Server: `src/server/src/server.js`<br>Mobile: APK Android |
 
 ## 3.3 Implementasi Antarmuka
 
@@ -202,9 +210,19 @@ Tabel 3.3. Implementasi Antarmuka
 
 | No | ID Antarmuka | Nama Antarmuka | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[I-01]* | *[Nama layar]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[I-02]* | *[Nama layar]* | *[path/ke/file]* | *[...]* |
-| ... | *...* | *...* | *...* | *...* |
+| 1 | I-01 | Login | `src/mobile/src/app/login.js`, `src/mobile/src/auth/TombolMasukGoogle.js` | APK Android |
+| 2 | I-02 | Beranda | `src/mobile/src/features/warga/BerandaScreen.js` (rute `app/warga/(tabs)/index.js`) | APK Android |
+| 3 | I-03 | Detail Laporan (mode publik dan mode saya) | `src/mobile/src/features/warga/DetailLaporanScreen.js` (rute `app/warga/laporan/[id].js`) | APK Android |
+| 4 | I-04 | Buat Laporan (juga untuk revisi) | `src/mobile/src/features/pelaporan/BuatLaporanScreen.js` (rute `app/warga/(tabs)/lapor.js` dan `app/warga/revisi/[id].js`) | APK Android |
+| 5 | I-05 | Dashboard Admin: Daftar Laporan Masuk | `src/mobile/src/features/verifikasi/DashboardAdminScreen.js` (rute `app/admin/(tabs)/index.js`) | APK Android |
+| 6 | I-06 | Verifikasi Laporan | `src/mobile/src/features/verifikasi/VerifikasiScreen.js` (rute `app/admin/verifikasi/[id].js`) | APK Android |
+| 7 | I-07 | Penggabungan Laporan Duplikat | `src/mobile/src/features/duplikat/DuplikatScreen.js` (rute `app/admin/(tabs)/duplikat.js`) | APK Android |
+| 8 | I-08 | Daftar Laporan Terverifikasi | `src/mobile/src/features/prioritas/PrioritasScreen.js` (rute `app/pemda/(tabs)/index.js`) | APK Android |
+| 9 | I-09 | Daftar Fasilitas | `src/mobile/src/features/fasilitas/DaftarFasilitasScreen.js` (rute `app/admin/(tabs)/fasilitas.js` dan `app/pemda/(tabs)/fasilitas.js`) | APK Android |
+| 10 | I-10 | Detail Fasilitas | `src/mobile/src/features/fasilitas/DetailFasilitasScreen.js` (rute `app/admin/fasilitas/[id].js` dan `app/pemda/fasilitas/[id].js`) | APK Android |
+| 11 | I-11 | Laporan Saya (tambahan) | `src/mobile/src/features/warga/LaporanSayaScreen.js` (rute `app/warga/(tabs)/saya.js`) | APK Android |
+| 12 | I-12 | Notifikasi (tambahan) | `src/mobile/src/features/warga/NotifikasiScreen.js` (rute `app/warga/notifikasi.js`) | APK Android |
+| 13 | I-13 | Profil (tambahan) | `src/mobile/src/features/akun/ProfilScreen.js` (rute `app/warga/(tabs)/profil.js`, `app/admin/(tabs)/profil.js`, `app/pemda/(tabs)/profil.js`) | APK Android |
 
 ## 3.4 File Lain
 
@@ -214,8 +232,21 @@ Tabel 3.4. File Lain
 
 | No | Nama File | Keterangan |
 | :--- | :--- | :--- |
-| 1 | *[Nama file]* | *[Fungsi file]* |
-| ... | *...* | *...* |
+| 1 | `src/shared/constants.js` | Konstanta bersama seperti status, transisi status, kategori, dan aturan bisnis |
+| 2 | `src/server/src/server.js`, `src/server/src/app.js` | Titik masuk server dan perakitan aplikasi Express |
+| 3 | `src/server/src/config.js` | Membaca konfigurasi dari environment variable |
+| 4 | `src/server/src/routes/index.js` | Daftar endpoint `/api` dan pembatasan peran |
+| 5 | `src/server/src/middleware/` (`autentikasi.js`, `validasi.js`, `upload.js`, `errorHandler.js`) | Komponen Autentikasi dan Validasi. Termasuk unggah foto dan format error |
+| 6 | `src/server/src/adapters/googleMapsAdapter.js`, `src/server/src/adapters/wilayahBandung.js` | GoogleMapsAdapter dengan cadangan data 30 kecamatan |
+| 7 | `src/server/src/adapters/cloudStorageAdapter.js` | CloudStorageAdapter untuk menyimpan foto |
+| 8 | `src/server/src/adapters/googleAuthAdapter.js` | Verifikasi token Google Sign-In |
+| 9 | `src/server/src/db/pool.js` | Koneksi PostgreSQL dan `withTransaction()` |
+| 10 | `src/server/src/db/migrations/001_init.sql`, `src/server/src/db/migrations/501_indeks_prioritas.sql`, `src/server/src/db/migrate.js` | Skema basis data dan indeks beserta skrip migrasi |
+| 11 | `src/server/src/db/seed.js`, `src/server/src/db/gambarContoh.js` | Data seed berisi akun uji, fasilitas, dan laporan contoh |
+| 12 | `src/server/tests/` dan `src/server/vitest.config.js` | File test Vitest dan konfigurasinya |
+| 13 | `src/docker-compose.yml`, `src/server/src/db/init/01-create-test-db.sql` | PostgreSQL 18 lokal dan basis data test |
+| 14 | `src/Dockerfile`, `src/.dockerignore` | Image server untuk deploy di Railway |
+| 15 | `src/server/.env.example`, `src/mobile/.env.example`, `src/mobile/eas.json`, `src/mobile/app.config.js` | Contoh environment variable dan konfigurasi build mobile |
 
 <br>
 
@@ -489,21 +520,21 @@ Tabel 4.2.11. Hasil Pengujian Unit Kelas C11
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C11-UT01 |  |  |  |  |  |  |
-| C11-UT02 |  |  |  |  |  |  |
-| C11-UT03 |  |  |  |  |  |  |
-| C11-UT04 |  |  |  |  |  |  |
-| C11-UT05 |  |  |  |  |  |  |
-| C11-UT06 |  |  |  |  |  |  |
+| C11-UT01 | `getKandidatDuplikat()` | Normal | `GET /api/admin/duplikat/kandidat` sebagai admin pada data seed | Laporan aktif dikelompokkan per fasilitas dan kelompok kandidat berada di atas. Laporan Ditolak, Selesai, dan Digabung tidak muncul | Kelompok "PJU Jl. Cihampelas" bertanda kandidat dengan 2 laporan dan berada di atas. Tidak ada laporan Ditolak, Selesai, atau Digabung | Pass |
+| C11-UT02 | `gabungLaporan()` | Normal | Gabung laporan 5 hari lalu dan 1 hari lalu dari fasilitas berbeda | Laporan terlama jadi induk. Laporan lain berstatus Digabung dan pindah ke fasilitas induk | Induk adalah laporan 5 hari lalu. Laporan 1 hari lalu berstatus Digabung dengan fasilitas induk dan riwayatnya bertambah 1 | Pass |
+| C11-UT03 | `gabungLaporan()` | Normal | Gabung induk dan anak yang sudah punya satu laporan tergabung | Laporan yang tergabung ke anak ikut pindah ke induk sehingga jumlah pelapor tidak berkurang | Laporan tersebut kini menunjuk induk dan jumlah laporan tergabung pada induk menjadi 2 | Pass |
+| C11-UT04 | `gabungLaporan()` | Batas | (a) Satu id laporan (b) id yang sama dua kali (c) induk Diproses dengan anak Terverifikasi | (a) dan (b) ditolak 400. (c) Berhasil karena induk sudah paling lanjut | (a) 400 (b) 400 (c) 200 dan kedua anak berstatus Digabung | Pass |
+| C11-UT05 | `gabungLaporan()` | Negatif | (a) Laporan aktif dengan laporan Ditolak (b) induk Menunggu Verifikasi dengan anak Terverifikasi | Ditolak 409 dan tidak ada data yang berubah | (a) 409 (b) 409. Status dan riwayat kedua laporan tidak berubah | Pass |
+| C11-UT06 | `gabungLaporan()` | Negatif | (a) Kategori berbeda (b) id 999999 | (a) 400 (b) 404 | (a) 400 (b) 404 | Pass |
 
 Tabel 4.2.11b. Ringkasan Cakupan Kelas C11
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL |  |
-| Operasi yang diuji |  |
-| ID Algoritma yang tercakup |  |
-| Coverage (wajib ≥ 70%) |  |
+| Daftar operasi public pada DPPL | `simpanKandidat()`, `warning()`, `gabungLaporan()` |
+| Operasi yang diuji | `gabungLaporan()` dan `getKandidatDuplikat()`. `simpanKandidat()` dan `warning()` ada di layar I-07 sehingga diuji lewat UC07-TC01 dan UC07-TC02 |
+| ID Algoritma yang tercakup | Algo-012, Q-013 |
+| Coverage (wajib ≥ 70%) | `duplikat.js`: 100% baris dan 96,15% cabang pada tag `v9.1`. Bukti pada Tabel 4.6 |
 
 <br>
 
@@ -515,11 +546,11 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
 | ID Antarmuka | Komponen Asal | Komponen Tujuan | Jenis Batas | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
-| IK-01 |  |  |  |  |
-| IK-02 |  |  |  |  |
-| IK-03 |  |  |  |  |
-| IK-04 |  |  |  |  |
-| IK-05 |  |  |  |  |
+| IK-01 | Controller | Autentikasi dan Validasi, Pengguna, PostgreSQL | Controller - Pendukung - Database | INT-TC01 |
+| IK-02 | AuthController | Google Sign-In (`googleAuthAdapter`) | Aplikasi - Sistem eksternal | INT-TC02 |
+| IK-03 | LaporanController dan Lokasi | GoogleMapsAdapter (Geocoding API) | Aplikasi - Sistem eksternal | INT-TC03 |
+| IK-04 | LaporanController | CloudStorageAdapter | Aplikasi - Sistem eksternal | INT-TC04 |
+| IK-05 | DuplikatController | KonfirmasiDuplikat, Laporan, SkorPrioritas, PostgreSQL | Controller - Model - Database | INT-TC05, INT-TC06 |
 | IK-06 | LaporanController (buat dan revisi) | Laporan, Lokasi, Fasilitas (Model) | Controller - Model | INT-TC07, INT-TC08 |
 | IK-07 | LaporanController (publik dan laporan saya) | Laporan, RiwayatStatus, Notifikasi (Model) dan PostgreSQL | Controller - Model - Database | INT-TC09, INT-TC10 |
 | IK-08 |  |  |  |  |
@@ -530,12 +561,12 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 
 | ID Pengujian | ID Antarmuka | Skenario | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| INT-TC01 |  |  |  |  |  |  |
-| INT-TC02 |  |  |  |  |  |  |
-| INT-TC03 |  |  |  |  |  |  |
-| INT-TC04 |  |  |  |  |  |  |
-| INT-TC05 |  |  |  |  |  |  |
-| INT-TC06 |  |  |  |  |  |  |
+| INT-TC01 | IK-01 | Login dan pembatasan peran | Login tiga peran, kata sandi salah, body kosong, tanpa token, dan pelapor ke endpoint admin lewat Supertest ke PostgreSQL | Login 200 dengan peran sesuai. Sisanya 401, 400, 401, dan 403 | Login 200 dengan peran PELAPOR, ADMIN, PEMDA. Sisanya 401, 400, 401, dan 403 | Pass |
+| INT-TC02 | IK-02 | Login Google Sign-In | `POST /api/auth/google`. Verifikasi token Google ditiru karena token asli tidak bisa didapat saat test | Belum dikonfigurasi 503. Token kosong 400. Token tidak sah 401. Akun baru dibuat sebagai PELAPOR. Email terdaftar ditautkan | Sesuai harapan. Login ulang tidak membuat akun ganda | Pass |
+| INT-TC03 | IK-03 | Penentuan wilayah | Respons Geocoding tiruan untuk titik ITB, lalu status gagal dan jaringan putus | Wilayah "Coblong" dari Google. Saat gagal beralih ke data luring | "Coblong" dan alamat dari Google. Saat gagal hasilnya sama dengan data luring. Titik di luar kota menjadi "Luar Kota Bandung" | Pass |
+| INT-TC04 | IK-04 | Penyimpanan foto | Simpan foto dengan driver lokal dan driver GCS tiruan. Ulangi dengan nama bucket kosong | Lokal menghasilkan file `laporan/<tanggal>/<nama>.png`. GCS menghasilkan URL publik. Bucket kosong ditolak | File tersimpan dengan isi sama. URL `storage.googleapis.com` terbentuk. Bucket kosong ditolak | Pass |
+| INT-TC05 | IK-05 | Normal: gabung duplikat | `POST /api/admin/duplikat/gabung` sebagai admin lalu baca ulang tabel `laporan` dan `riwayat_status` | Respons 200. Anak berstatus Digabung dan menunjuk induk | Respons 200. Data anak dan riwayat tersimpan sesuai | Pass |
+| INT-TC06 | IK-05 | Gagal: transaksi dibatalkan | Gabung laporan tidak aktif, gabung dengan token pelapor, dan uji `withTransaction()` saat gagal | 409 tanpa perubahan data. Pelapor 403. Transaksi di-ROLLBACK | 409 dan data tidak berubah. Pelapor 403. ROLLBACK berjalan | Pass |
 | INT-TC07 | IK-06 | Normal: laporan baru melewati controller, model, dan basis data | `POST /api/laporan` lewat aplikasi Express nyata (Supertest) ke PostgreSQL nyata, lalu baca ulang tabel `laporan`, `lokasi`, `riwayat_status`, dan `pengguna` | Respons 201, data di keempat tabel konsisten dengan isi permintaan, foto tersimpan di penyimpanan | Respons 201, baris laporan, lokasi, dan riwayat tersimpan sesuai, `jumlah_laporan` bertambah 1, file foto ada | Pass |
 | INT-TC08 | IK-06 | Gagal: permintaan ditolak sebelum menyentuh basis data | Kirim laporan sebagai admin, tanpa token login, dan dengan titik di luar Kota Bandung | Berturut-turut 403, 401, dan 400. Untuk titik di luar kota, tidak ada laporan maupun foto yang tersimpan | Respons 403, 401, dan 400. Untuk titik di luar kota, jumlah laporan tidak bertambah dan tidak ada foto baru di penyimpanan | Pass |
 | INT-TC09 | IK-07 | Normal: daftar dan detail laporan publik melewati controller, model, dan database dengan anonimitas | Login sebagai warga1/warga2; panggil daftar publik, filter, ringkasan, dan detail laporan Terverifikasi melalui Supertest | Respons 200; data publik lengkap, anonim, terfilter, terbaru dulu, dan tidak memuat identitas pelapor | Respons 200 pada seluruh endpoint yang valid; objek respons hanya berisi field publik dan filter/laporan sesuai data; ringkasan konsisten dengan basis data | Pass |
@@ -641,8 +672,8 @@ Tabel 4.4.7. Hasil Pengujian Use Case UC07
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC07-TC01 |  |  |  |  |  |  |  |
-| UC07-TC02 |  |  |  |  |  |  |  |
+| UC07-TC01 | KF15, KF17, KF20, KF21 | Normal | Persiapan: pelapor membuat laporan Jalan Berlubang di titik Jl. Cihampelas No. 42.<br>1. Login sebagai admin.<br>2. Buka tab "Laporan Aktif".<br>3. Tekan "Gabungkan Laporan".<br>4. Pilih #LPR-0008 dan laporan baru.<br>5. Tekan "Gabung (2)" lalu "Yakin". | Akun pelapor: warga2@silembur.test / silembur123<br>Akun admin: admin@silembur.test / silembur123<br>Titik: -6.893512, 107.604611 | Kelompok bertanda "Kandidat duplikat · 2". Muncul "Penggabungan berhasil" dan skor #LPR-0008 naik dari 46 menjadi 51 | [...] | [...] |
+| UC07-TC02 | KF15, KF21 | Alternatif 1: Admin salah memilih laporan | 1. Login sebagai admin.<br>2. Buka "Laporan Aktif" lalu tekan "Gabungkan Laporan".<br>3. Pilih #LPR-0003, #LPR-0004, dan #LPR-0011.<br>4. Tekan "Gabung (3)" lalu "Tidak yakin".<br>5. Batalkan pilihan #LPR-0011.<br>6. Tekan "Gabung (2)" lalu "Yakin". | Akun admin: admin@silembur.test / silembur123 | Setelah "Tidak yakin" pilihan tetap ada. Setelah "Yakin" #LPR-0004 digabung ke #LPR-0003 dan #LPR-0011 tetap Diproses | [...] | [...] |
 
 ### 4.4.8 Use Case Melacak Riwayat Perubahan Status per Fasilitas
 
@@ -666,10 +697,10 @@ Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| KNF01-TC01 |  |  |  |  |  |  |
+| KNF01-TC01 | KNF01 | Availability | Uptime minimal 99% selama 24 jam | Cek `GET /api/health` di URL Railway setiap 1 menit selama 24 jam. Berhasil jika respons 200 dalam 5 detik | [...] | [...] |
 | KNF02-TC01 | KNF02 | 0 kemunculan identitas pelapor pada respons publik; daftar dan detail publik tidak memuat nama, email, maupun `id_pelapor` | Pemeriksaan respons otomatis 100% pada daftar publik, detail publik, dan pencarian teks respons | `warga.test.js` memeriksa daftar/detail melalui Supertest dan PostgreSQL nyata; respons dikonversi menjadi teks dan dicocokkan dengan nama/email pelapor seed serta kata kunci `"pelapor"` dan `"email"` | Tidak ditemukan nama/email pelapor, `pelapor`, `email`, atau `@silembur.test` pada respons publik; status Ditolak/Perlu Revisi/Digabung tidak masuk respons publik | Pass |
 | KNF03-TC01 | KNF03 | Waktu respons ditampilkan maksimal 4 detik; klien memutus permintaan setelah 5 detik dan menampilkan pesan pemuatan ulang | Ukur waktu respons endpoint daftar/detail melalui pengujian Supertest dan aplikasi; dibandingkan terhadap batas server 4 detik dan timeout klien 5 detik | Warga test menunjukkan respons daftar/detail berhasil dan valid; API mematikan permintaan klien setelah 5 detik bila tidak selesai, sementara target server dipasang maksimal 4 detik | Endpoint uji mengembalikan respons valid pada pengujian lokal; timeout klien tetap 5 detik karena jarak 1 detik untuk transisi ke keadaan gagal; tidak ada respons yang melebihi target pada eksekusi pengujian normal | Pass |
-| KNF04-TC01 |  |  |  |  |  |  |
+| KNF04-TC01 | KNF04 | Performance Efficiency | N laporan duplikat menjadi 1 laporan aktif dengan jumlah pelapor tetap N. Waktu gabung di bawah 4 detik | Skrip Node.js memanggil `POST /api/admin/duplikat/gabung` untuk N = 2, 10, 50 masing-masing 5 kali. Waktu diukur dengan `performance.now()` | Semua N menyisakan 1 laporan aktif dengan jumlah pelapor N. Median waktu 6,1 ms (N = 2), 9,8 ms (N = 10), dan 36,8 ms (N = 50) | Pass |
 | KNF05-TC01 | KNF05 | Performance & Response Time | Execution time algoritma prioritas & fasilitas berulang di bawah 200 ms | Profiling skrip Node.js (console.time) dan EXPLAIN ANALYZE PostgreSQL | `getLaporanTerverifikasi` selesai dalam ~130ms. Query EXPLAIN `fasilitas` tereksekusi dalam 0.031ms. Keduanya jauh di bawah ambang 200ms | Pass |
 
 <br>
@@ -688,13 +719,13 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C03-UT01 – C03-UT05 | <img src="./assets/C03-UT01.png" width="90%"><br>Keluaran Vitest untuk `pemda.test.js` |
 | C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
 | C04-UT08 – C04-UT10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar/ringkasan publik, filter, paginasi, status publik, detail publik, laporan saya, detail kepemilikan, dan riwayat |
-| C04-UT11 – C04-UT13 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C04-UT11 s.d. C04-UT13 |
+| C04-UT11 – C04-UT13 |  |
 | C04-UT14 – C04-UT17 | Sama dengan bukti C03-UT01 () |
-| C04 (coverage) | <img src="./assets/C04-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite, baris `models/laporan/*.js` |
+| C04 (coverage) |  |
 | C05-UT01 – C05-UT05 | Sama dengan bukti C01-UT01 – C01-UT03 (`lokasi.test.js`) |
 | C05 (coverage) | <img src="./assets/bagian2-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite (194 test lulus) |
 | C06-UT01 – C06-UT03 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `lokasi.test.js`) |
-| C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `fasilitas-pemda.test.js` |
+| C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `c06-fasilitas.test.js` |
 | C06 (coverage) |  |
 | C07-UT01 – C07-UT06 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C07-UT01 s.d. C07-UT06 |
 | C07 (coverage) | <img src="./assets/C07-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite, baris `models/verifikasi/verifikasi.js` |
@@ -704,13 +735,13 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C09-UT02 – C09-UT03 | Tidak ada test pada eksekusi test-bagian3 yang memanggil `getPerubahan()` untuk kasus ID ada/tidak ada; belum ada bukti pengujian langsung untuk dua operasi ini |
 | C10-UT01 – C10-UT03 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar notifikasi milik sendiri, jumlah belum dibaca, penandaan dibaca, dan penolakan akses lintas pemilik |
 | C10-UT04 | Tidak ada test pada eksekusi test-bagian3 yang memeriksa penolakan endpoint notifikasi bagi peran non-Pelapor; belum ada bukti pengujian untuk kasus ini |
-| C10-UT05 – C10-UT06 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C10-UT05 dan C10-UT06 |
+| C10-UT05 – C10-UT06 |  |
 | C11-UT01 – C11-UT06 |  |
 | C11 (coverage) |  |
 | INT-TC01 – INT-TC06 |  |
 | INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
 | INT-TC09 – INT-TC10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — test `warga.test.js` mengakses endpoint Express dengan Supertest dan PostgreSQL untuk laporan publik, laporan saya, riwayat, dan notifikasi; tidak ada test yang diberi label terpisah sebagai INT-TC09/INT-TC10 |
-| INT-TC11 – INT-TC12 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk INT-TC11 dan INT-TC12 |
+| INT-TC11 – INT-TC12 |  |
 | INT-TC13 – INT-TC16 | <img src="./assets/INT-TC13.png" width="90%"><br>Keluaran Supertest endpoint Pemda |
 | UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
 | UC01-TC02 | <img src="./assets/UC01-TC02a.png" width="30%"> <img src="./assets/UC01-TC02b.png" width="30%"><br>Tombol terkunci dan dialog "Formulir belum lengkap" |
@@ -730,15 +761,15 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC06-TC01 |  |
 | UC06-TC02 |  |
 | UC06-TC03 |  |
-| UC07-TC01 |  |
-| UC07-TC02 |  |
+| UC07-TC01 | [...] |
+| UC07-TC02 | [...] |
 | UC08-TC01 |  |
 | UC08-TC02 |  |
-| KNF01-TC01 |  |
+| KNF01-TC01 | [...] |
 | KNF02-TC01 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar/detail publik tanpa identitas pelapor dan mengecualikan laporan nonpublik |
 | KNF03-TC01 | Tidak ada pengukuran waktu respons terukur pada eksekusi test-bagian3; durasi test di JUnit adalah durasi kasus uji, bukan pengukuran response time yang tervalidasi terhadap target 4 detik |
-| KNF04-TC01 |  |
-| KNF05-TC01 | <img src="./assets/KNF05-TC01.png" width="90%"><br>Screenshot hasil terminal `profiling_p5.js` |
+| KNF04-TC01 | <img src="./assets/KNF04-TC01.png" width="70%"><br>Hasil skrip pengukuran penggabungan duplikat |
+| KNF05-TC01 | <img src="./assets/KNF05-TC01.png" width="90%"><br>Screenshot hasil terminal `profiling.js` |
 
 <br>
 
@@ -752,16 +783,37 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
 | KF ID | KNF Terkait | Use Case ID | Kelas Terkait | Implementasi File Terkait | Test Case (UC) | Test Case (Unit/Integrasi/KNF) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
-| *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
-| *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
-| *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| KF01 | - | UC01 | C04 - Laporan | `src/mobile/src/features/pelaporan/BuatLaporanScreen.js`<br>`src/server/src/models/laporan/buat.js` | UC01-TC01, UC01-TC02 | C04-UT01 s.d. C04-UT03 |
+| KF02 | - | UC01 | C04 - Laporan | `src/server/src/adapters/cloudStorageAdapter.js`<br>`src/server/src/controllers/laporan/buat.js` | UC01-TC01 | C04-UT04, INT-TC04, INT-TC07 |
+| KF03 | - | UC01 | C05 - Lokasi | `src/server/src/models/lokasi/lokasi.js`<br>`src/server/src/adapters/googleMapsAdapter.js` | UC01-TC01, UC01-TC02 | C05-UT01 s.d. C05-UT05, INT-TC03 |
+| KF04 | KNF01 | UC01 | C01 - Pelapor<br>C04 - Laporan | `src/server/src/models/laporan/buat.js` | UC01-TC01 | C01-UT01 s.d. C01-UT03, C04-UT04, C04-UT05, INT-TC07, INT-TC08, KNF01-TC01 |
+| KF05 | KNF01 | UC01<br>UC02 | C04 - Laporan<br>C07 - Verifikasi | `src/server/src/models/verifikasi/verifikasi.js`<br>`src/server/src/models/laporan/buat.js` | UC01-TC03, UC02-TC01, UC02-TC02 | C04-UT06, C04-UT07, C07-UT01 s.d. C07-UT06, KNF01-TC01 |
+| KF06 | - | UC02 | C02 - Admin<br>C04 - Laporan | `src/server/src/models/laporan/verifikasi.js`<br>`src/mobile/src/features/verifikasi/DashboardAdminScreen.js` | UC02-TC01 | C02-UT01 s.d. C02-UT04, C04-UT11 s.d. C04-UT13 |
+| KF07 | - | UC02 | C10 - Notifikasi | `src/server/src/models/notifikasi/kirim.js`<br>`src/server/src/models/notifikasi/inbox.js` | UC02-TC01, UC02-TC02 | C01-UT07, C10-UT01 s.d. C10-UT06 |
+| KF08 | - | UC02 | C07 - Verifikasi | `src/server/src/models/verifikasi/verifikasi.js`<br>`src/server/src/models/laporan/prioritas.js` | UC02-TC02 | C07-UT01 s.d. C07-UT06 |
+| KF09 | - | UC02 | C07 - Verifikasi | `src/server/src/models/verifikasi/verifikasi.js` | UC02-TC01 | C07-UT01 s.d. C07-UT06, INT-TC11, INT-TC12 |
+| KF10 | KNF02 | UC04 | C04 - Laporan | `src/server/src/models/laporan/publik.js`<br>`src/mobile/src/features/warga/BerandaScreen.js` | UC04-TC01 s.d. UC04-TC03 | C04-UT08, INT-TC09, KNF02-TC01 |
+| KF11 | KNF02 | UC04 | C04 - Laporan | `src/server/src/models/laporan/publik.js`<br>`src/mobile/src/features/warga/DetailLaporanScreen.js` | UC04-TC01, UC04-TC04 | C04-UT09, INT-TC09, KNF02-TC01 |
+| KF12 | KNF03 | UC05 | C04 - Laporan<br>C09 - RiwayatStatus | `src/server/src/models/laporan/status.js` | UC05-TC01 | C09-UT01, INT-TC10, KNF03-TC01 |
+| KF13 | KNF03 | UC05 | C01 - Pelapor<br>C04 - Laporan | `src/server/src/models/laporan/saya.js`<br>`src/mobile/src/features/warga/LaporanSayaScreen.js` | UC05-TC01, UC05-TC02 | C01-UT04, C04-UT10, INT-TC10, KNF03-TC01 |
+| KF14 | - | UC06 | C06 - Fasilitas | `src/server/src/models/fasilitas/berulang.js`<br>`src/mobile/src/features/fasilitas/DaftarFasilitasScreen.js` | UC06-TC01 s.d. UC06-TC03 | C03-UT03, C06-UT04 s.d. C06-UT06, C06-UT10 s.d. C06-UT12, INT-TC15 |
+| KF15 | KNF04 | UC07 | C11 - KonfirmasiDuplikat | `src/server/src/models/konfirmasiDuplikat/duplikat.js`<br>`src/mobile/src/features/duplikat/DuplikatScreen.js` | UC07-TC01, UC07-TC02 | C11-UT02 s.d. C11-UT06, INT-TC05, INT-TC06, KNF04-TC01 |
+| KF16 | - | UC02 | C08 - SkorPrioritas | `src/server/src/models/skorPrioritas/skor.js` | UC02-TC01 | C08-UT01 s.d. C08-UT06 |
+| KF17 | - | UC07 | C08 - SkorPrioritas<br>C11 - KonfirmasiDuplikat | `src/server/src/models/skorPrioritas/skor.js`<br>`src/server/src/models/konfirmasiDuplikat/duplikat.js` | UC07-TC01 | C08-UT01 s.d. C08-UT06 |
+| KF18 | KNF05 | UC03 | C03 - PemerintahDaerah<br>C04 - Laporan | `src/server/src/models/laporan/prioritas.js`<br>`src/mobile/src/features/prioritas/PrioritasScreen.js` | UC03-TC01 s.d. UC03-TC03 | C03-UT01, C04-UT14, C04-UT15, INT-TC13, INT-TC14, KNF05-TC01 |
+| KF19 | KNF05 | UC03 | C03 - PemerintahDaerah<br>C04 - Laporan | `src/server/src/models/laporan/prioritas.js` | UC03-TC02 | C03-UT02, C04-UT16, C04-UT17 |
+| KF20 | - | UC07 | C11 - KonfirmasiDuplikat | `src/server/src/models/konfirmasiDuplikat/duplikat.js` | UC07-TC01 | C11-UT01 |
+| KF21 | - | UC07 | C11 - KonfirmasiDuplikat | `src/server/src/models/konfirmasiDuplikat/duplikat.js`<br>`src/mobile/src/features/duplikat/DuplikatScreen.js` | UC07-TC01, UC07-TC02 | C11-UT01 |
+| KF22 | - | UC08 | C06 - Fasilitas<br>C09 - RiwayatStatus | `src/server/src/models/laporan/status.js`<br>`src/server/src/models/riwayatStatus/riwayat.js` | UC08-TC01, UC08-TC02 | C06-UT07 s.d. C06-UT09, C09-UT01 s.d. C09-UT03 |
+| KF23 | - | UC08 | C06 - Fasilitas | `src/server/src/models/fasilitas/riwayat.js`<br>`src/mobile/src/features/fasilitas/DetailFasilitasScreen.js` | UC08-TC01, UC08-TC02 | C03-UT04, C03-UT05, C06-UT07 s.d. C06-UT09, INT-TC16 |
+| KF24 | KNF03 | UC05 | C01 - Pelapor<br>C09 - RiwayatStatus | `src/server/src/models/laporan/saya.js`<br>`src/mobile/src/features/warga/DetailLaporanScreen.js` | UC05-TC01, UC05-TC03 | C01-UT06, C09-UT01, INT-TC10, KNF03-TC01 |
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
 | ID KNF | Parameter | KF/UC Terkait | Test Case |
 | :--- | :--- | :--- | :--- |
-| *KNF01* | *Reliability* | *KF05 / UC03* | *KNF01-TC01* |
-| *KNFXX* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
-| *...* | *...* | *...* | *...* |
+| KNF01 | Availability | KF04, KF05 / UC01 | KNF01-TC01 |
+| KNF02 | Security | KF10, KF11 / UC04 | KNF02-TC01 |
+| KNF03 | Response Time | KF12, KF13, KF24 / UC05 | KNF03-TC01 |
+| KNF04 | Performance Efficiency | KF15 / UC07 | KNF04-TC01 |
+| KNF05 | Portability | KF18, KF19 / UC03 | KNF05-TC01 |
