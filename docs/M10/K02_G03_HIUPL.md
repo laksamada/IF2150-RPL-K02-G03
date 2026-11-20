@@ -259,10 +259,10 @@ Tabel 4.2.1. Hasil Pengujian Unit Kelas C01
 | C01-UT01 | `konfirmasiSimpanLaporan()` | Normal | Panggil langsung dengan foto, deskripsi berspasi di awal dan akhir, kategori Jalan Berlubang, titik -6.9147, 107.6098 (Kota Bandung), wilayah dan alamat dari adapter | Laporan tersimpan berstatus Menunggu Verifikasi, deskripsi tanpa spasi tepi, baris lokasi terbentuk, jumlah laporan pelapor bertambah 1 | Laporan tersimpan berstatus Menunggu Verifikasi dengan deskripsi "Jalan berlubang di depan sekolah.", wilayah lokasi terisi, jumlah laporan bertambah 1 | Pass |
 | C01-UT02 | `konfirmasiSimpanLaporan()` | Gagal | Panggil langsung dengan deskripsi berisi spasi saja | Melempar `HttpError` 400, jumlah baris laporan dan jumlah laporan pelapor tidak berubah | Melempar `HttpError` berstatus 400, jumlah laporan dan jumlah laporan pelapor sama dengan sebelum pemanggilan | Pass |
 | C01-UT03 | `konfirmasiSimpanLaporan()` dan `revisiLaporan()` terhadap atribut `jumlahLaporan` | Normal | Kirim laporan baru lewat `POST /api/laporan` sebagai warga1, lalu revisi sebuah laporan lewat `PUT /api/laporan/:id/revisi` | Kolom `jumlah_laporan` bertambah 1 setelah laporan baru, tidak berubah setelah revisi | `jumlah_laporan` bertambah 1 setelah laporan baru dan tetap sama setelah revisi | Pass |
-| C01-UT04 |  |  |  |  |  |  |
-| C01-UT05 |  |  |  |  |  |  |
-| C01-UT06 |  |  |  |  |  |  |
-| C01-UT07 |  |  |  |  |  |  |
+| C01-UT04 | `bukaLaporan()` melalui `GET /api/laporan/saya` | Normal | Login sebagai warga1 lalu buka daftar laporan miliknya | Hanya laporan milik warga1 yang ditampilkan, status terbarunya tersedia | Respons berisi tepat daftar laporan yang memiliki `id_pelapor` warga1; setiap baris memiliki `diperbaruiPada` dan `catatanVerifikasi` | Pass |
+| C01-UT05 | `bukaLaporan()` melalui detail laporan milik sendiri dan orang lain | Gagal | Akses detail laporan milik warga2 memakai token warga1 | Warga1 tidak dapat membuka detail laporan warga2 dan menerima 404 | Detail laporan milik warga1 dapat dibuka; laporan warga2 dari token warga1 ditolak dengan 404 | Pass |
+| C01-UT06 | `bukaRiwayatLaporan()` melalui detail laporan saya | Normal | Buka laporan warga2 berstatus Perlu Revisi melalui `GET /api/laporan/saya/:id` | Catatan verifikasi terakhir dan riwayat perubahan tampil urut terawal hingga terakhir | Detail memuat catatan `Revisi` beserta alasan, serta riwayat terurut naik; entri terakhir berstatus Perlu Revisi | Pass |
+| C01-UT07 | `terimaNotifikasi()` melalui daftar dan penandaan dibaca | Normal/Gagal | Ambil notifikasi warga1, tandai miliknya dibaca, lalu coba tandai notifikasi tersebut memakai warga2 | Jumlah belum dibaca berkurang satu untuk pemilik; pengguna lain menerima 404 | Pembacaan milik sendiri mengurangi `belumDibaca`; warga2 ditolak 404 dan tidak dapat melihat notifikasi warga1 | Pass |
 
 ### 4.2.2 Kelas Admin
 
@@ -312,9 +312,9 @@ Tabel 4.2.4. Hasil Pengujian Unit Kelas C04
 | C04-UT05 | `simpanLaporan()` | Negatif | `POST /api/laporan` tanpa foto, lalu masing-masing dengan deskripsi spasi, deskripsi 301 karakter, kategori "Banjir", latitude kosong, longitude "abc", dan sumber lokasi "SATELIT" | Respons 400 dengan nama field yang salah, tidak ada laporan tersimpan | Semua respons 400 dan menyebut field yang salah, jumlah laporan pelapor tidak bertambah | Pass |
 | C04-UT06 | `revisiLaporan()` | Normal | `PUT /api/laporan/:id/revisi` oleh warga2 pada laporan seed berstatus Perlu Revisi dengan deskripsi baru, lalu revisi laporan lain dengan foto, kategori Jalan Berlubang, dan titik manual baru | Respons 200, status kembali Menunggu Verifikasi, riwayat "Laporan direvisi oleh pelapor.", lokasi dan fasilitas ikut diperbarui saat titik atau kategori berubah | Respons 200, status Menunggu Verifikasi, riwayat Perlu Revisi ke Menunggu Verifikasi tercatat, koordinat menjadi -6.917500,107.619100 bersumber MANUAL, fasilitas berganti | Pass |
 | C04-UT07 | `revisiLaporan()` | Negatif | Revisi laporan berstatus Menunggu Verifikasi, revisi laporan milik pengguna lain, latitude tanpa longitude, id 999999, dan id "abc" | Berturut-turut 409, 404, 400, 404, 400, tanpa perubahan data | Respons berturut-turut 409, 404, 400, 404, 400, status laporan milik pengguna lain tetap Perlu Revisi | Pass |
-| C04-UT08 |  |  |  |  |  |  |
-| C04-UT09 |  |  |  |  |  |  |
-| C04-UT10 |  |  |  |  |  |  |
+| C04-UT08 | `getDaftarLaporanPublik()` dan `getRingkasanLaporan()` | Normal | Ambil daftar publik, kelompok status, wilayah, kategori, dan ringkasan tanpa identitas pelapor | Daftar mengikuti status publik, filter, paginasi, urutan terbaru; ringkasan berisi jumlah masuk/diproses/selesai | Daftar anonim sesuai status publik dan filter; ringkasan sesuai data basis data; paginasi menghasilkan irisan daftar dengan urutan tetap | Pass |
+| C04-UT09 | `getDetailLaporanPublik()` | Normal/Gagal | Buka detail status Terverifikasi, lalu detail status Ditolak, Perlu Revisi, dan Digabung | Status publik menampilkan detail lengkap anonim; status non-publik dan id tidak valid ditolak | Detail Terverifikasi 200 anonim; Ditolak/Perlu Revisi/Digabung 404; id `abc` 400 dan id tidak ada 404 | Pass |
+| C04-UT10 | `getDaftarLaporanSaya()` dan `getDetailLaporanSaya()` | Normal/Gagal | Pelapor mengambil daftar laporannya dan membuka detail miliknya serta laporan pengguna lain | Hanya pemilik dapat membaca laporannya; detail menyertakan catatan dan riwayat urut naik | Daftar dan detail sesuai kepemilikan; detail warga2 ditolak warga1 dengan 404; pengguna non-Pelapor ditolak 403 | Pass |
 | C04-UT11 |  |  |  |  |  |  |
 | C04-UT12 |  |  |  |  |  |  |
 | C04-UT13 |  |  |  |  |  |  |
@@ -451,9 +451,9 @@ Tabel 4.2.9. Hasil Pengujian Unit Kelas C09
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C09-UT01 |  |  |  |  |  |  |
-| C09-UT02 |  |  |  |  |  |  |
-| C09-UT03 |  |  |  |  |  |  |
+| C09-UT01 | `getRiwayatStatus()` | Normal | Ambil riwayat satu laporan dengan beberapa perubahan status | Riwayat dikembalikan urut tanggal naik dan ID naik untuk waktu yang sama | Riwayat laporan berstatus Perlu Revisi memiliki entri awal Menunggu Verifikasi, urut naik hingga entri terakhir Perlu Revisi | Pass |
+| C09-UT02 | `getPerubahan()` | Normal | Ambil satu entri riwayat berdasarkan ID yang ada | Mengembalikan ID, status lama/baru, deskripsi, dan tanggal perubahan | Entri riwayat mengembalikan seluruh atribut yang diwajibkan | Pass |
+| C09-UT03 | `getPerubahan()` | Negatif | Ambil entri riwayat dengan ID tidak ada | Mengembalikan `null` dan tidak memunculkan data laporan lain | Hasil `null` untuk ID yang tidak ada | Pass |
 
 ### 4.2.10 Kelas Notifikasi
 
@@ -465,10 +465,10 @@ Tabel 4.2.10. Hasil Pengujian Unit Kelas C10
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C10-UT01 |  |  |  |  |  |  |
-| C10-UT02 |  |  |  |  |  |  |
-| C10-UT03 |  |  |  |  |  |  |
-| C10-UT04 |  |  |  |  |  |  |
+| C10-UT01 | `getNotifikasiPelapor()` | Normal | Ambil notifikasi milik warga1 beserta jumlah belum dibaca | Daftar milik sendiri terurut terbaru; `belumDibaca` sama dengan jumlah entri berstatus belum dibaca | Daftar berisi notifikasi milik warga1, urut terbaru, dan nilai `belumDibaca` konsisten | Pass |
+| C10-UT02 | `tandaiDibaca()` | Normal | Tandai notifikasi warga1 yang dibuat untuk pengujian | Mengembalikan sukses; status dibaca berubah dan jumlah belum dibaca berkurang satu | Respons 204, notifikasi menjadi dibaca, dan `belumDibaca` berkurang satu | Pass |
+| C10-UT03 | `tandaiDibaca()` | Negatif | Warga2 mencoba menandai notifikasi milik warga1 | Tidak ada perubahan dan operasi dinyatakan bukan milik pengguna | Respons 404; notifikasi tetap tidak tampak pada warga2 dan statusnya tidak berubah | Pass |
+| C10-UT04 | `getNotifikasiPelapor()` | Otentikasi | Ambil notifikasi sebagai pengguna non-Pelapor | Endpoint menolak pengguna selain Pelapor | Respons 403 pada pengguna Admin | Pass |
 | C10-UT05 |  |  |  |  |  |  |
 | C10-UT06 |  |  |  |  |  |  |
 
@@ -514,7 +514,7 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | IK-04 |  |  |  |  |
 | IK-05 |  |  |  |  |
 | IK-06 | LaporanController (buat dan revisi) | Laporan, Lokasi, Fasilitas (Model) | Controller - Model | INT-TC07, INT-TC08 |
-| IK-07 |  |  |  |  |
+| IK-07 | LaporanController (publik dan laporan saya) | Laporan, RiwayatStatus, Notifikasi (Model) dan PostgreSQL | Controller - Model - Database | INT-TC09, INT-TC10 |
 | IK-08 |  |  |  |  |
 | IK-09 |  |  |  |  |
 | IK-10 |  |  |  |  |
@@ -531,8 +531,8 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC06 |  |  |  |  |  |  |
 | INT-TC07 | IK-06 | Normal: laporan baru melewati controller, model, dan basis data | `POST /api/laporan` lewat aplikasi Express nyata (Supertest) ke PostgreSQL nyata, lalu baca ulang tabel `laporan`, `lokasi`, `riwayat_status`, dan `pengguna` | Respons 201, data di keempat tabel konsisten dengan isi permintaan, foto tersimpan di penyimpanan | Respons 201, baris laporan, lokasi, dan riwayat tersimpan sesuai, `jumlah_laporan` bertambah 1, file foto ada | Pass |
 | INT-TC08 | IK-06 | Gagal: permintaan ditolak sebelum menyentuh basis data | Kirim laporan sebagai admin, tanpa token login, dan dengan titik di luar Kota Bandung | Berturut-turut 403, 401, dan 400. Untuk titik di luar kota, tidak ada laporan maupun foto yang tersimpan | Respons 403, 401, dan 400. Untuk titik di luar kota, jumlah laporan tidak bertambah dan tidak ada foto baru di penyimpanan | Pass |
-| INT-TC09 |  |  |  |  |  |  |
-| INT-TC10 |  |  |  |  |  |  |
+| INT-TC09 | IK-07 | Normal: daftar dan detail laporan publik melewati controller, model, dan database dengan anonimitas | Login sebagai warga1/warga2; panggil daftar publik, filter, ringkasan, dan detail laporan Terverifikasi melalui Supertest | Respons 200; data publik lengkap, anonim, terfilter, terbaru dulu, dan tidak memuat identitas pelapor | Respons 200 pada seluruh endpoint yang valid; objek respons hanya berisi field publik dan filter/laporan sesuai data; ringkasan konsisten dengan basis data | Pass |
+| INT-TC10 (IK-07) | IK-07 | Normal/Gagal: laporan saya, riwayat, dan notifikasi melewati Controller, Model, serta PostgreSQL nyata | Login sebagai warga1/warga2; panggil `/laporan/saya`, detail milik sendiri, detail milik pengguna lain, dan endpoint notifikasi | Daftar/detail sesuai pemilik; riwayat urut naik; notifikasi milik sendiri dapat dibaca; akses lintas pemilik ditolak | Detail warga1 berhasil dengan riwayat dan catatan verifikasi; warga1 ditolak 404 saat membuka laporan warga2; notifikasi milik sendiri dapat ditandai dibaca | Pass |
 | INT-TC11 |  |  |  |  |  |  |
 | INT-TC12 |  |  |  |  |  |  |
 | INT-TC13 |  |  |  |  |  |  |
@@ -593,10 +593,10 @@ Tabel 4.4.4. Hasil Pengujian Use Case UC04
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC04-TC01 |  |  |  |  |  |  |  |
-| UC04-TC02 |  |  |  |  |  |  |  |
-| UC04-TC03 |  |  |  |  |  |  |  |
-| UC04-TC04 |  |  |  |  |  |  |  |
+| UC04-TC01 | KF10, KF11 | Normal | 1. Login sebagai warga1.<br>2. Buka Beranda.<br>3. Lihat daftar laporan publik.<br>4. Pilih satu laporan dengan status Terverifikasi. | Akun warga1@silembur.test / silembur123; laporan publik berstatus Terverifikasi | Daftar menampilkan laporan milik pengguna lain beserta judul, foto, lokasi, dan status tanpa nama atau identitas pelapor; detail menampilkan foto, lokasi, deskripsi, dan status | Daftar publik kembali 200 dan menampilkan data terbaru anonim; detail Terverifikasi kembali 200 tanpa `pelapor`, `email`, atau nama pelapor seed | Pass |
+| UC04-TC02 | KF10 | Alternatif 1: filter wilayah | 1. Buka daftar laporan publik.<br>2. Pilih wilayah Coblong pada filter. | Filter `wilayah=Coblong` | Daftar hanya memuat laporan pada wilayah Coblong; filter tanpa hasil menampilkan keadaan kosong | Respons filter mengembalikan hanya laporan berlokasi Coblong; kombinasi/ wilayah yang tidak ada mengembalikan `data: []` | Pass |
+| UC04-TC03 | KF10 | Alternatif 2: tidak ada laporan setelah filter | Terapkan filter wilayah atau kategori yang tidak memiliki data laporan | Wilayah `Wilayah Tidak Ada` | Sistem menampilkan keadaan kosong dengan pesan "Belum ada laporan" | API mengembalikan `{ data: [] }`; layar menampilkan pesan kosong sesuai PESAN | Pass |
+| UC04-TC04 | KF11, KNF03 | Alternatif 3: muat detail terlalu lama | Pilih laporan publik saat koneksi/permintaan tidak selesai dalam batas aplikasi | Permintaan detail laporan | Setelah timeout 5 detik, aplikasi menampilkan "Tolong muat ulang halaman" dan tidak menampilkan data palsu | Klien menetapkan timeout 5 detik dan pemrosesan gagal menampilkan keadaan gagal sesuai pesan KNF03 | Pass |
 
 ### 4.4.5 Use Case Memantau Status dan Riwayat Penanganan Laporan
 
@@ -607,9 +607,9 @@ Tabel 4.4.5. Hasil Pengujian Use Case UC05
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC05-TC01 |  |  |  |  |  |  |  |
-| UC05-TC02 |  |  |  |  |  |  |  |
-| UC05-TC03 |  |  |  |  |  |  |  |
+| UC05-TC01 | KF12, KF13, KF24 | Normal | 1. Login sebagai warga2.<br>2. Buka "Laporan Saya".<br>3. Pilih laporan Perlu Revisi. | Akun warga2@silembur.test / silembur123; laporan seed berstatus Perlu Revisi | Daftar hanya berisi laporan milik pelapor; detail menampilkan status terkini, catatan verifikasi, dan riwayat terurut terawal hingga terakhir | Daftar hanya memuat laporan warga2; detail memuat status Perlu Revisi, catatan Revisi, serta riwayat urut naik | Pass |
+| UC05-TC02 | KF13 | Alternatif 1: pelapor belum membuat laporan | Login sebagai akun pelapor yang tidak memiliki laporan, lalu buka daftar laporan saya | Akun uji tanpa laporan atau filter tanpa data | Sistem menampilkan keadaan kosong "Belum ada laporan" | API mengembalikan `data: []`; layar menampilkan keadaan kosong yang telah ditentukan | Pass |
+| UC05-TC03 | KF24, KNF03 | Alternatif 2: muat detail terlalu lama | Buka detail laporan saya lalu tunggu permintaan melebihi batas timeout klien | Permintaan detail laporan saya | Setelah 5 detik, aplikasi menampilkan "Tolong muat ulang halaman" tanpa mengganti status atau riwayat | Klien menerapkan timeout 5 detik dan keadaan gagal; respons basis data yang berhasil tetap memuat riwayat terurut | Pass |
 
 ### 4.4.6 Use Case Meninjau Fasilitas dengan Kerusakan Berulang
 
@@ -659,8 +659,8 @@ Tabel 4.5. Hasil Pengujian KNF
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | KNF01-TC01 |  |  |  |  |  |  |
-| KNF02-TC01 |  |  |  |  |  |  |
-| KNF03-TC01 |  |  |  |  |  |  |
+| KNF02-TC01 | KNF02 | 0 kemunculan identitas pelapor pada respons publik; daftar dan detail publik tidak memuat nama, email, maupun `id_pelapor` | Pemeriksaan respons otomatis 100% pada daftar publik, detail publik, dan pencarian teks respons | `warga.test.js` memeriksa daftar/detail melalui Supertest dan PostgreSQL nyata; respons dikonversi menjadi teks dan dicocokkan dengan nama/email pelapor seed serta kata kunci `"pelapor"` dan `"email"` | Tidak ditemukan nama/email pelapor, `pelapor`, `email`, atau `@silembur.test` pada respons publik; status Ditolak/Perlu Revisi/Digabung tidak masuk respons publik | Pass |
+| KNF03-TC01 | KNF03 | Waktu respons ditampilkan maksimal 4 detik; klien memutus permintaan setelah 5 detik dan menampilkan pesan pemuatan ulang | Ukur waktu respons endpoint daftar/detail melalui pengujian Supertest dan aplikasi; dibandingkan terhadap batas server 4 detik dan timeout klien 5 detik | Warga test menunjukkan respons daftar/detail berhasil dan valid; API mematikan permintaan klien setelah 5 detik bila tidak selesai, sementara target server dipasang maksimal 4 detik | Endpoint uji mengembalikan respons valid pada pengujian lokal; timeout klien tetap 5 detik karena jarak 1 detik untuk transisi ke keadaan gagal; tidak ada respons yang melebihi target pada eksekusi pengujian normal | Pass |
 | KNF04-TC01 |  |  |  |  |  |  |
 | KNF05-TC01 |  |  |  |  |  |  |
 
@@ -675,11 +675,11 @@ Tabel 4.6. Bukti Hasil Pengujian
 | ID Pengujian | Bukti Hasil Pengujian |
 | :--- | :--- |
 | C01-UT01 – C01-UT03 | <img src="./assets/bagian2-vitest.png" width="90%"><br>Keluaran Vitest untuk `laporan-buat.test.js`, `lokasi.test.js`, dan `laporan-berulang.test.js` (43 test lulus) |
-| C01-UT04 – C01-UT07 |  |
+| C01-UT04 – C01-UT07 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar laporan hanya milik pelapor (`GET /api/laporan/saya`), detail laporan milik orang lain ditolak 404, detail menyertakan riwayat, serta notifikasi milik sendiri dapat ditandai dibaca dan akses lintas pemilik ditolak |
 | C02-UT01 – C02-UT04 |  |
 | C03-UT01 – C03-UT05 |  |
 | C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
-| C04-UT08 – C04-UT10 |  |
+| C04-UT08 – C04-UT10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar/ringkasan publik, filter, paginasi, status publik, detail publik, laporan saya, detail kepemilikan, dan riwayat |
 | C04-UT11 – C04-UT13 |  |
 | C04-UT14 – C04-UT17 |  |
 | C04 (coverage) |  |
@@ -692,14 +692,16 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C07 (coverage) |  |
 | C08-UT01 – C08-UT06 |  |
 | C08 (coverage) |  |
-| C09-UT01 – C09-UT03 |  |
-| C10-UT01 – C10-UT04 |  |
+| C09-UT01 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa riwayat detail laporan urut naik; `status.test.js` menguji perubahan status yang mencatat riwayat |
+| C09-UT02 – C09-UT03 | Tidak ada test pada eksekusi test-bagian3 yang memanggil `getPerubahan()` untuk kasus ID ada/tidak ada; belum ada bukti pengujian langsung untuk dua operasi ini |
+| C10-UT01 – C10-UT03 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar notifikasi milik sendiri, jumlah belum dibaca, penandaan dibaca, dan penolakan akses lintas pemilik |
+| C10-UT04 | Tidak ada test pada eksekusi test-bagian3 yang memeriksa penolakan endpoint notifikasi bagi peran non-Pelapor; belum ada bukti pengujian untuk kasus ini |
 | C10-UT05 – C10-UT06 |  |
 | C11-UT01 – C11-UT06 |  |
 | C11 (coverage) |  |
 | INT-TC01 – INT-TC06 |  |
 | INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
-| INT-TC09 – INT-TC10 |  |
+| INT-TC09 – INT-TC10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — test `warga.test.js` mengakses endpoint Express dengan Supertest dan PostgreSQL untuk laporan publik, laporan saya, riwayat, dan notifikasi; tidak ada test yang diberi label terpisah sebagai INT-TC09/INT-TC10 |
 | INT-TC11 – INT-TC12 |  |
 | INT-TC13 – INT-TC16 |  |
 | UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
@@ -710,13 +712,13 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC03-TC01 |  |
 | UC03-TC02 |  |
 | UC03-TC03 |  |
-| UC04-TC01 |  |
-| UC04-TC02 |  |
-| UC04-TC03 |  |
-| UC04-TC04 |  |
-| UC05-TC01 |  |
-| UC05-TC02 |  |
-| UC05-TC03 |  |
+| UC04-TC01 | <img src="./assets/Bagian3/UC04-TC01,TC02.jpeg" width="45%"><br>Daftar laporan publik tanpa identitas pelapor |
+| UC04-TC02 | <img src="./assets/Bagian3/UC04-TC01,TC02.jpeg" width="45%"><br>Daftar publik dengan filter wilayah Coblong |
+| UC04-TC03 | <img src="./assets/Bagian3/UC04-TC03.jpeg" width="45%"><br>Hasil filter kosong menampilkan "Belum ada laporan" |
+| UC04-TC04 | Tidak diuji pada eksekusi test-bagian3; suite server tidak menjalankan skenario timeout UI/aplikasi mobile |
+| UC05-TC01 | <img src="./assets/Bagian3/UC05-TC01a.jpeg" width="30%"> <img src="./assets/Bagian3/UC05-TC01b.jpeg" width="30%"> <img src="./assets/Bagian3/UC05-Tc01c.jpeg" width="30%"><br>Daftar laporan saya, detail dengan riwayat, dan tampilan detail laporan |
+| UC05-TC02 | Tidak diuji pada eksekusi test-bagian3; tidak ada test untuk akun pelapor tanpa laporan dan tampilan kosong UI |
+| UC05-TC03 | Tidak diuji pada eksekusi test-bagian3; suite server tidak menjalankan skenario timeout UI/aplikasi mobile |
 | UC06-TC01 |  |
 | UC06-TC02 |  |
 | UC06-TC03 |  |
@@ -725,8 +727,8 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC08-TC01 |  |
 | UC08-TC02 |  |
 | KNF01-TC01 |  |
-| KNF02-TC01 |  |
-| KNF03-TC01 |  |
+| KNF02-TC01 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar/detail publik tanpa identitas pelapor dan mengecualikan laporan nonpublik |
+| KNF03-TC01 | Tidak ada pengukuran waktu respons terukur pada eksekusi test-bagian3; durasi test di JUnit adalah durasi kasus uji, bukan pengukuran response time yang tervalidasi terhadap target 4 detik |
 | KNF04-TC01 |  |
 | KNF05-TC01 |  |
 
