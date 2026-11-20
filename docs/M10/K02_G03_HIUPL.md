@@ -281,10 +281,10 @@ Tabel 4.2.2. Hasil Pengujian Unit Kelas C02
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C02-UT01 |  |  |  |  |  |  |
-| C02-UT02 |  |  |  |  |  |  |
-| C02-UT03 |  |  |  |  |  |  |
-| C02-UT04 |  |  |  |  |  |  |
+| C02-UT01 | `lihatDaftarLaporan()` (`GET /api/admin/laporan`) | Normal | Login sebagai admin. Siapkan dua laporan Menunggu Verifikasi milik warga1 berumur 72 jam dan 24 jam. Panggil `GET /api/admin/laporan` tanpa parameter | Respons 200, semua item berstatus Menunggu Verifikasi, laporan 72 jam muncul sebelum laporan 24 jam dan seluruh daftar urut dari terlama, setiap item memuat pelapor (id, nama, email) dan `skor` null | Antrean Menunggu Verifikasi, terlama dulu, memuat identitas pelapor | Pass |
+| C02-UT02 | `lihatDaftarLaporan()` (`GET /api/admin/laporan`) | Batas | Panggil dengan status Ditolak, status kosong, status Ditolak dengan kata kunci "QZJX" (huruf besar), kata kunci "%", kata kunci 100 karakter dan 101 karakter, lalu status "Disetujui" | Filter status hanya memuat status tersebut, status kosong dianggap default Menunggu Verifikasi, kata kunci tanpa beda huruf besar kecil hanya menemukan laporan yang cocok, "%" menghasilkan daftar kosong, 100 karakter 200, 101 karakter 400, status "Disetujui" 400 | Filter status, kata kunci, dan batas panjang kata kunci | Pass |
+| C02-UT03 | `tetapkanKeputusan()` (`POST /api/admin/laporan/:id/verifikasi`) | Normal | Sebagai admin kirim keputusan Disetujui (catatan "Lokasi dan foto sesuai.") pada laporan Jalan Berlubang berumur 48 jam, lalu Ditolak (catatan "Bukan fasilitas umum.") dan Revisi (catatan "Foto kurang jelas.") pada dua laporan lain | Disetujui: 200, status Terverifikasi, skor 39 (20 + 5×1 + 2×2 + 10×1) dan sama dengan skor pada laporan. Ditolak: 200, status Ditolak, skor null. Revisi: 200, status Perlu Revisi, skor null | Disetujui, Ditolak, dan Revisi memetakan ke status yang benar | Pass |
+| C02-UT04 | `tetapkanKeputusan()` (`POST /api/admin/laporan/:id/verifikasi`) | Negatif | Pada laporan Menunggu Verifikasi kirim: Ditolak dengan catatan spasi, keputusan "Setuju", id 999999, id "abc", Disetujui sebagai warga1, sebagai pemda, dan tanpa token. Lalu kirim Disetujui yang valid, kemudian Ditolak untuk laporan yang sama | Berturut-turut 400 (field `catatan`), 400, 404, 400, 403, 403, 401, tanpa perubahan status maupun baris verifikasi. Disetujui yang valid 200, keputusan kedua 409, status tetap Terverifikasi dengan satu baris verifikasi | Ditolak bila catatan kosong, id salah, sudah diputuskan, atau bukan admin | Pass |
 
 ### 4.2.3 Kelas PemerintahDaerah
 
@@ -322,9 +322,9 @@ Tabel 4.2.4. Hasil Pengujian Unit Kelas C04
 | C04-UT08 | `getDaftarLaporanPublik()` dan `getRingkasanLaporan()` | Normal | Ambil daftar publik, kelompok status, wilayah, kategori, dan ringkasan tanpa identitas pelapor | Daftar mengikuti status publik, filter, paginasi, urutan terbaru; ringkasan berisi jumlah masuk/diproses/selesai | Daftar anonim sesuai status publik dan filter; ringkasan sesuai data basis data; paginasi menghasilkan irisan daftar dengan urutan tetap | Pass |
 | C04-UT09 | `getDetailLaporanPublik()` | Normal/Gagal | Buka detail status Terverifikasi, lalu detail status Ditolak, Perlu Revisi, dan Digabung | Status publik menampilkan detail lengkap anonim; status non-publik dan id tidak valid ditolak | Detail Terverifikasi 200 anonim; Ditolak/Perlu Revisi/Digabung 404; id `abc` 400 dan id tidak ada 404 | Pass |
 | C04-UT10 | `getDaftarLaporanSaya()` dan `getDetailLaporanSaya()` | Normal/Gagal | Pelapor mengambil daftar laporannya dan membuka detail miliknya serta laporan pengguna lain | Hanya pemilik dapat membaca laporannya; detail menyertakan catatan dan riwayat urut naik | Daftar dan detail sesuai kepemilikan; detail warga2 ditolak warga1 dengan 404; pengguna non-Pelapor ditolak 403 | Pass |
-| C04-UT11 |  |  |  |  |  |  |
-| C04-UT12 |  |  |  |  |  |  |
-| C04-UT13 |  |  |  |  |  |  |
+| C04-UT11 | `getLaporanMenungguVerifikasi()` dan `hitungLaporanBaru()` | Normal dan Batas | Panggil langsung dengan `pool`: tanpa argumen, dengan dua laporan Menunggu Verifikasi bertanggal persis sama, satu laporan Ditolak, kata kunci "zXqV", "  seri kedua  ", "%", teks yang tidak ada, dan "   ", serta status Ditolak dengan kata kunci. Panggil `hitungLaporanBaru()` sebelum dan sesudah menambah satu laporan, lalu setelah statusnya diubah menjadi Ditolak | Tanpa argumen hanya memuat Menunggu Verifikasi (tanpa laporan Ditolak) dan laporan bertanggal sama berurut menurut id. Kata kunci tanpa beda huruf besar kecil menemukan dua laporan, spasi tepi dibuang, "%" kosong, kata kunci spasi dianggap tanpa kata kunci, status Ditolak menemukan satu laporan. `hitungLaporanBaru()` sama dengan panjang antrean, bertambah 1 setelah laporan baru, kembali semula setelah menjadi Ditolak | Default, urutan, kata kunci, badge | Pass |
+| C04-UT12 | `getDetailLaporan()` (`getLaporanAdmin()`, `getDetailLaporanAdmin()`) | Normal dan Negatif | Ambil detail laporan Pohon Tumbang berumur 96 jam dengan dua baris riwayat yang disisipkan terbalik, lalu laporan Jalan Berlubang berumur 24 jam dengan satu laporan Digabung dan satu baris verifikasi Revisi. Ambil juga id 999999 | DTO memuat pelapor, lokasi, fasilitas, `skor` null. Pratinjau skor 53 (30 + 5×1 + 2×4 + 10×1) tanpa menulis ke `skor_prioritas`, riwayat urut dari terawal. Laporan kedua: pratinjau 42, jumlah pelapor 2, satu histori verifikasi berisi keputusan, catatan, waktu, nama admin. Id 999999 mengembalikan `null` untuk kedua fungsi | DTO admin, pratinjau skor tanpa menyimpan, riwayat urut, null bila tidak ada | Pass |
+| C04-UT13 | `updateStatus()` (`ubahStatus()`) | Normal dan Negatif | Dalam transaksi ubah satu laporan dari Menunggu Verifikasi ke Terverifikasi, Diproses, lalu Selesai dengan pengguna admin. Ubah laporan lain ke Digabung dengan laporan induk. Coba transisi Menunggu Verifikasi ke Selesai, Ditolak ke Terverifikasi, Selesai ke Diproses, Digabung ke Menunggu Verifikasi, dan id 999999 | Setiap transisi sah mengembalikan idLaporan, statusLama, statusBaru, status berubah, `diperbarui_pada` maju, dan menambah satu baris riwayat berisi pengguna, status lama, status baru, deskripsi (total 3 baris). Digabung menyimpan id laporan induk. Transisi tidak sah ditolak 409 tanpa mengubah status dan riwayat, id 999999 404 | Transisi sah tercatat, transisi tidak sah 409 tanpa perubahan | Pass |
 | C04-UT14 | `getLaporanTerverifikasi()` | Normal | Panggil fungsi menggunakan objek pool tanpa opsi filter khusus | Mengembalikan daftar laporan terverifikasi terurut skor menurun | Laporan berhasil diambil, dengan `skor_akhir` tertinggi berada di indeks 0 | Pass |
 | C04-UT15 | `getLaporanTerverifikasi()` | Batas | Panggil fungsi saat seluruh laporan memiliki skor prioritas sama | Laporan tetap diambil dan diurutkan menggunakan kriteria tanggal sekunder | Laporan ditarik dengan sukses, diurutkan menurut waktu pembuatan logis | Pass |
 | C04-UT16 | `getLaporanTerverifikasi()` | Normal | Opsi filter kecamatan valid (contoh: "Regol") | Mengembalikan laporan yang hanya terletak di wilayah tersebut | Hasil saringan 100% cocok dengan field kecamatan "Regol" | Pass |
@@ -334,10 +334,10 @@ Tabel 4.2.4b. Ringkasan Cakupan Kelas C04
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL |  |
-| Operasi yang diuji |  |
-| ID Algoritma yang tercakup |  |
-| Coverage (wajib ≥ 70%) |  |
+| Daftar operasi public pada DPPL | `buatLaporanBaru()`, `tampilkanFormulir()`, `validasiIsianFormulir()`, `bukaKunciSimpan()`, `simpanLaporan()`, `getLaporanMenungguVerifikasi()`, `getDetailLaporan()`, `updateStatus()`, `getLaporanTerverifikasi()`, `urutkanBerdasarkanPrioritas()`, `filterLaporan()`, `pilihDuplikat()`, `getRiwayatStatus()` |
+| Operasi yang diuji | Bagian 4 (C04-UT11 s.d. C04-UT13): `getLaporanMenungguVerifikasi()`, `getDetailLaporan()`, `updateStatus()`. Operasi lain diuji oleh C04-UT01 s.d. C04-UT10 dan C04-UT14 s.d. C04-UT17 [lengkapi saat penggabungan] |
+| ID Algoritma yang tercakup | Dari Bagian 4: Algo-002 dan Q-002 (lewat `updateStatus()`). ID dari bagian lain ditambahkan saat penggabungan |
+| Coverage (wajib ≥ 70%) | [ISI: persentase baris dan cabang file `src/server/src/models/laporan/*.js`, diukur dengan `@vitest/coverage-v8` pada seluruh test suite. Bukti pada Tabel 4.6] |
 
 ### 4.2.5 Kelas Lokasi
 
@@ -406,21 +406,21 @@ Tabel 4.2.7. Hasil Pengujian Unit Kelas C07
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C07-UT01 |  |  |  |  |  |  |
-| C07-UT02 |  |  |  |  |  |  |
-| C07-UT03 |  |  |  |  |  |  |
-| C07-UT04 |  |  |  |  |  |  |
-| C07-UT05 |  |  |  |  |  |  |
-| C07-UT06 |  |  |  |  |  |  |
+| C07-UT01 | `simpanVerifikasi()` | Normal | Panggil langsung pada laporan Menunggu Verifikasi dengan id admin, keputusan Revisi, catatan "Foto kurang jelas." | Mengembalikan id verifikasi (angka). Satu baris `verifikasi` berisi laporan, admin, keputusan, catatan, `waktu_verifikasi` terisi waktu saat ini. Status laporan tetap Menunggu Verifikasi karena fungsi ini hanya mencatat | Mencatat keputusan, catatan, admin, dan waktu tanpa mengubah status | Pass |
+| C07-UT02 | `simpanVerifikasi()` | Batas dan Negatif | Panggil tanpa catatan, dengan catatan 500 karakter, keputusan "Setuju", id admin 999999, lalu id laporan 999999 | Tanpa catatan tersimpan string kosong, 500 karakter tersimpan utuh. Tiga masukan terakhir ditolak basis data (pelanggaran CHECK dan foreign key) dan jumlah baris `verifikasi` tidak bertambah | Catatan kosong jadi string kosong; keputusan/admin/laporan tidak valid ditolak basis data | Pass |
+| C07-UT03 | `tetapkanKeputusan()` dan `teruskanKePemerintah()` | Normal | Dalam transaksi panggil `tetapkanKeputusan()` Disetujui (catatan "Foto dan lokasi sesuai.") pada laporan Jalan Berlubang berumur 24 jam. Lalu panggil `teruskanKePemerintah()` dua kali pada laporan Terverifikasi berumur 48 jam | Mengembalikan idLaporan, idVerifikasi, status Terverifikasi, skor 37 (20 + 5×1 + 2×1 + 10×1). Ada satu baris verifikasi, riwayat "Disetujui. Catatan: Foto dan lokasi sesuai." oleh admin, baris skor (1, 1, 1, 37), dan satu notifikasi belum dibaca untuk pelapor "Laporan #id: Disetujui. Foto dan lokasi sesuai.". `teruskanKePemerintah()` mengembalikan 39 (20 + 5×1 + 2×2 + 10×1) pada kedua pemanggilan dan hanya ada satu baris skor | Disetujui -> Terverifikasi, skor, riwayat, notifikasi | Pass |
+| C07-UT04 | `tetapkanKeputusan()` dan `tahanLaporan()` (KF08) | Normal | Putuskan Ditolak (catatan "Bukan fasilitas umum.") dan Revisi (catatan "Foto kurang jelas.") pada dua laporan. Sediakan satu laporan Disetujui dan satu laporan yang tetap Menunggu Verifikasi sebagai kontrol, lalu panggil `GET /api/prioritas` sebagai pemda | Ditolak: status Ditolak, skor null, tanpa baris skor, jumlah kerusakan berulang fasilitas 0. Revisi: status Perlu Revisi, skor null, tanpa baris skor, jumlah kerusakan berulang 1. Pesan notifikasi memuat keputusan dan catatan. Daftar prioritas pemda memuat laporan Disetujui dan tidak memuat laporan Ditolak, Perlu Revisi, maupun Menunggu Verifikasi. Penahanan tidak berupa fungsi tersendiri: laporan tertahan karena statusnya berada di luar `STATUS_PRIORITAS` | Tanpa skor, tidak diteruskan ke pemda (KF08) | Pass |
+| C07-UT05 | `tetapkanKeputusan()` | Batas | Putuskan Revisi dengan catatan "  perlu foto baru  " dan Disetujui dengan catatan spasi saja. Lewat API kirim Disetujui dengan catatan tepat 500 karakter dan 501 karakter | Catatan dirapikan menjadi "perlu foto baru" pada verifikasi dan notifikasi "Laporan #id: Revisi. perlu foto baru". Catatan spasi tersimpan kosong, riwayat "Disetujui.", notifikasi "Laporan #id: Disetujui.". 500 karakter 200 dan tersimpan utuh, 501 karakter 400 (field `catatan`) tanpa perubahan data | Catatan dirapikan, Disetujui tanpa catatan, batas 500 dan 501 karakter | Pass |
+| C07-UT06 | `tetapkanKeputusan()` | Negatif | Panggil dengan keputusan "Setuju", Ditolak dengan catatan spasi, Revisi tanpa catatan, id laporan 999999, serta laporan berstatus Terverifikasi, Digabung, dan Perlu Revisi | Berturut-turut `HttpError` 400, 400, 400, 404, 409, 409, 409. Tidak ada baris verifikasi, notifikasi, riwayat, maupun skor baru dan status semua laporan tidak berubah | Keputusan tidak dikenal, catatan wajib, laporan tidak ada, status tidak sesuai | Pass |
 
 Tabel 4.2.7b. Ringkasan Cakupan Kelas C07
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL |  |
-| Operasi yang diuji |  |
-| ID Algoritma yang tercakup |  |
-| Coverage (wajib ≥ 70%) |  |
+| Daftar operasi public pada DPPL | `simpanVerifikasi()`, `tahanLaporan()`, `teruskanKePemerintah()` |
+| Operasi yang diuji | `simpanVerifikasi()` (C07-UT01, C07-UT02), `teruskanKePemerintah()` (C07-UT03), `tahanLaporan()` (C07-UT04, tidak berupa fungsi tersendiri: penahanan terjadi karena status laporan di luar `STATUS_PRIORITAS`), serta `tetapkanKeputusan()` yang mengorkestrasi ketiganya (C07-UT03 s.d. C07-UT06) |
+| ID Algoritma yang tercakup | Algo-002, Algo-008, Q-002, Q-003, Q-008 |
+| Coverage (wajib ≥ 70%) | [ISI: persentase baris dan cabang file `src/server/src/models/verifikasi/verifikasi.js`, diukur dengan `@vitest/coverage-v8` pada seluruh test suite. Bukti pada Tabel 4.6] |
 
 ### 4.2.8 Kelas SkorPrioritas
 
@@ -432,21 +432,21 @@ Tabel 4.2.8. Hasil Pengujian Unit Kelas C08
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C08-UT01 |  |  |  |  |  |  |
-| C08-UT02 |  |  |  |  |  |  |
-| C08-UT03 |  |  |  |  |  |  |
-| C08-UT04 |  |  |  |  |  |  |
-| C08-UT05 |  |  |  |  |  |  |
-| C08-UT06 |  |  |  |  |  |  |
+| C08-UT01 | `hitungSkor()` (Algo-009, bagian murni `hitungNilaiSkor()`) | Normal | Hitung dengan 1 pelapor, 0 hari, frekuensi 0 untuk tiap kategori. Hitung Pohon Tumbang dengan (3 pelapor, 10 hari, frekuensi 4) dan Jalan Berlubang dengan (2 pelapor, 5 hari, frekuensi 3) | Bobot 30, 20, 10, 5 sehingga skor 35, 25, 15, 10 untuk Pohon Tumbang, Jalan Berlubang, Lampu Jalan Mati, Lainnya. Pohon Tumbang 105 (30 + 15 + 20 + 40), Jalan Berlubang 70 (20 + 10 + 10 + 30) | Bobot tiap kategori dan gabungan semua faktor | Pass |
+| C08-UT02 | `hitungSkor()` (Algo-009, bagian murni `hitungNilaiSkor()`) | Batas | Hitung Jalan Berlubang dengan faktor minimum (1 pelapor, 0 hari, frekuensi 0), lalu tambah satu pelapor, satu hari, satu frekuensi secara terpisah. Hitung lama menunggu 365 hari, kategori "Tidak Dikenal", dan tanpa kategori | Skor minimum 25. Kenaikan tepat 5, 2, dan 10. Lama menunggu 365 hari menghasilkan 755 (20 + 5 + 730). Kategori tidak dikenal atau kosong memakai bobot Lainnya sehingga 10 (cabang else Algo-009) | Nilai batas, kategori tidak dikenal, kenaikan per satuan | Pass |
+| C08-UT03 | `hitungSkor()` dan `getSkor()` | Normal | Siapkan laporan Pohon Tumbang Terverifikasi berumur 84 jam dengan baris skor awal, dua laporan Digabung ke laporan itu, dan satu laporan Menunggu Verifikasi di fasilitas yang sama. Panggil `hitungSkor()` lalu `getSkor()` | Skor 71 (30 + 5×3 + 2×3 + 10×2). Baris skor berisi jumlah pelapor 3, lama menunggu 3 (3,5 hari dibulatkan ke bawah), frekuensi 2 (laporan Digabung tidak dihitung), skor 71, dan `dihitung_pada` diperbarui. `getSkor()` mengembalikan 71 | Jumlah pelapor, lama menunggu, dan frekuensi dibaca dari basis data lalu disimpan | [Pass/Fail] |
+| C08-UT04 | `hitungSkor()` | Batas (hitung ulang, KF17) | Hitung skor laporan berumur 23 jam dan 25 jam. Gabungkan satu laporan ke laporan 25 jam lalu hitung ulang. Tambah satu laporan Ditolak di fasilitas yang sama lalu hitung ulang | 23 jam menghasilkan lama menunggu 0 (skor 35), 25 jam menghasilkan 1 (skor 37). Setelah penggabungan skor 42 (naik 5). Setelah laporan Ditolak ditambahkan skor tetap 42 dan frekuensi tetap 1 | Pembulatan hari ke bawah dan perhitungan ulang saat data terkait berubah (KF17) | Pass |
+| C08-UT05 | `hitungSkor()` dan `buatSkorAwal()` | Negatif | Panggil `hitungSkor()` pada laporan tanpa baris skor dan pada id 999999. Panggil `buatSkorAwal()` untuk id 999999. Hitung skor laporan Lampu Jalan Mati baru yang tidak punya fasilitas | `hitungSkor()` mengembalikan `null` untuk kedua masukan dan tidak membuat baris skor. `buatSkorAwal()` ditolak basis data (foreign key). Laporan tanpa fasilitas mendapat frekuensi 0 sehingga skor 15 (10 + 5) |  Null untuk laporan tanpa baris skor atau tidak ada, laporan tanpa fasilitas | Pass |
+| C08-UT06 | `getSkor()` dan `buatSkorAwal()` | Normal dan Batas | Panggil `getSkor()` sebelum ada baris skor dan untuk id 999999. Panggil `buatSkorAwal()`, `hitungSkor()`, lalu `buatSkorAwal()` sekali lagi | `getSkor()` mengembalikan `null` sebelum baris ada. Setelah `buatSkorAwal()` baris berisi (1, 0, 0, 0) dan `getSkor()` mengembalikan 0. Setelah dihitung nilainya lebih dari 0 dan tidak tertimpa oleh `buatSkorAwal()` kedua, tetap satu baris | Nilai awal 0, idempoten, null bila belum ada | Pass |
 
 Tabel 4.2.8b. Ringkasan Cakupan Kelas C08
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL |  |
-| Operasi yang diuji |  |
-| ID Algoritma yang tercakup |  |
-| Coverage (wajib ≥ 70%) |  |
+| Daftar operasi public pada DPPL | `hitungSkor()`, `getSkor()` |
+| Operasi yang diuji | `hitungSkor()` termasuk bagian murni `hitungNilaiSkor()` dan pembaca komponen `getKomponenSkor()` (C08-UT01 s.d. C08-UT05), `getSkor()` (C08-UT03, C08-UT06), serta `buatSkorAwal()` (C08-UT05, C08-UT06) |
+| ID Algoritma yang tercakup | Algo-009, Q-008, Q-009, Q-010 |
+| Coverage (wajib ≥ 70%) | [ISI: persentase baris dan cabang file `src/server/src/models/skorPrioritas/skor.js`, diukur dengan `@vitest/coverage-v8` pada seluruh test suite. Bukti pada Tabel 4.6] |
 
 ### 4.2.9 Kelas RiwayatStatus
 
@@ -476,8 +476,8 @@ Tabel 4.2.10. Hasil Pengujian Unit Kelas C10
 | C10-UT02 | `tandaiDibaca()` | Normal | Tandai notifikasi warga1 yang dibuat untuk pengujian | Mengembalikan sukses; status dibaca berubah dan jumlah belum dibaca berkurang satu | Respons 204, notifikasi menjadi dibaca, dan `belumDibaca` berkurang satu | Pass |
 | C10-UT03 | `tandaiDibaca()` | Negatif | Warga2 mencoba menandai notifikasi milik warga1 | Tidak ada perubahan dan operasi dinyatakan bukan milik pengguna | Respons 404; notifikasi tetap tidak tampak pada warga2 dan statusnya tidak berubah | Pass |
 | C10-UT04 | `getNotifikasiPelapor()` | Otentikasi | Ambil notifikasi sebagai pengguna non-Pelapor | Endpoint menolak pengguna selain Pelapor | Respons 403 pada pengguna Admin | Pass |
-| C10-UT05 |  |  |  |  |  |  |
-| C10-UT06 |  |  |  |  |  |  |
+| C10-UT05 | `kirimNotifikasi()` | Normal | Panggil dua kali untuk laporan yang sama dengan pesan "  Laporan #id: Revisi. Foto kurang jelas.  " (spasi tepi) dan "Laporan #id: Disetujui.". Baca kotak masuk warga1 | Mengembalikan id notifikasi (angka) yang bertambah. Dua baris `notifikasi` untuk pelapor yang benar, pesan pertama tanpa spasi tepi, `dibaca` false, `waktu_kirim` terisi waktu saat ini. Kotak masuk warga1 memuat kedua notifikasi dan jumlah belum dibaca minimal 2 | Pesan disimpan untuk pelapor yang benar, spasi tepi dibuang, belum dibaca | Pass |
+| C10-UT06 | `kirimNotifikasi()` | Negatif | Panggil dengan pesan "", "   ", null, dan undefined. Panggil dengan id laporan 999999 lalu id pelapor 999999 | Pesan kosong mengembalikan `null` dan tidak menyimpan baris (Algo-011). Id laporan atau pelapor yang tidak ada ditolak basis data (foreign key) dan tidak ada baris tersimpan | Pesan kosong tidak dikirim; laporan atau pelapor tidak ada ditolak basis data | Pass |
 
 ### 4.2.11 Kelas KonfirmasiDuplikat
 
@@ -540,8 +540,8 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC08 | IK-06 | Gagal: permintaan ditolak sebelum menyentuh basis data | Kirim laporan sebagai admin, tanpa token login, dan dengan titik di luar Kota Bandung | Berturut-turut 403, 401, dan 400. Untuk titik di luar kota, tidak ada laporan maupun foto yang tersimpan | Respons 403, 401, dan 400. Untuk titik di luar kota, jumlah laporan tidak bertambah dan tidak ada foto baru di penyimpanan | Pass |
 | INT-TC09 | IK-07 | Normal: daftar dan detail laporan publik melewati controller, model, dan database dengan anonimitas | Login sebagai warga1/warga2; panggil daftar publik, filter, ringkasan, dan detail laporan Terverifikasi melalui Supertest | Respons 200; data publik lengkap, anonim, terfilter, terbaru dulu, dan tidak memuat identitas pelapor | Respons 200 pada seluruh endpoint yang valid; objek respons hanya berisi field publik dan filter/laporan sesuai data; ringkasan konsisten dengan basis data | Pass |
 | INT-TC10 (IK-07) | IK-07 | Normal/Gagal: laporan saya, riwayat, dan notifikasi melewati Controller, Model, serta PostgreSQL nyata | Login sebagai warga1/warga2; panggil `/laporan/saya`, detail milik sendiri, detail milik pengguna lain, dan endpoint notifikasi | Daftar/detail sesuai pemilik; riwayat urut naik; notifikasi milik sendiri dapat dibaca; akses lintas pemilik ditolak | Detail warga1 berhasil dengan riwayat dan catatan verifikasi; warga1 ditolak 404 saat membuka laporan warga2; notifikasi milik sendiri dapat ditandai dibaca | Pass |
-| INT-TC11 |  |  |  |  |  |  |
-| INT-TC12 |  |  |  |  |  |  |
+| INT-TC11 | IK-08 | Normal: keputusan Disetujui melewati controller, model, dan basis data | Siapkan laporan Pohon Tumbang berumur 48 jam milik warga1. Lewat aplikasi Express nyata (Supertest) ke PostgreSQL nyata: sebagai admin `GET /api/admin/laporan/jumlah-baru`, `GET /api/admin/laporan/:id`, lalu `POST /api/admin/laporan/:id/verifikasi` Disetujui dengan catatan "Valid, segera diteruskan.". Baca ulang tabel `laporan`, `verifikasi`, `riwayat_status`, `skor_prioritas`, `notifikasi`, lalu `GET /api/notifikasi` sebagai warga1 dan `GET /api/prioritas` sebagai pemda | Respons 200 berstatus Terverifikasi dengan skor 49 sama dengan pratinjau. Kelima tabel konsisten: status, satu baris verifikasi oleh admin, riwayat Menunggu Verifikasi ke Terverifikasi, baris skor (1, 2, 1, 49), satu notifikasi belum dibaca. Jumlah laporan baru berkurang 1, warga1 menerima notifikasi, pemda melihat laporan berskor 49 tanpa identitas pelapor | Keputusan Disetujui melewati controller, model, dan basis data secara konsisten hingga terbaca pelapor dan pemda | Pass |
+| INT-TC12 | IK-08 | Gagal: ditolak sebelum menyentuh data dan kegagalan di tengah transaksi dibatalkan seluruhnya | Pada laporan Menunggu Verifikasi kirim keputusan tanpa token, sebagai warga1, dan Ditolak tanpa catatan. Lalu pasang trigger sementara di PostgreSQL yang menggagalkan insert `notifikasi` untuk laporan itu dan kirim Disetujui. Lepas trigger, kirim Disetujui lagi, lalu Ditolak | Respons 401, 403, 400 tanpa perubahan data. Dengan trigger respons 500 dan status, verifikasi, riwayat, skor, serta notifikasi sama seperti sebelum permintaan (transaksi di-rollback). Setelah trigger dilepas Disetujui 200, keputusan berikutnya 409 dan hanya ada satu baris verifikasi dan satu notifikasi | Keputusan ditolak sebelum menyentuh data, dan kegagalan di tengah transaksi dibatalkan seluruhnya | Pass |
 | INT-TC13 | IK-09 | Normal: API Prioritas Pemda merespons data valid | `GET /api/prioritas` dengan token Pemda | Respons 200, format JSON dengan array laporan terurut | Respons 200 OK, struktur JSON sesuai skema Laporan Prioritas | Pass |
 | INT-TC14 | IK-09 | Gagal: API Prioritas diakses oleh akun Pelapor biasa | `GET /api/prioritas` menggunakan token `warga1` | Ditolak oleh middleware dengan respons 403 Forbidden | Respons 403 Forbidden didapatkan dengan aman | Pass |
 | INT-TC15 | IK-10 | Normal: API Fasilitas Berulang dengan token benar | `GET /api/fasilitas/berulang` dengan token Pemda | Respons 200, data berisi tabel fasilitas `kandidat_evaluasi` | Respons 200, data dikembalikan kurang dari 1 detik | Pass |
@@ -575,8 +575,9 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC02-TC01 |  |  |  |  |  |  |  |
-| UC02-TC02 |  |  |  |  |  |  |  |
+| UC02-TC01 | KF06, KF07, KF08, KF09, KF16 | Normal | 1. Login sebagai pelapor, buat laporan baru (atau pakai laporan hasil UC01-TC01).<br>2. Login sebagai admin, amati badge jumlah laporan baru pada "Dashboard Admin".<br>3. Ketuk kartu laporan pada daftar "Menunggu verifikasi".<br>4. Baca detail dan "Pratinjau skor prioritas".<br>5. Tekan "Setujui", lalu "Setujui" pada dialog konfirmasi.<br>6. Login sebagai pelapor, buka Notifikasi.<br>7. Login sebagai pemda, buka daftar prioritas. | Akun: admin@silembur.test, warga1@silembur.test, pemda@silembur.test (kata sandi silembur123)<br>Laporan: baru, berstatus Menunggu Verifikasi (mis. #LPR-0017 dari UC01-TC01)<br>Catatan: "Lokasi dan foto sesuai." | Laporan tampil di antrean dan badge menghitungnya. Layar verifikasi memuat foto, lokasi, identitas pelapor, dan pratinjau skor (bobot kategori + 5×jumlah pelapor + 2×hari menunggu + 10×laporan di fasilitas). Setelah "Setujui" muncul "Keputusan tersimpan" dengan status "Terverifikasi" dan skor sama dengan pratinjau, laporan hilang dari antrean dan badge berkurang 1. Pelapor menerima notifikasi "Laporan #id: Disetujui." beserta catatan. Pemda melihat laporan itu pada daftar prioritas dengan skor yang sama | Laporan tampil di antrean, masyarakat mendapatkan notifikasi laporan diterima, laporan muncul di pemda | Pass |
+| UC02-TC02 | KF05, KF07, KF08, KF09 | Alternatif 1: Admin menolak laporan | 1. Login sebagai admin, buka laporan Menunggu Verifikasi.<br>2. Tekan "Tolak" tanpa mengisi catatan.<br>3. Isi catatan alasan, tekan "Tolak", lalu "Tolak" pada dialog konfirmasi.<br>4. Periksa antrean admin.<br>5. Login sebagai pelapor, buka Notifikasi dan detail laporan.<br>6. Login sebagai pemda, buka daftar prioritas. | Akun: admin@silembur.test, warga1@silembur.test, pemda@silembur.test (kata sandi silembur123)<br>Laporan: berstatus Menunggu Verifikasi (laporan baru, bukan data seed)<br>Catatan: "Bukan fasilitas umum." | Tanpa catatan muncul "Catatan alasan wajib diisi untuk keputusan Tolak atau Minta Revisi" dan keputusan tidak terkirim. Setelah dikonfirmasi muncul "Keputusan tersimpan" dengan status "Ditolak" tanpa skor, laporan hilang dari antrean. Pelapor menerima notifikasi "Laporan #id: Ditolak. Bukan fasilitas umum.", detail laporan berstatus Ditolak dengan riwayat. Laporan tidak muncul pada daftar prioritas pemda | Laporan tampil di antrean, admin tidak bisa menolak tanpa alassan, masyarakat mendapatkan notifikasi laporan ditolak, laporan tidak muncul di pemda  | Pass |
+
 
 ### 4.4.3 Use Case Menyaring dan Memantau Laporan Terverifikasi Berdasarkan Prioritas
 
@@ -683,39 +684,39 @@ Tabel 4.6. Bukti Hasil Pengujian
 | :--- | :--- |
 | C01-UT01 – C01-UT03 | <img src="./assets/bagian2-vitest.png" width="90%"><br>Keluaran Vitest untuk `laporan-buat.test.js`, `lokasi.test.js`, dan `laporan-berulang.test.js` (43 test lulus) |
 | C01-UT04 – C01-UT07 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar laporan hanya milik pelapor (`GET /api/laporan/saya`), detail laporan milik orang lain ditolak 404, detail menyertakan riwayat, serta notifikasi milik sendiri dapat ditandai dibaca dan akses lintas pemilik ditolak |
-| C02-UT01 – C02-UT04 |  |
+| C02-UT01 – C02-UT04 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C02-UT01 s.d. C02-UT04 |
 | C03-UT01 – C03-UT05 | <img src="./assets/C03-UT01.png" width="90%"><br>Keluaran Vitest untuk `pemda.test.js` |
 | C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
 | C04-UT08 – C04-UT10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar/ringkasan publik, filter, paginasi, status publik, detail publik, laporan saya, detail kepemilikan, dan riwayat |
-| C04-UT11 – C04-UT13 |  |
+| C04-UT11 – C04-UT13 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C04-UT11 s.d. C04-UT13 |
 | C04-UT14 – C04-UT17 | Sama dengan bukti C03-UT01 () |
-| C04 (coverage) |  |
+| C04 (coverage) | <img src="./assets/C04-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite, baris `models/laporan/*.js` |
 | C05-UT01 – C05-UT05 | Sama dengan bukti C01-UT01 – C01-UT03 (`lokasi.test.js`) |
 | C05 (coverage) | <img src="./assets/bagian2-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite (194 test lulus) |
 | C06-UT01 – C06-UT03 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `lokasi.test.js`) |
 | C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `fasilitas-pemda.test.js` |
 | C06 (coverage) |  |
-| C07-UT01 – C07-UT06 |  |
-| C07 (coverage) |  |
-| C08-UT01 – C08-UT06 |  |
-| C08 (coverage) |  |
+| C07-UT01 – C07-UT06 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C07-UT01 s.d. C07-UT06 |
+| C07 (coverage) | <img src="./assets/C07-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite, baris `models/verifikasi/verifikasi.js` |
+| C08-UT01 – C08-UT06 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C08-UT01 s.d. C08-UT06 |
+| C08 (coverage) | <img src="./assets/C08-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite, baris `models/skorPrioritas/skor.js` |
 | C09-UT01 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa riwayat detail laporan urut naik; `status.test.js` menguji perubahan status yang mencatat riwayat |
 | C09-UT02 – C09-UT03 | Tidak ada test pada eksekusi test-bagian3 yang memanggil `getPerubahan()` untuk kasus ID ada/tidak ada; belum ada bukti pengujian langsung untuk dua operasi ini |
 | C10-UT01 – C10-UT03 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar notifikasi milik sendiri, jumlah belum dibaca, penandaan dibaca, dan penolakan akses lintas pemilik |
 | C10-UT04 | Tidak ada test pada eksekusi test-bagian3 yang memeriksa penolakan endpoint notifikasi bagi peran non-Pelapor; belum ada bukti pengujian untuk kasus ini |
-| C10-UT05 – C10-UT06 |  |
+| C10-UT05 – C10-UT06 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk C10-UT05 dan C10-UT06 |
 | C11-UT01 – C11-UT06 |  |
 | C11 (coverage) |  |
 | INT-TC01 – INT-TC06 |  |
 | INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
 | INT-TC09 – INT-TC10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — test `warga.test.js` mengakses endpoint Express dengan Supertest dan PostgreSQL untuk laporan publik, laporan saya, riwayat, dan notifikasi; tidak ada test yang diberi label terpisah sebagai INT-TC09/INT-TC10 |
-| INT-TC11 – INT-TC12 |  |
+| INT-TC11 – INT-TC12 | <img src="./assets/bagian4-vitest.png" width="90%"><br>Keluaran Vitest `hiupl-bagian4.test.js` untuk INT-TC11 dan INT-TC12 |
 | INT-TC13 – INT-TC16 | <img src="./assets/INT-TC13.png" width="90%"><br>Keluaran Supertest endpoint Pemda |
 | UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
 | UC01-TC02 | <img src="./assets/UC01-TC02a.png" width="30%"> <img src="./assets/UC01-TC02b.png" width="30%"><br>Tombol terkunci dan dialog "Formulir belum lengkap" |
 | UC01-TC03 | <img src="./assets/UC01-TC03a.png" width="30%"> <img src="./assets/UC01-TC03b.png" width="30%"> <img src="./assets/UC01-TC03c.png" width="30%"> <img src="./assets/UC01-TC03d.png" width="30%"><br>Catatan admin, dialog kirim revisi, riwayat penanganan, foto dan deskripsi setelah revisi |
-| UC02-TC01 |  |
-| UC02-TC02 |  |
+| UC02-TC01 | <img src="./assets/UC02-TC01a.png" width="30%"> <img src="./assets/UC02-TC01b.png" width="30%"> <img src="./assets/UC02-TC01c.png" width="30%"> <img src="./assets/UC02-TC01d.png" width="30%"> <img src="./assets/UC02-TC01e.png" width="30%"> <img src="./assets/UC02-TC01f.png" width="30%"><br> <img src="./assets/UC02-TC01g.png" width="30%"> <img src="./assets/UC02-TC01h.png" width="30%"> <img src="./assets/UC02-TC01i.png" width="30%"><br> <img src="./assets/UC02-TC01j.png" width="30%"><br> <img src="./assets/UC02-TC01k.png" width="30%"><br> <img src="./assets/UC02-TC01l.png" width="30%"> <br>Dashboard dengan badge, detail dan pratinjau skor, dialog konfirmasi Setujui, "Keputusan tersimpan", notifikasi pelapor, daftar prioritas pemda |
+| UC02-TC02 | <img src="./assets/UC02-TC02a.png" width="30%"> <img src="./assets/UC02-TC02b.png" width="30%"> <img src="./assets/UC02-TC02c.png" width="30%"> <img src="./assets/UC02-TC02d.png" width="30%"> <img src="./assets/UC02-TC02e.png" width="30%"> <img src="./assets/UC02-TC02f.png" width="30%"> <img src="./assets/UC02-TC02g.png" width="30%"> <br>Pesan catatan wajib, dialog konfirmasi Tolak, "Keputusan tersimpan", notifikasi pelapor, daftar prioritas pemda tanpa laporan |
 | UC03-TC01 | <img src="./assets/UC03-TC01.png" width="30%"><br>Tampilan layar Laporan Prioritas Pemda |
 | UC03-TC02 |  |
 | UC03-TC03 |  |
