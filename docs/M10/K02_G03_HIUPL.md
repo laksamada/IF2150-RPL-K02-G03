@@ -715,16 +715,16 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C01-UT01 – C01-UT03 | <img src="./assets/bagian2-vitest.png" width="90%"><br>Keluaran Vitest untuk `laporan-buat.test.js`, `lokasi.test.js`, dan `laporan-berulang.test.js` (43 test lulus) |
 | C01-UT04 – C01-UT07 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar laporan hanya milik pelapor (`GET /api/laporan/saya`), detail laporan milik orang lain ditolak 404, detail menyertakan riwayat, serta notifikasi milik sendiri dapat ditandai dibaca dan akses lintas pemilik ditolak |
 | C02-UT01 – C02-UT04 |  |
-| C03-UT01 – C03-UT05 | <img src="./assets/C03-UT01.png" width="90%"><br>Keluaran Vitest untuk `pemda.test.js` |
+| C03-UT01 – C03-UT05 | <img src="./assets/C03-UT01.png" width="90%"><br>Keluaran Vitest untuk `c03-pemda.test.js` |
 | C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
 | C04-UT08 – C04-UT10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js`: daftar/ringkasan publik, filter, paginasi, status publik, detail publik, laporan saya, detail kepemilikan, dan riwayat |
 | C04-UT11 – C04-UT13 |  |
-| C04-UT14 – C04-UT17 | Sama dengan bukti C03-UT01 () |
+| C04-UT14 – C04-UT17 | <img src="./assets/C04-UT14.png" width="90%"><br>Keluaran Vitest untuk `c04-laporan.test.js` |
 | C04 (coverage) |  |
 | C05-UT01 – C05-UT05 | Sama dengan bukti C01-UT01 – C01-UT03 (`lokasi.test.js`) |
 | C05 (coverage) | <img src="./assets/bagian2-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite (194 test lulus) |
 | C06-UT01 – C06-UT03 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `lokasi.test.js`) |
-| C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `fasilitas-pemda.test.js` |
+| C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `c06-fasilitas.test.js` |
 | C06 (coverage) |  |
 | C07-UT01 – C07-UT06 |  |
 | C07 (coverage) |  |
@@ -741,7 +741,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
 | INT-TC09 – INT-TC10 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — test `warga.test.js` mengakses endpoint Express dengan Supertest dan PostgreSQL untuk laporan publik, laporan saya, riwayat, dan notifikasi; tidak ada test yang diberi label terpisah sebagai INT-TC09/INT-TC10 |
 | INT-TC11 – INT-TC12 |  |
-| INT-TC13 – INT-TC16 | <img src="./assets/INT-TC13.png" width="90%"><br>Keluaran Supertest endpoint Pemda |
+| INT-TC13 – INT-TC16 | <img src="./assets/INT-TC13.png" width="90%"><br>Keluaran Supertest endpoint Pemda (`pemda-integrasi.test.js`) |
 | UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
 | UC01-TC02 | <img src="./assets/UC01-TC02a.png" width="30%"> <img src="./assets/UC01-TC02b.png" width="30%"><br>Tombol terkunci dan dialog "Formulir belum lengkap" |
 | UC01-TC03 | <img src="./assets/UC01-TC03a.png" width="30%"> <img src="./assets/UC01-TC03b.png" width="30%"> <img src="./assets/UC01-TC03c.png" width="30%"> <img src="./assets/UC01-TC03d.png" width="30%"><br>Catatan admin, dialog kirim revisi, riwayat penanganan, foto dan deskripsi setelah revisi |
@@ -768,7 +768,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF02-TC01 | [Laporan JUnit test-bagian3](./assets/Bagian3/test-bagian3.xml) — `warga.test.js` memeriksa daftar/detail publik tanpa identitas pelapor dan mengecualikan laporan nonpublik |
 | KNF03-TC01 | Tidak ada pengukuran waktu respons terukur pada eksekusi test-bagian3; durasi test di JUnit adalah durasi kasus uji, bukan pengukuran response time yang tervalidasi terhadap target 4 detik |
 | KNF04-TC01 | <img src="./assets/KNF04-TC01.png" width="70%"><br>Hasil skrip pengukuran penggabungan duplikat |
-| KNF05-TC01 | <img src="./assets/KNF05-TC01.png" width="90%"><br>Screenshot hasil terminal `profiling_p5.js` |
+| KNF05-TC01 | <img src="./assets/KNF05-TC01.png" width="90%"><br>Screenshot hasil terminal `profiling.js` |
 
 <br>
 
