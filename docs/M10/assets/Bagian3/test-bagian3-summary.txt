@@ -1,0 +1,23 @@
+HASIL PENGUJIAN BAGIAN UC04, UC05, RIWAYAT STATUS, DAN NOTIFIKASI
+Tanggal eksekusi: 20 November 2026
+Lingkungan: PostgreSQL Docker aktif, Vitest 5.1, Supertest
+
+Pengujian test-bagian3:
+- tests/status.test.js: 11 lulus, 0 gagal
+- tests/warga.test.js: 23 lulus, 0 gagal
+- Total: 34 lulus, 0 gagal
+
+ID yang dicakup:
+- C01-UT04 sampai C01-UT07
+- C04-UT08 sampai C04-UT10
+- C09-UT01 sampai C09-UT03
+- C10-UT01 sampai C10-UT04
+- INT-TC09 sampai INT-TC10
+- UC04-TC01 sampai UC04-TC04
+- UC05-TC01 sampai UC05-TC03
+- KNF02-TC01
+- KNF03-TC01
+
+Perintah:
+cd src/server
+npx vitest run tests/warga.test.js tests/status.test.js

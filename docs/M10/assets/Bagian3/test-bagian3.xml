@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="34" failures="0" errors="0" time="0.4970503">
+    <testsuite name="tests/status.test.js" timestamp="2026-11-20T11:21:34.058Z" hostname="acerv15" tests="11" failures="0" errors="0" skipped="0" time="0.0419349">
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Menunggu Verifikasi -&gt; Terverifikasi = true" time="0.0014269">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Menunggu Verifikasi -&gt; Perlu Revisi = true" time="0.0001558">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Perlu Revisi -&gt; Menunggu Verifikasi = true" time="0.0001011">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Terverifikasi -&gt; Diproses = true" time="0.0000999">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Diproses -&gt; Selesai = true" time="0.0000895">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Menunggu Verifikasi -&gt; Selesai = false" time="0.0000848">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Ditolak -&gt; Terverifikasi = false" time="0.0000705">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Selesai -&gt; Diproses = false" time="0.0000721">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="bolehTransisi (unit) &gt; Digabung -&gt; Menunggu Verifikasi = false" time="0.0000889">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="ubahStatus (integrasi DB) &gt; mengubah status dan mencatat riwayat" time="0.0338657">
+        </testcase>
+        <testcase classname="tests/status.test.js" name="ubahStatus (integrasi DB) &gt; menolak transisi ilegal dengan 409 dan tidak mengubah apa pun" time="0.0041006">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/warga.test.js" timestamp="2026-11-20T11:21:34.064Z" hostname="acerv15" tests="23" failures="0" errors="0" skipped="0" time="0.4551154">
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; mengembalikan laporan publik tanpa identitas pelapor" time="0.0126942">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; hanya memuat status publik, terbaru dulu" time="0.006396">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; filter kelompok=menunggu" time="0.0056134">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; filter kelompok=diproses" time="0.0053707">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; filter kelompok=selesai" time="0.006214">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; filter wilayah=Coblong hanya mengembalikan wilayah Coblong (UC04 alt 1)" time="0.0060862">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; filter kategori dan kombinasi tanpa hasil -&gt; data: []" time="0.0105904">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; limit &amp; offset membatasi hasil" time="0.0106428">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; menolak filter tidak valid (400)" time="0.0047337">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik (UC04, KF10, KNF02) &gt; wajib login (401)" time="0.0033892">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik/:id (KF11, KNF02) &gt; detail laporan publik tanpa identitas pelapor" time="0.0093613">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik/:id (KF11, KNF02) &gt; laporan Ditolak -&gt; 404" time="0.0081156">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik/:id (KF11, KNF02) &gt; laporan Perlu Revisi -&gt; 404" time="0.008293">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik/:id (KF11, KNF02) &gt; laporan Digabung -&gt; 404" time="0.0062043">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/publik/:id (KF11, KNF02) &gt; id tidak ada -&gt; 404, id tidak valid -&gt; 400" time="0.0100875">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/ringkasan (I-02 O-0202) &gt; mengembalikan jumlah masuk/diproses/selesai sesuai basis data" time="0.0076888">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/saya (UC05, KF13, KF24) &gt; hanya laporan milik pelapor yang login, semua status" time="0.0090787">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/saya (UC05, KF13, KF24) &gt; detail menyertakan catatan verifikasi terakhir dan riwayat urut naik" time="0.0143791">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/saya (UC05, KF13, KF24) &gt; warga1 tidak bisa membuka laporan milik warga2 (404)" time="0.0088251">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="GET /api/laporan/saya (UC05, KF13, KF24) &gt; hanya untuk PELAPOR (403)" time="0.0045776">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="Notifikasi pelapor (O-0201, KF07 sisi penerima) &gt; daftar notifikasi milik sendiri, terbaru dulu, dengan jumlah belum dibaca" time="0.0051682">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="Notifikasi pelapor (O-0201, KF07 sisi penerima) &gt; belumDibaca berkurang setelah PATCH dibaca" time="0.017649">
+        </testcase>
+        <testcase classname="tests/warga.test.js" name="Notifikasi pelapor (O-0201, KF07 sisi penerima) &gt; tidak bisa menandai notifikasi milik orang lain (404)" time="0.009333">
+        </testcase>
+    </testsuite>
+</testsuites>

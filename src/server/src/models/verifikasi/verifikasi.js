@@ -7,6 +7,7 @@
  */
 import { KEPUTUSAN, KEPUTUSAN_KE_STATUS, STATUS } from '@silembur/shared';
 import { HttpError } from '../../utils/http.js';
+import { getJumlahLaporan } from '../fasilitas/berulang.js';
 import { ubahStatus } from '../laporan/status.js';
 import { kirimNotifikasi } from '../notifikasi/kirim.js';
 import { buatSkorAwal, hitungSkor } from '../skorPrioritas/skor.js';
@@ -14,59 +15,67 @@ import { buatSkorAwal, hitungSkor } from '../skorPrioritas/skor.js';
 /** Q-003: catat keputusan admin. @returns {Promise<number>} id_verifikasi */
 export async function simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, catatan }) {
   const { rows } = await db.query(
-    `INSERT INTO verifikasi (id_laporan, id_admin, keputusan, catatan_alasan)
-     VALUES ($1, $2, $3, $4) RETURNING id_verifikasi`,
+    `INSERT INTO verifikasi (id_laporan, id_admin, keputusan, catatan_alasan, waktu_verifikasi)
+     VALUES ($1, $2, $3, $4, NOW())
+     RETURNING id_verifikasi`,
     [idLaporan, idAdmin, keputusan, catatan ?? ''],
   );
   return rows[0].id_verifikasi;
 }
 
+/** Algo-008 teruskanKePemerintah(): buat skor awal (Q-008) lalu hitung skor (Algo-009). */
+export async function teruskanKePemerintah(db, idLaporan) {
+  await buatSkorAwal(db, idLaporan);
+  return hitungSkor(db, idLaporan);
+}
+
 /**
- * Algo-002 tetapkanKeputusan + Algo-008 teruskanKePemerintah, dalam satu transaksi:
- *   1. simpanVerifikasi
- *   2. ubahStatus sesuai KEPUTUSAN_KE_STATUS (Disetujui -> Terverifikasi, Ditolak, Revisi -> Perlu Revisi)
- *   3. jika Disetujui: buatSkorAwal (Q-008) lalu hitungSkor
- *   4. kirimNotifikasi ke pelapor berisi keputusan + catatan (KF07)
- * Laporan yang belum Terverifikasi otomatis "tertahan" karena tidak masuk STATUS_PRIORITAS (KF08).
- *
- * WAJIB dipanggil dengan `client` dari withTransaction().
- * @returns {Promise<{ skor: number|null }>}
- * @throws HttpError 404 bila laporan tidak ada, 409 bila status bukan "Menunggu Verifikasi".
+ * Algo-002 tetapkanKeputusan + Algo-008 teruskanKePemerintah, dalam satu transaksi
+ * (`db` WAJIB client dari withTransaction):
+ *   1. pastikan laporan ada (404) dan masih "Menunggu Verifikasi" (409)
+ *   2. simpanVerifikasi
+ *   3. ubahStatus sesuai KEPUTUSAN_KE_STATUS (Disetujui -> Terverifikasi, Ditolak, Revisi -> Perlu Revisi)
+ *   4. jika Disetujui: buatSkorAwal (Q-008) lalu hitungSkor; selain itu: Fasilitas.getJumlahLaporan (Algo-007)
+ *   5. kirimNotifikasi ke pelapor berisi keputusan + catatan (KF07)
+ * @returns {Promise<{ idLaporan: number, idVerifikasi: number, status: string, skor: number|null }>}
  */
-export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, catatan }) {
-  // Kunci baris: dua admin yang memutuskan bersamaan tidak bisa sama-sama lolos.
+export async function tetapkanKeputusan(db, { idLaporan, idAdmin, keputusan, catatan = '' }) {
+  const statusBaru = KEPUTUSAN_KE_STATUS[keputusan];
+  if (!statusBaru) throw new HttpError(400, 'Keputusan verifikasi tidak dikenal');
+  const catatanBersih = (catatan ?? '').trim();
+  if (keputusan !== KEPUTUSAN.DISETUJUI && !catatanBersih) {
+    throw new HttpError(400, 'Catatan alasan wajib diisi untuk keputusan Ditolak atau Revisi');
+  }
+
   const { rows } = await db.query(
-    'SELECT id_pelapor, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
+    'SELECT id_pelapor, id_fasilitas, status_laporan FROM laporan WHERE id_laporan = $1 FOR UPDATE',
     [idLaporan],
   );
   if (rows.length === 0) throw new HttpError(404, `Laporan #${idLaporan} tidak ditemukan`);
-  const { id_pelapor: idPelapor, status_laporan: statusSekarang } = rows[0];
-  if (statusSekarang !== STATUS.MENUNGGU_VERIFIKASI) {
-    throw new HttpError(
-      409,
-      `Laporan #${idLaporan} berstatus "${statusSekarang}"; hanya laporan "${STATUS.MENUNGGU_VERIFIKASI}" yang bisa diverifikasi`,
-    );
+  const { id_pelapor: idPelapor, id_fasilitas: idFasilitas, status_laporan: statusLama } = rows[0];
+  if (statusLama !== STATUS.MENUNGGU_VERIFIKASI) {
+    throw new HttpError(409, `Laporan #${idLaporan} tidak bisa diverifikasi karena berstatus "${statusLama}"`);
   }
 
-  const catatanBersih = (catatan ?? '').trim();
-  await simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, catatan: catatanBersih });
+  const idVerifikasi = await simpanVerifikasi(db, { idLaporan, idAdmin, keputusan, catatan: catatanBersih });
+
   await ubahStatus(db, {
     idLaporan,
-    statusBaru: KEPUTUSAN_KE_STATUS[keputusan],
+    statusBaru,
     deskripsi: catatanBersih ? `${keputusan}. Catatan: ${catatanBersih}` : `${keputusan}.`,
     idPengguna: idAdmin,
   });
 
-  let skor = null;
-  if (keputusan === KEPUTUSAN.DISETUJUI) {
-    await buatSkorAwal(db, idLaporan);
-    skor = await hitungSkor(db, idLaporan);
-  }
+  // Disetujui menghitung ulang kerusakan berulang lewat hitungSkor; Ditolak/Revisi dihitung ulang di sini
+  // agar laporan Ditolak langsung keluar dari hitungan fasilitas (KF14, Algo-007, gap G11).
+  const skor = keputusan === KEPUTUSAN.DISETUJUI ? await teruskanKePemerintah(db, idLaporan) : null;
+  if (keputusan !== KEPUTUSAN.DISETUJUI) await getJumlahLaporan(db, idFasilitas);
 
   await kirimNotifikasi(db, {
     idLaporan,
     idPelapor,
-    isiPesan: `Laporan #${idLaporan}: ${keputusan}.${catatanBersih ? ` ${catatanBersih}` : ''}`,
+    isiPesan: `Laporan #${idLaporan}: ${keputusan}. ${catatanBersih}`,
   });
-  return { skor };
+
+  return { idLaporan, idVerifikasi, status: statusBaru, skor };
 }
