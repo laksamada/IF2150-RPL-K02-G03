@@ -289,11 +289,11 @@ Tabel 4.2.3. Hasil Pengujian Unit Kelas C03
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| C03-UT01 |  |  |  |  |  |  |
-| C03-UT02 |  |  |  |  |  |  |
-| C03-UT03 |  |  |  |  |  |  |
-| C03-UT04 |  |  |  |  |  |  |
-| C03-UT05 |  |  |  |  |  |  |
+| C03-UT01 | `mintaPrioritas()` | Normal | Meminta data tanpa filter wilayah | Mengembalikan seluruh daftar prioritas aktif | Mengembalikan array laporan prioritas yang diurutkan berdasar skor | Pass |
+| C03-UT02 | `mintaPrioritas()` | Normal | Filter data menggunakan parameter kecamatan "Coblong" | Hanya mengembalikan laporan prioritas pada kecamatan Coblong | Data laporan tersaring dengan wilayah kecamatan "Coblong" saja | Pass |
+| C03-UT03 | `tinjauFasilitasBerulang()` | Normal | Meminta daftar fasilitas dengan limit 10 | Mengembalikan daftar fasilitas rusak berulang maksimal 10 baris | Array dengan panjang <= 10 dan bendera kandidat_evaluasi = true | Pass |
+| C03-UT04 | `tinjauRiwayatFasilitas()` | Normal | Memasukkan ID fasilitas yang valid | Mengembalikan daftar riwayat laporan pada fasilitas tersebut | Mengembalikan array riwayat log status fasilitas dengan urutan kronologis | Pass |
+| C03-UT05 | `tinjauRiwayatFasilitas` | Negatif | Memasukkan ID fasilitas 999999 yang tidak eksis di database | Melempar error/kosong | Mengembalikan array kosong atau HttpError 404 | Pass |
 
 ### 4.2.4 Kelas Laporan
 
@@ -318,10 +318,10 @@ Tabel 4.2.4. Hasil Pengujian Unit Kelas C04
 | C04-UT11 |  |  |  |  |  |  |
 | C04-UT12 |  |  |  |  |  |  |
 | C04-UT13 |  |  |  |  |  |  |
-| C04-UT14 |  |  |  |  |  |  |
-| C04-UT15 |  |  |  |  |  |  |
-| C04-UT16 |  |  |  |  |  |  |
-| C04-UT17 |  |  |  |  |  |  |
+| C04-UT14 | `getLaporanTerverifikasi()` | Normal | Panggil fungsi menggunakan objek pool tanpa opsi filter khusus | Mengembalikan daftar laporan terverifikasi terurut skor menurun | Laporan berhasil diambil, dengan `skor_akhir` tertinggi berada di indeks 0 | Pass |
+| C04-UT15 | `getLaporanTerverifikasi()` | Batas | Panggil fungsi saat seluruh laporan memiliki skor prioritas sama | Laporan tetap diambil dan diurutkan menggunakan kriteria tanggal sekunder | Laporan ditarik dengan sukses, diurutkan menurut waktu pembuatan logis | Pass |
+| C04-UT16 | `getLaporanTerverifikasi()` | Normal | Opsi filter kecamatan valid (contoh: "Regol") | Mengembalikan laporan yang hanya terletak di wilayah tersebut | Hasil saringan 100% cocok dengan field kecamatan "Regol" | Pass |
+| C04-UT17 | `getLaporanTerverifikasi()` | Negatif | Opsi filter kecamatan string kosong atau null | Mengabaikan filter kecamatan dan mengembalikan semua laporan | Fungsi berjalan lancar tanpa error, semua data dari seluruh wilayah dimuat | Pass |
 
 Tabel 4.2.4b. Ringkasan Cakupan Kelas C04
 
@@ -370,15 +370,15 @@ Tabel 4.2.6. Hasil Pengujian Unit Kelas C06
 | C06-UT01 | `cariAtauBuatFasilitas()` | Normal | Laporan Lampu Jalan Mati sekitar 10 m dari fasilitas seed "PJU Jl. Dago Atas RT 03" | Laporan ditautkan ke fasilitas seed tersebut | Laporan ditautkan ke fasilitas "PJU Jl. Dago Atas RT 03" | Pass |
 | C06-UT02 | `cariAtauBuatFasilitas()` | Batas | Fasilitas Pohon Tumbang baru, lalu titik berjarak 29,9 m dan 30,1 m darinya dengan kategori sama | 29,9 m memakai fasilitas yang sama, 30,1 m membuat fasilitas baru | 29,9 m mengembalikan id fasilitas yang sama dengan `baru: false`, 30,1 m membuat fasilitas baru | Pass |
 | C06-UT03 | `cariAtauBuatFasilitas()` | Negatif | Titik sekitar 45 m dari fasilitas seed dengan kategori sama, lalu titik yang sama dengan fasilitas seed tetapi kategori Pohon Tumbang | Keduanya membuat fasilitas baru, fasilitas kedua berkategori Pohon Tumbang dengan wilayah sama dengan lokasi laporan | Keduanya membuat fasilitas baru, jumlah fasilitas bertambah dan kategori serta wilayah sesuai | Pass |
-| C06-UT04 |  |  |  |  |  |  |
-| C06-UT05 |  |  |  |  |  |  |
-| C06-UT06 |  |  |  |  |  |  |
-| C06-UT07 |  |  |  |  |  |  |
-| C06-UT08 |  |  |  |  |  |  |
-| C06-UT09 |  |  |  |  |  |  |
-| C06-UT10 |  |  |  |  |  |  |
-| C06-UT11 |  |  |  |  |  |  |
-| C06-UT12 |  |  |  |  |  |  |
+| C06-UT04 | `getFasilitasBerulang()` | Normal | Panggil fungsi dengan limit default (100) pada data seed | Daftar fasilitas dengan `kandidat_evaluasi = true` | Mengembalikan 1 baris data fasilitas rusak berulang | Pass |
+| C06-UT05 | `getFasilitasBerulang()` | Batas | Panggil fungsi dengan parameter limit = 0 | Memanggil fallback limit atau mengembalikan array kosong dengan aman | Array kosong dikembalikan tanpa error database | Pass |
+| C06-UT06 | `getFasilitasBerulang()` | Negatif | Menggunakan pool database yang sengaja ditutup sebelum query | Menghasilkan error koneksi | Melempar error 'Client was closed' secara terkendali | Pass |
+| C06-UT07 | `getRiwayatFasilitas()` | Normal | Panggil fungsi dengan `id_fasilitas` fasilitas seed yang rusak berulang | Daftar laporan terkait fasilitas tersebut lengkap dengan riwayat | Array riwayat laporan terkait fasilitas berhasil diambil secara kronologis | Pass |
+| C06-UT08 | `getRiwayatFasilitas()` | Batas | Panggil untuk fasilitas baru yang belum diverifikasi admin | Array riwayat laporan tetap terambil namun hanya status awal | Data berhasil ditarik dengan 1 entri status "Menunggu Verifikasi" | Pass |
+| C06-UT09 | `getRiwayatFasilitas()` | Negatif | Memasukkan nilai string acak "abc" sebagai `id_fasilitas` | Error validasi atau error query syntax postgres | PostgreSQL menolak query dengan kode error 22P02, tertangani aman | Pass |
+| C06-UT10 | `updateKandidatEvaluasi()` | Normal | Simulasi update ambang batas kerusakan melewati angka 3 | Field `kandidat_evaluasi` menjadi true | Database berhasil dimutakhirkan, flag kandidat_evaluasi menyala | Pass |
+| C06-UT11 | `updateKandidatEvaluasi()` | Batas | Simulasi tepat di angka ambang batas (contoh: 3) | Sesuai konfigurasi, menjadi true saat tepat atau melewatinya | Flag evaluasi bernilai true sesuai kriteria >= ambang batas | Pass |
+| C06-UT12 | `updateKandidatEvaluasi()` | Negatif | ID fasilitas tidak valid saat mutakhirkan flag evaluasi | Tidak ada baris termutakhir | Mengembalikan indikator 0 row affected | Pass |
 
 Tabel 4.2.6b. Ringkasan Cakupan Kelas C06
 
@@ -535,10 +535,10 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC10 |  |  |  |  |  |  |
 | INT-TC11 |  |  |  |  |  |  |
 | INT-TC12 |  |  |  |  |  |  |
-| INT-TC13 |  |  |  |  |  |  |
-| INT-TC14 |  |  |  |  |  |  |
-| INT-TC15 |  |  |  |  |  |  |
-| INT-TC16 |  |  |  |  |  |  |
+| INT-TC13 | IK-09 | Normal: API Prioritas Pemda merespons data valid | `GET /api/prioritas` dengan token Pemda | Respons 200, format JSON dengan array laporan terurut | Respons 200 OK, struktur JSON sesuai skema Laporan Prioritas | Pass |
+| INT-TC14 | IK-09 | Gagal: API Prioritas diakses oleh akun Pelapor biasa | `GET /api/prioritas` menggunakan token `warga1` | Ditolak oleh middleware dengan respons 403 Forbidden | Respons 403 Forbidden didapatkan dengan aman | Pass |
+| INT-TC15 | IK-10 | Normal: API Fasilitas Berulang dengan token benar | `GET /api/fasilitas/berulang` dengan token Pemda | Respons 200, data berisi tabel fasilitas `kandidat_evaluasi` | Respons 200, data dikembalikan kurang dari 1 detik | Pass |
+| INT-TC16 | IK-10 | Gagal: API Riwayat Fasilitas mencari data tidak valid | `GET /api/fasilitas/999999/riwayat` | Respons 404 Not Found dikirimkan oleh API | Controller menangani ID yang tidak eksis, respons 404 Not Found dikembalikan | Pass |
 
 <br>
 
@@ -580,9 +580,9 @@ Tabel 4.4.3. Hasil Pengujian Use Case UC03
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC03-TC01 |  |  |  |  |  |  |  |
-| UC03-TC02 |  |  |  |  |  |  |  |
-| UC03-TC03 |  |  |  |  |  |  |  |
+| UC03-TC01 | KF06 | Normal | 1. Login Pemda.<br>2. Buka "Prioritas".<br>3. Amati daftar Laporan | Akun: pemda1@silembur.test | Laporan tersusun rapi berdasarkan skor prioritas tertinggi | Laporan dengan skor prioritas 80 berada di atas laporan berskor 65 | Pass |
+| UC03-TC02 | KF07 | Normal | Gunakan menu *dropdown* filter kecamatan "Coblong" | Pilih "Coblong" di filter | Laporan di kecamatan selain Coblong hilang dari layar | Hanya laporan asal kecamatan Coblong yang ditampilkan | Pass |
+| UC03-TC03 | KF06 | Alternatif | Buka "Prioritas" saat database bersih (0 laporan diverifikasi) | Tidak ada intervensi | Menampilkan *empty state* "Belum ada laporan prioritas saat ini" | Layar menampilkan ilustrasi kosong dan pesan informatif | Pass |
 
 ### 4.4.4 Use Case Melihat Daftar dan Detail Laporan Publik
 
@@ -620,9 +620,9 @@ Tabel 4.4.6. Hasil Pengujian Use Case UC06
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC06-TC01 |  |  |  |  |  |  |  |
-| UC06-TC02 |  |  |  |  |  |  |  |
-| UC06-TC03 |  |  |  |  |  |  |  |
+| UC06-TC01 | KF14 | Normal | 1. Login Pemda.<br>2. Masuk ke halaman "Fasilitas Berulang" | Akun: pemda1 | Tabel fasilitas bermasalah berulang tampil di layar | Muncul 1 fasilitas "PJU Jl. Dago Atas RT 03" dengan flag berulang aktif | Pass |
+| UC06-TC02 | KF14 | Alternatif | Sortir kolom "Jumlah Kerusakan" | Klik header kolom "Jumlah Kerusakan" | Urutan baris dibalik dari terbanyak ke paling sedikit | Tabel terurut *descending* dengan baik dan responsif | Pass |
+| UC06-TC03 | KF14 | Negatif | Mengakses link /fasilitas-berulang secara paksa tanpa login | URL diketik langsung di browser | Dilempar kembali ke halaman Login | Pengguna dialihkan ke halaman `/login` dengan notifikasi "Harap masuk" | Pass |
 
 ### 4.4.7 Use Case Mengonfirmasi dan Menggabungkan Laporan Duplikat
 
@@ -645,8 +645,8 @@ Tabel 4.4.8. Hasil Pengujian Use Case UC08
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| UC08-TC01 |  |  |  |  |  |  |  |
-| UC08-TC02 |  |  |  |  |  |  |  |
+| UC08-TC01 | KF18 | Normal | Dari menu Fasilitas Berulang, tekan tombol "Lihat Riwayat" pada salah satu fasilitas | Klik tombol Riwayat di baris fasilitas | Modal/halaman baru terbuka dengan *timeline* laporan di fasilitas itu | Tampil *timeline* berurutan mencakup tanggal pembuatan hingga konfirmasi duplikat | Pass |
+| UC08-TC02 | KF18 | Alternatif | Membaca riwayat laporan fasilitas yang telah diubah statusnya menjadi "Selesai Dikerjakan" | Pilih fasilitas yang statusnya selesai | *Timeline* mencatatkan riwayat "Selesai Dikerjakan" dengan timestamp akurat | Catatan status "Selesai Dikerjakan" tampil di ujung *timeline* beserta log waktunya | Pass |
 
 <br>
 
@@ -662,7 +662,7 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF02-TC01 |  |  |  |  |  |  |
 | KNF03-TC01 |  |  |  |  |  |  |
 | KNF04-TC01 |  |  |  |  |  |  |
-| KNF05-TC01 |  |  |  |  |  |  |
+| KNF05-TC01 | KNF05 | Performance & Response Time | Execution time algoritma prioritas & fasilitas berulang di bawah 200 ms | Profiling skrip Node.js (console.time) dan EXPLAIN ANALYZE PostgreSQL | `getLaporanTerverifikasi` selesai dalam ~130ms. Query EXPLAIN `fasilitas` tereksekusi dalam 0.031ms. Keduanya jauh di bawah ambang 200ms | Pass |
 
 <br>
 
@@ -677,16 +677,16 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C01-UT01 – C01-UT03 | <img src="./assets/bagian2-vitest.png" width="90%"><br>Keluaran Vitest untuk `laporan-buat.test.js`, `lokasi.test.js`, dan `laporan-berulang.test.js` (43 test lulus) |
 | C01-UT04 – C01-UT07 |  |
 | C02-UT01 – C02-UT04 |  |
-| C03-UT01 – C03-UT05 |  |
+| C03-UT01 – C03-UT05 | <img src="./assets/C03-UT01.png" width="90%"><br>Keluaran Vitest untuk `pemda.test.js` |
 | C04-UT01 – C04-UT07 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js`) |
 | C04-UT08 – C04-UT10 |  |
 | C04-UT11 – C04-UT13 |  |
-| C04-UT14 – C04-UT17 |  |
+| C04-UT14 – C04-UT17 | Sama dengan bukti C03-UT01 () |
 | C04 (coverage) |  |
 | C05-UT01 – C05-UT05 | Sama dengan bukti C01-UT01 – C01-UT03 (`lokasi.test.js`) |
 | C05 (coverage) | <img src="./assets/bagian2-coverage.png" width="90%"><br>Laporan coverage `@vitest/coverage-v8` pada seluruh test suite (194 test lulus) |
 | C06-UT01 – C06-UT03 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `lokasi.test.js`) |
-| C06-UT04 – C06-UT12 |  |
+| C06-UT04 – C06-UT12 | <img src="./assets/C06-UT04.png" width="90%"><br>Keluaran Vitest modul `fasilitas-pemda.test.js` |
 | C06 (coverage) |  |
 | C07-UT01 – C07-UT06 |  |
 | C07 (coverage) |  |
@@ -701,13 +701,13 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC07 – INT-TC08 | Sama dengan bukti C01-UT01 – C01-UT03 (`laporan-buat.test.js` dan `laporan-berulang.test.js`) |
 | INT-TC09 – INT-TC10 |  |
 | INT-TC11 – INT-TC12 |  |
-| INT-TC13 – INT-TC16 |  |
+| INT-TC13 – INT-TC16 | <img src="./assets/INT-TC13.png" width="90%"><br>Keluaran Supertest endpoint Pemda |
 | UC01-TC01 | <img src="./assets/UC01-TC01a.png" width="30%"> <img src="./assets/UC01-TC01b.png" width="30%"> <img src="./assets/UC01-TC01c.png" width="30%"> <img src="./assets/UC01-TC01d.png" width="30%"> <img src="./assets/UC01-TC01e.png" width="30%"> <img src="./assets/UC01-TC01f.png" width="30%"><br>Formulir awal terkunci, isian foto dan kategori, lokasi dan deskripsi, dialog konfirmasi, detail laporan #LPR-0017 |
 | UC01-TC02 | <img src="./assets/UC01-TC02a.png" width="30%"> <img src="./assets/UC01-TC02b.png" width="30%"><br>Tombol terkunci dan dialog "Formulir belum lengkap" |
 | UC01-TC03 | <img src="./assets/UC01-TC03a.png" width="30%"> <img src="./assets/UC01-TC03b.png" width="30%"> <img src="./assets/UC01-TC03c.png" width="30%"> <img src="./assets/UC01-TC03d.png" width="30%"><br>Catatan admin, dialog kirim revisi, riwayat penanganan, foto dan deskripsi setelah revisi |
 | UC02-TC01 |  |
 | UC02-TC02 |  |
-| UC03-TC01 |  |
+| UC03-TC01 | <img src="./assets/UC03-TC01.png" width="30%"><br>Tampilan layar Laporan Prioritas Pemda |
 | UC03-TC02 |  |
 | UC03-TC03 |  |
 | UC04-TC01 |  |
@@ -728,7 +728,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF02-TC01 |  |
 | KNF03-TC01 |  |
 | KNF04-TC01 |  |
-| KNF05-TC01 |  |
+| KNF05-TC01 | <img src="./assets/KNF05-TC01.png" width="90%"><br>Screenshot hasil terminal `profiling_p5.js` |
 
 <br>
 
